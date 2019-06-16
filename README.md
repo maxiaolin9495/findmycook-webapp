@@ -2,11 +2,15 @@
 
 This is our repository for our business idea "Find your Cook".
 
+## Installation
+Using Terminal
+`git clone https://<username>:<password>@github.com/itsJS/findYourCookApp.git`
+
 ## Code of Conduct
 
 ### Git Workflow
 Please use feature branches only to commit your code. 
-The reviewer needs to make sure that the features committed are working without errors before approving.
+\\ The reviewer needs to make sure that the features committed are working without errors before approving.
 The reviewer shall merge the feature branch into the develop branch once they approved the pull request.
 The master branch is only used for production, i.e. a finished deliverable/ work product.
 
