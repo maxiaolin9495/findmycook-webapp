@@ -21,7 +21,7 @@ The reviewer shall merge the feature branch into the develop branch once they ap
 The master branch is only used for production, i.e. a finished deliverable/ work product.
 
 Follow the following workflow:
-![Image](../git_workflow.png?raw=true)
+![Image](findYourCookApp/git_workflow.png?raw=true)
 
 
 ### Naming Branches
