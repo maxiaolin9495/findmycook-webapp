@@ -1,2 +1,1 @@
-# findYourCookApp
-SEBAMaster FindYourCook WebApp
+# Find Your Cook WebApp
