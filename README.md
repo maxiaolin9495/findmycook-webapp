@@ -10,6 +10,9 @@ The reviewer needs to make sure that the features committed are working without 
 The reviewer shall merge the feature branch into the develop branch once they approved the pull request.
 The master branch is only used for production, i.e. a finished deliverable/ work product.
 
+
+
+
 ### Naming Branches
 Name the branches according to the branch types:
 - 👨‍🎨 **Feature**: `feature/xx-yy-zz` -- ease tracking of features. Example: `feature/add-free-slots`
