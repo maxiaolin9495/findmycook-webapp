@@ -1,11 +1,11 @@
-# Find Your Cook WebApp
+# Find My Cook WebApp
 
-This is our repository for our business idea "Find your Cook".
+This is our repository for the "Find My Cook" front-end.
 
 ## Installation
 Using Terminal
 
-`git clone https://<username>:<password>@github.com/itsJS/findYourCookApp.git`
+`git clone https://github.com/itsJS/findMyCook-frontend.git`
 
 ## Code of Conduct
 
@@ -20,7 +20,7 @@ The reviewer shall merge the feature branch into the develop branch once they ap
 
 The master branch is only used for production, i.e. a finished deliverable/ work product.
 
-Here is our workflow:
+#### Here is our workflow:
 
 ![Image](git_workflow.png?raw=true)
 Reference: Copyright 2019 Stephan Krusche, Bernd Bruegge - POM SS19 - 09 - Branch and Merge Management - Slide 7
