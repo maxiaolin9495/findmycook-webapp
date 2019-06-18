@@ -1,11 +1,11 @@
-# Find Your Cook WebApp
+# Find My Cook WebApp
 
-This is our repository for our business idea "Find your Cook".
+This is our repository for the "Find My Cook" front-end.
 
 ## Installation
 Using Terminal
 
-`git clone https://<username>:<password>@github.com/itsJS/findYourCookApp.git`
+`git clone https://github.com/itsJS/findMyCook-frontend.git`
 
 ## Code of Conduct
 
