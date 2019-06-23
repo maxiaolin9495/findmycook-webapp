@@ -53,7 +53,7 @@ const filterchef = async (req, res) => {
         city: 1,
         rating: 1,
         introduction: 1,
-        price: 1, 
+        price: 1,
         time: 1,
         photo: 1
     });
@@ -63,5 +63,6 @@ const filterchef = async (req, res) => {
 
 module.exports = {
     search,
-    getChefbyname,
+    filterchef,
+    getChefbyname
 };
