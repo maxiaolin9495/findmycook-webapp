@@ -4,6 +4,7 @@ import React from 'react';
 import {HashRouter as Router, Route, Switch, Redirect, Link} from 'react-router-dom';
 
 import {SearchPageView} from "./ViewController/SearchView/SearchPageView.js";
+import {SearchResultView} from "./ViewController/SearchView/SearchResultView.js";
 
 
 export default class App extends React.Component {
@@ -14,7 +15,8 @@ export default class App extends React.Component {
         this.state = {
             title: 'FindMyCook.com',
             routes: [
-                {component: SearchPageView, path: '/', exact: true}
+                {component: SearchPageView, path: '/', exact: true},
+                {component: SearchResultView, path: '/searchresult', exact: true}
 
             ]
         };

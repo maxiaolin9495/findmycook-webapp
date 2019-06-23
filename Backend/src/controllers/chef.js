@@ -22,6 +22,44 @@ const getChefbyname = async (req, res) => {
     res.status(200).json(chef);
 };
 
+const filterchef = async (req, res) => {
+    const {
+      chefIds,
+      city,
+      foodtype,
+      price
+    } = req.body;
+
+    const mapPriceRange = (price) => {
+        if (price === '0') {
+            return {price: {"$lte": 24, "$gte": 0}};
+        } else if (price === '25') {
+            return {price: {"$lte": 49, "$gte": 25}};
+        } else if (price === '50') {
+            return {price: {"$lte": 74, "$gte": 50}};
+        } else if (price === '75') {
+            return {price: {"$lte": 100, "$gte": 75}};
+        }
+    }
+
+    const query = {};
+    if (chefIds.length !== 0) query._id = {$in: chefIds};
+    if (price.length !== 0) query.$or = price.map(mapPriceRange);
+    if (city.length !== 0) query.city = {$in: district};
+    if (foodtype.length !== 0) query.foodtype = {$in: type};
+    const chef = await ChefModel.find(query, {
+        name: 1,
+        foodtype: 1,
+        city: 1,
+        rating: 1,
+        introduction: 1,
+        price: 1, 
+        time: 1,
+        photo: 1
+    });
+
+    res.status(200).json(chef);
+};
 
 module.exports = {
     search,
