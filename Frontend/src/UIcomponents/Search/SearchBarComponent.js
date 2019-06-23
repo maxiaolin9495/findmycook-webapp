@@ -24,7 +24,7 @@ class SearchBarComponent extends React.Component {
                 }}>
                     <SearchBar className={"searchtoolbar"}
                                onChange={(value) => this.setState({searchValue: value})}
-                               //onRequestSearch={() => this.props.history.push(`/searchresult?query=${this.state.searchValue}`)}
+                               onRequestSearch={() => this.props.history.push(`/searchresult?query=${this.state.searchValue}`)}
                                style={{
                                    flex: '1'
                                }}
@@ -34,7 +34,8 @@ class SearchBarComponent extends React.Component {
                         fontSize: '15px',
                         background: 'blue',
                         color: 'white'
-                    }} onClick={() => this.props.history.push('/casuallook')}>Search</Button>
+                    }} //onClick={() => this.props.history.push('/casuallook')}
+                    >Search</Button>
                 </div>
 
             </div>
