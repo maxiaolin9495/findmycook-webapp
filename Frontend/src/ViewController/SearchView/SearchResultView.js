@@ -3,6 +3,7 @@ import SearchResultPage from '../../UIcomponents/Search/SearchResultPage';
 import Background from '../../Images/searchresultbg.jpg';
 import '../../css/bg.css';
 import ChefService from "../../Services/ChefService";
+import Navigation from '../../UIcomponents/PageDesign/Navigation.js';
 
 export class SearchResultView extends React.Component {
 
@@ -47,6 +48,7 @@ export class SearchResultView extends React.Component {
 
         return (
             <div>
+                <Navigation/>
                 <img src={Background} className="bg"/>
                 <SearchResultPage data={this.state.data}
                                   onFilter={(chefIds, city, foodtype, price) => this.filterchef(chefIds, city, foodtype, price)}
