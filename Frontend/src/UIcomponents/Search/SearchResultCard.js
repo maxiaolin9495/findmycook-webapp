@@ -15,7 +15,7 @@ class SearchResultCard extends Component {
             <div style={{
                 marginTop: '10px',
                 marginLeft: '5%',
-                width: '90%',
+                width: '70%',
                 display: 'flex',
                 paddingTop: '1%',
                 paddingBottom: '1%',
@@ -52,10 +52,12 @@ class SearchResultCard extends Component {
                         color: 'grey'
                     }}
                     >{this.props.city}</div>
-                    <h3 style={{
+                    <h2 style={{
+                        fontWeight: 'bolder',
+                        fontFamily: 'Lucida Bright',
                         width: '70%',
                         marginTop: '40px'
-                    }}>Type:{this.props.foodtype}</h3>
+                    }}>{this.props.foodtype}</h2>
                     <div>{this.props.introduction.slice(0, 200) + '...'}
                     </div>
                 </div>
@@ -67,7 +69,7 @@ class SearchResultCard extends Component {
                         fontSize: '40px',
                     }}>€{this.props.price}</div>
                     <Button primary style={{
-                        background: 'green',
+                        background: 'gray',
                         borderRadius: '10px',
                         color: 'white',
                         marginTop: '15px',

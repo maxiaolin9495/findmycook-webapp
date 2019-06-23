@@ -85,7 +85,7 @@ class SearchResultPage extends Component {
     citiesCheckboxs = (cities) => {
         const rendered = [];
         let key = 0;
-        rendered.push(<h2>City:</h2>);
+        rendered.push(<h3>City:</h3>);
         for (let city of cities.City) {
             rendered.push(<Checkbox
                 className='filter-checkbox'
@@ -107,7 +107,7 @@ class SearchResultPage extends Component {
     foodtypesCheckboxs = (handlecitiescheckbox) => {
         const rendered = [];
         let key = 0;
-        rendered.push(<h2>Food Type:</h2>);
+        rendered.push(<h3>Food Type:</h3>);
         for (let type of foodtypes.Type) {
             rendered.push(<Checkbox
                 className='filter-checkbox'
@@ -128,7 +128,7 @@ class SearchResultPage extends Component {
     pricesCheckboxs = (prices) => {
         const rendered = [];
         let key = 0;
-        rendered.push(<h2>Price:</h2>);
+        rendered.push(<h3>Price:</h3>);
         for (let price of prices.Price) {
             rendered.push(<Checkbox
                 className='filter-checkbox'
@@ -152,9 +152,9 @@ class SearchResultPage extends Component {
             <div style={{marginBottom: "40px"}}>
                 <div style={{
                     marginTop: '20px',
-                    width: '90%',
+                    width: '70%',
                     marginLeft: '5%',
-                    height: '210px',
+                    height: '200px',
                     background: 'white',
                     backgroundColor: 'rgba(255, 255, 255, 0.7)',
                     padding: '20px',
@@ -191,7 +191,7 @@ class SearchResultPage extends Component {
                         <div style={{width: '4%'}}>
                         </div>
                         <Button style={{
-                            background: 'green',
+                            background: 'gray',
                             borderRadius: '10px',
                             color: 'white',
                             paddingLeft: '20px',
