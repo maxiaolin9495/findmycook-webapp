@@ -4,7 +4,15 @@ const mongoose = require('mongoose');
 // Define the chef schema
 
 const ChefSchema = new mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName:{
+        type: String,
+        required: true
+    },
+    email: {
         type: String,
         required: true
     },
@@ -17,7 +25,8 @@ const ChefSchema = new mongoose.Schema({
         required: true
     },
     time: String,
-    photo: String
+    photo: String,
+    languages: Array
 });
 
 ChefSchema.set('versionKey', false);

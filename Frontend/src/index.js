@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 import WebFontLoader from 'webfontloader';
-import 'react-md/dist/react-md.blue-light_blue.min.css'
+import './css/react-md.css'
 
 WebFontLoader.load({
     google: {

@@ -4,7 +4,7 @@ import React from 'react';
 import Background from '../../Images/Homepage.jpg';
 import SearchBarComponent from "../../UIcomponents/Search/SearchBarComponent";
 import '../../css/bg.css';
-import Navigation from '../../UIcomponents/PageDesign/Navigation.js';
+import Navigation from '../../UIcomponents/PageDesign/Navigation';
 
 export class SearchPageView extends React.Component {
 
@@ -18,13 +18,15 @@ export class SearchPageView extends React.Component {
 
     render() {
           return (
-            <section>
-
-                <img src={Background} className="bg"/>
-                <div style={{marginTop: '25%', position: 'relative'}}>
-                <SearchBarComponent/>
+            <div>
+                <Navigation/>
+                <section>
+                    <img src={Background} className="bg"/>
+                    <div style={{marginTop: '25%', position: 'relative'}}>
+                         <SearchBarComponent/>
                     </div>
-            </section>
+                </section>
+            </div>
 
         )
 

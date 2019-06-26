@@ -73,17 +73,28 @@ class NavigationMenu extends React.Component {
         return (
             <div className={this.props.className}>
                 <NavigationDrawer
+                    hidden="true"
                 style={NavigationMenuStyle}
             desktopDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
             className="NavigationMenuStyle"
             drawerTitle="Menu"
-            toolbarTitle={<Item label="FindMyCook.com">
+            toolbarActions={
+                    <div class="noneName" id="noneName">
+                        <Button id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')} hidden={this.props.loggedIn?true:false}>Login</Button>
+                        <Button id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')} hidden={this.props.loggedIn?true:false}>Register</Button>
+                    </div>
+            }
+            toolbarTitle={
+                <Item label="FindMyCook.com" >
                 <Button onClick={() => this.props.history.push('/')}><Avatar src={imgURL} role="presentation"
                                                                              suffix="green-300"/></Button>
-                    </Item>}
-                    >
+                    </Item>
+
+                }
+                >
 
                 </NavigationDrawer>
+
             </div>
         );
     }
