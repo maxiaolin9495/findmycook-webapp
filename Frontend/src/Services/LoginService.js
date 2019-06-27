@@ -26,18 +26,7 @@ export default class LoginService {
     }
 
     //gets data from jwtToken, which is prefilled with user data. Data from database has to be added to token beforehand.
-    static getCurrentUser() {
-        let token = window.localStorage['jwtTokenFMC'];
-        if (!token) return {};
 
-        let base64Url = token.split('.')[1];
-        let base64 = base64Url.replace('-', '+').replace('_', '/');
-        return {
-            id: JSON.parse(window.atob(base64)).id,
-            email: JSON.parse(window.atob(base64)).email,
-            userType: JSON.parse(window.atob(base64)).userType,
-        };
-    }
 
     static isAuthenticated() {
         return window.localStorage.hasOwnProperty('jwtTokenFMC');

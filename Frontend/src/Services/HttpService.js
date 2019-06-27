@@ -2,6 +2,7 @@
 
 export default class HttpService {
     constructor() {
+        this.state={};
     }
 
     static apiURL() {

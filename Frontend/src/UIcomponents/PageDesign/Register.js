@@ -22,7 +22,7 @@ class RegisterTab extends React.Component {
     render() {
         return (
             <div className="md-grid" id="registrationTable" label="Register"
-            style={{width: '25%',
+            style={{width: '30%',
                     background: 'white'}}>
                 <CardTitle title="Register" id='RegisterTitle' style={{
                     marginLeft: 'auto',
@@ -75,24 +75,18 @@ class RegisterTab extends React.Component {
     }
 
     onClick=()=> {
-        if (this.isEmail(this.state.email)) {
-            if (this.verifyPassword) {
-                if (type.toString().localeCompare('1') === 0) {
-                    this.handleSubmit();
-                }
-                else {
-                    this.handleSubmit();
-                }
+        if (this.isEmail()) {
+            if (this.verifyPassword()) {
+                this.handleSubmit();
             }
         }
-
     }
 
     isEmail=()=>{
         if (this.state.email.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
             return true;
         } else {
-            document.getElementById('floating-center-email').value = "Please input valid Email Address";
+            document.getElementById('floating-center-email').value="Please input valid Email Address";
             document.getElementById('floating-center-email').focus();
             return false;
         }
@@ -117,7 +111,6 @@ class RegisterTab extends React.Component {
 
     handleSubmit=(event)=> {
         event.preventDefault();
-
         let user = {
             email: this.state.email,
             password: this.state.password,

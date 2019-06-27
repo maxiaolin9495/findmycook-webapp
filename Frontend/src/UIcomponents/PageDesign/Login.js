@@ -15,7 +15,7 @@ class LoginTab extends React.Component{
         return (
             <div className="md-grid" id="LoginTable" label=""  style={{
                 display: 'flex',
-                width: '25%',
+                width: '30%',
                 margin: '0 auto',
                 marginTop: '10%',
                 background: 'white',
@@ -43,7 +43,7 @@ class LoginTab extends React.Component{
                     onChange={value => this.handleChange('password', value)}
                 />
                 <Button id="submit" type="submit"
-                        flat primary swapTheming onClick={this.onClick}
+                        flat primary swapTheming
                         style={{
                             marginTop: '10%',
                             marginLeft: 'auto',

@@ -112,10 +112,6 @@ const register = (req, res) => {
 };
 
 const addProfile = (req, res) => {
-    if (!Object.prototype.hasOwnProperty.call(req.header, 'Authorization')) return res.status(400).json({
-        error: 'Bad Request',
-        message: 'The Request must contain an authorization header'
-    });
     if (!Object.prototype.hasOwnProperty.call(req.body, 'firstName')) return res.status(400).json({
         error: 'Bad Request',
         message: 'The request body must contain a firstName property'
