@@ -1,9 +1,12 @@
-"use strict";
-
 const mongoose = require('mongoose');
 // Define the chef schema
 
 const ChefSchema = new mongoose.Schema({
+
+    email: {
+        type: String,
+        required: true
+    },
     firstName: {
         type: String,
         required: true
@@ -12,16 +15,22 @@ const ChefSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
+    foodType: {
         type: String,
-        required: true
+        required: true,
     },
-    foodtype: String,
-    city: String,
+    city: {
+        type: String,
+        required: true,
+    },
     rating: Number,
     introduction: String,
     price: {
         type: Number,
+        required: true
+    },
+    phoneNumber: {
+        type: String,
         required: true
     },
     time: String,
