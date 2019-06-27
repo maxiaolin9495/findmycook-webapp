@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const middlewares = require('./middlewares');
 
 const chef = require('./routes/chef.js');
+const user = require('./routes/user.js');
 
 const api = express();
 
@@ -28,6 +29,6 @@ api.get('/', (req, res) => {
 
 // API routes
 api.use('/chef', chef);
-
+api.use('/user', user);
 
 module.exports = api;

@@ -1,5 +1,3 @@
-"use strict";
-
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 import SearchBar from 'material-ui-search-bar';

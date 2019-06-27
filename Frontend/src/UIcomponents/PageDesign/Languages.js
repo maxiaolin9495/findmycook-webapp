@@ -8,11 +8,15 @@ class Languages extends React.Component {
     }
     render() {
         return (
-            <div hidden="true" className="md-cell md-cell--5" id="language-List">
+            <div hidden={false} id="language-List" style={{width: '100%'}}>
                 <Checkbox
                     id="custom-checkbox-icon-1"
                     name="using-custom-icons"
                     label="English"
+                    style={{
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                    }}
                 />
                 <Checkbox
                     id="custom-checkbox-icon-2"
@@ -44,7 +48,6 @@ class Languages extends React.Component {
                     label="Other"
                     lineDirection="center"
                     placeholder="If you can other language, please directly input them in"
-                    className="md-cell md-cell--bottom"
                 />
             </div>
         )

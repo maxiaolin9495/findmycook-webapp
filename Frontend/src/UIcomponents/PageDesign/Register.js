@@ -1,49 +1,47 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
-import {Button, TextField, SelectionControlGroup, Card}  from 'react-md';
-import Languages from '../../UIcomponents/PageDesign/Languages.js';
-function isEmail(email){
-    let strEmail = document.getElementById(email).value;
-    if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
-        return true;
-    } else {
-        document.getElementById('floating-center-email').innerText = "Please input valid Email Address";
-        document.getElementById('floating-center-email').focus();
-        return false;
-    }
-}
-function handleUserType(){
-    let type =document.getElementById('selection-user-type-radios').value;
-    if (type.toString().localeCompare('1') == 0){
-        document.getElementById('language-List').hidden = true;
-    } else{
-        document.getElementById('language-List').hidden = false;
-    }
-    return
-}
+import {Button, TextField, SelectionControlGroup, CardTitle} from 'react-md';
+import AlertMessage from './AlertMessage'
+
+
 
 class RegisterTab extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            email: '',
+            password: '',
+            passwordConfirm: '',
+            userType:'Customer',
+        }
     }
 
+    handleUserType=()=>{
+        this.state.userType = document.getElementById('selection-user-type-radios0').value
+    }
     render() {
         return (
-
-            <Card className="md-grid" id="registrationTable" label="Login">
+            <div className="md-grid" id="registrationTable" label="Register"
+            style={{width: '25%',
+                    background: 'white'}}>
+                <CardTitle title="Register" id='RegisterTitle' style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto'
+                }}/>
+                <form className="md-grid" onSubmit={this.handleSubmit}>
                 <SelectionControlGroup
                     id="selection-user-type-radios"
                     name="customer-type"
                     type="radio"
                     label="Please choose your user type"
-                    defaultValue='1'
-                    onclick={handleUserType}
+                    defaultValue='Customer'
+                    onChange={this.handleUserType}
                     controls={[{
-                        label: 'As a customer',
-                        value: '1',
-                    }, {
                         label: 'As a chef',
-                        value: '2',
+                        value: 'Chef',
+                    },{
+                        label: 'As a customer',
+                        value: 'Customer',
                     }]}
                 />
                 <TextField
@@ -52,68 +50,81 @@ class RegisterTab extends React.Component {
                     required
                     lineDirection="center"
                     placeholder="Please input your emailAddress"
-                    className="md-cell md-cell--bottom"
+                    onChange={value=> this.handleChange('email', value)}
                 />
                 <TextField
                     id="floating-password"
                     label="Please Input your password"
                     required
                     type="password"
-                    rows={2}
-                    className="md-cell md-cell--bottom"
+                    onChange={value=> this.handleChange('password', value)}
                 />
                 <TextField
-                    id="floating-center-firstName"
-                    label="firstname"
+                    id="floating-password-confirm"
+                    label="Confirm your password"
                     required
-                    rows={3}
-                    lineDirection="center"
-                    placeholder="Please input your firstname"
-                    className="md-cell md-cell--bottom"
+                    type="password"
+                    onChange={value=> this.handleChange('passwordConfirm', value)}
                 />
-                <TextField
-                    id="floating-center-lastName"
-                    label="lastName"
-                    required
-                    rows={4}
-                    lineDirection="center"
-                    placeholder="Please input your lastname"
-                    className="md-cell md-cell--bottom"
-                />
-                <TextField
-                    id="floating-center-phoneNumber"
-                    label="phonenumber"
-                    required
-                    rows={5}
-                    lineDirection="center"
-                    placeholder="Please input your common used phonenumber"
-                    className="md-cell md-cell--bottom"
-                />
-                <Languages/>
-                <Button flat primary swapTheming onClick={this.handleClick}>Register</Button>
-            </Card>
+                <Button id="submit" type="submit" flat primary swapTheming onClick={this.onClick} style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',}}>Register</Button>
+                </form>
+            </div>
         )
     }
 
-    handleClick() {
-        let emailAddress = document.getElementById('floating-center-email').value;
-        let password = document.getElementById('floating-password').value;
-        let phoneNumber = document.getElementById('phoneNumber').value;
-        let firstName = document.getElementById('firstName').value;
-        let lastName = document.getElementById('lastName').value;
-        let type = document.getElementById('selection-user-type-radios').value;
-
-        if (isEmail(emailAddress) && password.toString().length >= 6) {
-            if (type.toString().localeCompare('2') == 0) {
-                let languages = '';
-                this.props.history.push(`/registerChef?email=${emailAddress}&password=${password}&phoneNumber=${phoneNumber}&firstName=${firstName}&lastName=${lastName}
-            &languages=${languages}`)
-            }
-            else {
-                this.props.history.push(`/registerCustomer?email=${emailAddress}&password=${password}&phoneNumber=${phoneNumber}&firstName=${firstName}&lastName=${lastName}`)
+    onClick=()=> {
+        if (this.isEmail(this.state.email)) {
+            if (this.verifyPassword) {
+                if (type.toString().localeCompare('1') === 0) {
+                    this.handleSubmit();
+                }
+                else {
+                    this.handleSubmit();
+                }
             }
         }
 
+    }
+
+    isEmail=()=>{
+        if (this.state.email.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
+            return true;
+        } else {
+            document.getElementById('floating-center-email').value = "Please input valid Email Address";
+            document.getElementById('floating-center-email').focus();
+            return false;
+        }
+    }
+    verifyPassword=()=>{
+        if(this.state.password === this.state.passwordConfirm) {
+            return true;
+        }
+        else{
+            document.getElementById('floating-password-confirm').value = "";
+            document.getElementById('floating-password').label="Passwords are not matching";
+            document.getElementById('floating-password').value = "";
+            document.getElementById('floating-password').focus();
+            return false;
+        }
+    }
+    handleChange=(key, val)=> {
+        this.setState({
+            [key]: val
+        })
+    }
+
+    handleSubmit=(event)=> {
+        event.preventDefault();
+
+        let user = {
+            email: this.state.email,
+            password: this.state.password,
+            userType: this.state.userType,
+        };
+
+        this.props.onSubmit(user);
     }
 }
 

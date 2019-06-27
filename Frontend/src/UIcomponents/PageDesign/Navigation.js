@@ -1,10 +1,9 @@
-"use strict";
-
 import React from 'react';
 import {Route, Link, withRouter} from 'react-router-dom';
-import {FontIcon, ListItem, NavigationDrawer, Button, Avatar, IconSeparator, Autocomplete, TextField} from 'react-md';
+import {FontIcon, ListItem, NavigationDrawer, Button, Avatar, IconSeparator} from 'react-md';
 import imgURL from '../../Images/fmc.png';
 import NavigationMenuStyle from '../../css/Navigation.css';
+import LoginService from '../../Services/LoginService';
 
 
 const Item = ({label, children}) => (
@@ -68,20 +67,25 @@ class NavigationMenu extends React.Component {
         };
     }
 
+    logout=()=>{
+        LoginService.logout();
+        this.props.history.push('/');
+    }
 
     render() {
         return (
             <div className={this.props.className}>
                 <NavigationDrawer
-                    hidden="true"
-                style={NavigationMenuStyle}
+
+                    style={NavigationMenuStyle}
             desktopDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
             className="NavigationMenuStyle"
             drawerTitle="Menu"
             toolbarActions={
-                    <div class="noneName" id="noneName">
-                        <Button id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')} hidden={this.props.loggedIn?true:false}>Login</Button>
-                        <Button id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')} hidden={this.props.loggedIn?true:false}>Register</Button>
+                LoginService.isAuthenticated()?
+                    <Button id="logoutButton" flat primary swapTheming onClick={this.logout}>Log out</Button>:<div id="noneName">
+                        <Button id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
+                        <Button id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
                     </div>
             }
             toolbarTitle={

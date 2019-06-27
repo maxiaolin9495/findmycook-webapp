@@ -16,7 +16,7 @@ export class SearchResultView extends React.Component {
         };
     }
 
-    componentWillMount(props) {
+    componentWillMount(props){
         this.setState({
             loading: true
         });
@@ -32,7 +32,7 @@ export class SearchResultView extends React.Component {
 
     }
 
-    filterchef(chefIds, city, foodtype, price) {
+    filterchef =(chefIds, city, foodtype, price) =>{
         ChefService.filterchef(chefIds, city, foodtype, price).then((data) => {
             this.setState({
                 data: data,

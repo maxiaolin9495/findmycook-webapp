@@ -9,7 +9,7 @@ export default class HttpService {
     }
 
     static get(url, onSuccess, onError) {
-        let token = window.localStorage['jwtToken'];
+        let token = window.localStorage['jwtTokenFMC'];
         let header = new Headers();
         if (token) {
             header.append('Authorization', `JWT ${token}`);
@@ -32,7 +32,7 @@ export default class HttpService {
             }
         }).then((resp) => {
             if (resp.hasOwnProperty('token')) {
-                window.localStorage['jwtToken'] = resp.token;
+                window.localStorage['jwtTokenFMC'] = resp.token;
             }
             onSuccess(resp);
         }).catch((e) => {
@@ -41,7 +41,7 @@ export default class HttpService {
     }
 
     static put(url, data, onSuccess, onError) {
-        let token = window.localStorage['jwtToken'];
+        let token = window.localStorage['jwtTokenFMC'];
         let header = new Headers();
         if (token) {
             header.append('Authorization', `JWT ${token}`);
@@ -66,7 +66,7 @@ export default class HttpService {
             }
         }).then((resp) => {
             if (resp.hasOwnProperty('token')) {
-                window.localStorage['jwtToken'] = resp.token;
+                window.localStorage['jwtTokenFMC'] = resp.token;
             }
             onSuccess(resp);
         }).catch((e) => {
@@ -76,7 +76,7 @@ export default class HttpService {
     }
 
     static post(url, data, onSuccess, onError) {
-        let token = window.localStorage['jwtToken'];
+        let token = window.localStorage['jwtTokenFMC'];
         let header = new Headers();
         if (token) {
             header.append('Authorization', `JWT ${token}`);
@@ -101,7 +101,7 @@ export default class HttpService {
             }
         }).then((resp) => {
             if (resp.hasOwnProperty('token')) {
-                window.localStorage['jwtToken'] = resp.token;
+                window.localStorage['jwtTokenFMC'] = resp.token;
             }
             onSuccess(resp);
         }).catch((e) => {
@@ -110,7 +110,7 @@ export default class HttpService {
     }
 
     static remove(url, onSuccess, onError) {
-        let token = window.localStorage['jwtToken'];
+        let token = window.localStorage['jwtTokenFMC'];
         let header = new Headers();
         if (token) {
             header.append('Authorization', `JWT ${token}`);

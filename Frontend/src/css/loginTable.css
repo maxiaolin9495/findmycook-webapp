@@ -1,3 +1,9 @@
-#loginTable{
+#LoginTable{
     text-align: center;
+}
+
+#LoginTitle{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }

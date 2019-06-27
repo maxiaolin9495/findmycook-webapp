@@ -1,68 +1,73 @@
 import React from 'react';
-import {TextField, Button, Card} from 'react-md';
+import {TextField, Button, Card, CardTitle} from 'react-md';
 import {withRouter} from "react-router-dom";
-
-
-const FloatingLabels = () => (
-    <div className="md-grid">
-    </div>
-);
-
-function isEmail(strEmail){
-    if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
-        return true;
-    } else {
-        document.getElementById('floating-center-email').innerText = "Please input valid Email Address";
-        document.getElementById('floating-center-email').focus();
-        return false;
-    }
-}
+import AlertMessage from './AlertMessage'
 
 class LoginTab extends React.Component{
     constructor(props) {
         super(props);
-
+        this.state={
+            email: '',
+            password: '',
+        }
     }
     render() {
         return (
-            <Card className="md-grid" id="loginTable" label="Login">
+            <div className="md-grid" id="LoginTable" label=""  style={{
+                display: 'flex',
+                width: '25%',
+                margin: '0 auto',
+                marginTop: '10%',
+                background: 'white',
+            }}>
+                <form className="md-grid" onSubmit={this.handleSubmit}>
+                <CardTitle title="Login" id='LoginTitle' style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto'
+                }}/>
                 <TextField
                     id="floating-center-email"
                     label="Email"
                     required
                     lineDirection="center"
                     placeholder="Please input your emailAddress"
-                    className="md-cell md-cell--bottom"
+                    style={{marginTop: '10px'}}
+                    onChange={value => this.handleChange('email', value)}
                 />
                 <TextField
                     id="floating-password"
-                    label="Please Input your password"
+                    label="Password"
                     required
                     type="password"
-                    rows={2}
-                    className="md-cell md-cell--bottom"
+                    style={{marginTop: '10px'}}
+                    onChange={value => this.handleChange('password', value)}
                 />
-                <Button flat primary swapTheming onClick={this.handleClick}>Login</Button>
-            </Card>
+                <Button id="submit" type="submit"
+                        flat primary swapTheming onClick={this.onClick}
+                        style={{
+                            marginTop: '10%',
+                            marginLeft: 'auto',
+                        marginRight: 'auto'}}>Login</Button>
+                </form>
+            </div>
         )
     }
-    isEmail(strEmail) {
-        if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
-            return true;
-        } else {
-            document.getElementById('floating-center-email').innerText = "Please input valid Email Address";
-            document.getElementById('floating-center-email').focus();
-            return false;
-        }
-    }
-    handleClick(){
-        let emailAddress = document.getElementById(floating-center-email).value;
-        let password = document.getElementById(floating-password).value;
-        if(isEmail(emailAddress)){
-            this.props.history.push(`/login?email=${emailAddress}&password=${password}`)
-        }
+
+    handleChange=(key, val) =>{
+        this.setState({
+            [key]: val
+        })
     }
 
+
+    handleSubmit =(event) =>{
+        event.preventDefault();
+        let user = {
+            email: this.state.email,
+            password: this.state.password
+        };
+        this.props.onSubmit(user);
+    }
 }
 
 export default withRouter(LoginTab)
