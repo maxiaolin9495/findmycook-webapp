@@ -158,16 +158,16 @@ const addProfile = (req, res) => {
     userModel.findOne({email: req.body.email}).exec()//UseModel schema
         .then(user => {
             user.withProfile = 'Yes';
-            userModel.update(user).then(user => {
+            userModel.updateOne({email: user.email},user).then(user => {
             }).catch(error => {
-                return res.status(500).json({
+                res.status(500).json({
                     error: 'Internal server error',
                     message: error.message
                 })
             });
         }).catch(error => {
         console.log('error by searching user')
-        return res.status(404).json({
+        res.status(404).json({
             error: 'User Not Found',
             message: error.message
         })
@@ -307,7 +307,7 @@ const uploadProfile = (req, res) => {
             phoneNumber: req.body.phoneNumber,
             languages: req.body.languages,
         });
-        chefModel.update({email: chef.email}, chef, false, false).then(chef => {
+        chefModel.updateOne({email: chef.email}, chef).then(chef => {
             const token = jwt.sign({
                 id: req.body._id,
                 email: req.body.email,
@@ -342,7 +342,7 @@ const uploadProfile = (req, res) => {
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,
         });
-        customerModel.update({email: customer.email}, customer, false, false).then(customer => {
+        customerModel.updateOne({email: customer.email}, customer).then(customer => {
             const token = jwt.sign({
                 id: req.body._id,
                 email: customer.email,
