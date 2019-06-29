@@ -1,0 +1,25 @@
+{
+  "name": "FindMyCook-backend",
+  "version": "1.0.0",
+  "description": "FindMyCook backend as a service",
+  "main": "index.js",
+  "private": true,
+  "author": "Team-33",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js",
+    "devstart": "nodemon ./index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "helmet": "^3.11.0",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.0.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  }
+}
