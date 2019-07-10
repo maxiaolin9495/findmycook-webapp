@@ -53,7 +53,7 @@ const defaultNavItems = [
     {
         label: 'About us',
         to: '/about-us',
-        icon: 'fa fa-book'
+        icon: 'book'
     },
 ];
 
@@ -70,7 +70,7 @@ const logInNavItems = [
     },
     {
         label: 'Contact us',
-        to: '/send-mail',
+        to: '/contact-us',
         icon: 'send'
     },
     {
@@ -113,7 +113,7 @@ class NavigationMenu extends React.Component {
             attractions: [],
             titles: [],
             toolbarTitle: this.getCurrentTitle(props),
-            navItems: LoginService.isAuthenticated() ? defaultNavItems : logInNavItems
+            navItems: LoginService.isAuthenticated() ? logInNavItems:defaultNavItems
         };
     }
 

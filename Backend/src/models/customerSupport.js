@@ -9,7 +9,7 @@ const customerSupportSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    SupportStatus: {
+    supportStatus: {
         type: String,
         enum: ['open', 'inProgress', 'closed', 'canceled'],
         required: true

@@ -3,11 +3,11 @@ import * as emailjs from 'emailjs-com';
 
 const service_id = "gmail";
 const template_id = "feedbackFindMyCook";
-
+const user_id = 'user_dSKdVGR3vH7TctvEXGiI7'
 export default class UserService {
 
     static baseURL() {
-        return "http://localhost:3000/"
+        return "http://localhost:3000"
     }
 
     static getCurrentUser() {
@@ -60,11 +60,10 @@ export default class UserService {
 
     static uploadMessage(message, email) {
         return new Promise((resolve, reject) => {
-            let data = {
+            HttpService.post(this.baseURL()+'/contact/saveMessage', {
                 email: email,
                 message: message
-            }
-            HttpService.post(this.baseURL()+'/contact/saveMessage', data, function (data){
+            }, function (data){
                 resolve(data);
             } ,function (textStatus) {
                 reject(textStatus);
@@ -72,16 +71,23 @@ export default class UserService {
         });
     }
 
-    static contactUs(email, firstName, message){
-        let template_params = {
-            "to_email": email,
-            "to_name": firstName
-        }
-        emailjs.send(service_id, template_id, template_params).then(
-            function(response){
-                console.log('Success', response.status, response.text)
-            }, function (err){
-                console.log(err)
-            })
+    static handle(email, firstName, message){
+        this.contactUs(email,firstName).then(this.uploadMessage(message, email)).error(console.log(error))
+    }
+
+    static contactUs(email, firstName) {
+        return new Promise((resolve, reject) => {
+            emailjs.send(service_id, template_id, {
+                "to_email": email,
+                "to_name": firstName
+            }, user_id, function (response) {
+                console.log('Success', response.status, response.text);
+                resolve(response)
+            }, function (err) {
+                console.log(err);
+                reject(err)
+            });
+        })
+
     }
 }

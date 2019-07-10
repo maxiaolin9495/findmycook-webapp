@@ -1,5 +1,7 @@
 import React from 'react';
 import AboutUs from '../UIcomponents/PageDesign/AboutUs';
+import Navigation from "../UIcomponents/PageDesign/Navigation";
+import Background from "../Images/Homepage.jpg";
 
 export class AboutUsView extends React.Component {
 
@@ -13,7 +15,13 @@ export class AboutUsView extends React.Component {
 
     render() {
         return (
-            <AboutUs/>
+            <div>
+                <Navigation/>
+                <section>
+                    <img src={Background} className="bg"/>
+                    <AboutUs/>
+                </section>
+            </div>
         );
     }
 }

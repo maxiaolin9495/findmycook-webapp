@@ -3,6 +3,7 @@ const customerSupport = require('../models/customerSupport');
 
 
 const saveMessage = (req, res) =>{
+    console.log('received message');
     if (!Object.prototype.hasOwnProperty.call(req.body, 'message')) return res.status(400).json({
         error: 'Bad Request',
         message: 'The request body must contain a message property'
@@ -24,7 +25,7 @@ const saveMessage = (req, res) =>{
         return res.status(200).json({});
     }).catch(error => {
         console.log('error happened by creating customerSupport');
-        return res.stack(400).json({error: error })
+        return res.status(400).json({error: error })
     })
 
 
