@@ -86,10 +86,11 @@ class NavigationMenu extends React.Component {
                     <Button id="logoutButton" type = "button" flat primary swapTheming onClick={this.logout}>Log out</Button>:<div id="noneName">
                         <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
                         <Button type = "buttons" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
+                        <Button type = "buttonTwo" id="ReviewButton" flat primary swapTheming onClick={()=> this.props.history.push('/review')}>Review</Button>
                     </div>
             }
             toolbarTitle={
-                <Item label="FindMyCook.com" >
+                <Item label="Find my Cook" >
                 <Button onClick={() => this.props.history.push('/')}><Avatar src={imgURL} role="presentation"
                                                                              suffix="green-300"/></Button>
                     </Item>

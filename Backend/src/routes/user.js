@@ -7,5 +7,6 @@ router.post('/register', userController.register);
 router.post('/addProfile', userController.addProfile);
 router.post('/uploadProfile', userController.uploadProfile);
 router.get('/Profile', userController.getProfile);
+router.get('/review', userController.review)
 
 module.exports = router;

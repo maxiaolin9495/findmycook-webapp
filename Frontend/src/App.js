@@ -7,18 +7,20 @@ import {SearchPageView} from "./ViewController/SearchView/SearchPageView.js";
 import {SearchResultView} from "./ViewController/SearchView/SearchResultView.js";
 import {LoginView} from "./ViewController/SearchView/LoginView.js";
 import {RegisterView} from "./ViewController/SearchView/RegisterView.js";
+import {ReviewChefView} from "./ViewController/ReviewChefView/ReviewChefView.js";
 
 export default class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            title: 'FindMyCook.com',
+            title: 'Find my Cook',
             routes: [
                 {component: SearchPageView, path: '/', exact: true},
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true},
-                {component: RegisterView, path: '/register', exact: true}
+                {component: RegisterView, path: '/register', exact: true},
+                {component: ReviewChefView, path: '/review', exact: true}
             ]
         };
     }

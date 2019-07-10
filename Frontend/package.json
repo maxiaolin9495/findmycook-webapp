@@ -34,6 +34,7 @@
     "dependencies": {
         "@material-ui/core": "^1.2.3",
         "@material-ui/icons": "^1.1.0",
+        "@syncfusion/ej2-react-calendars": "^17.1.51",
         "antd": "^3.6.3",
         "bootstrap": "^4.3.1",
         "chart.js": "^2.7.2",

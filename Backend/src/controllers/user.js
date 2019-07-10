@@ -444,6 +444,9 @@ const getProfile = (req, res) => {
             });
     }
 }
+const review  = (req, res) => {
+    return "Review"
+}
 
 module.exports = {
     login,
@@ -451,4 +454,5 @@ module.exports = {
     addProfile,
     uploadProfile,
     getProfile,
+    review
 };
