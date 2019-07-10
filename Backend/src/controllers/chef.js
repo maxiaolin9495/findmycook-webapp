@@ -1,11 +1,9 @@
-"use strict";
-
-const ChefModel = require('../models/chef');
+const chefModel = require('../models/chef');
 
 const search = async (req, res) => {
     const name = req.query.name;
     const nameRegex = new RegExp(name, 'g');
-    const chefs = await ChefModel.find({
+    const chefs = await chefModel.find({
         $or: [
             {name: nameRegex},
             {type: nameRegex}
@@ -47,7 +45,7 @@ const filterchef = async (req, res) => {
     if (price.length !== 0) query.$or = price.map(mapPriceRange);
     if (city.length !== 0) query.city = {$in: city};
     if (foodtype.length !== 0) query.foodtype = {$in: foodtype};
-    const chef = await ChefModel.find(query, {
+    const chef = await chefModel.find(query, {
         name: 1,
         foodtype: 1,
         city: 1,

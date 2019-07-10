@@ -1,9 +1,8 @@
 const emailjs = require('emailjs-com');
-const customerSupport = require('../models/customerSupport');
+const customerSupportModel = require('../models/customerSupport');
 
 
 const saveMessage = (req, res) =>{
-    console.log('received message');
     if (!Object.prototype.hasOwnProperty.call(req.body, 'message')) return res.status(400).json({
         error: 'Bad Request',
         message: 'The request body must contain a message property'
@@ -21,7 +20,7 @@ const saveMessage = (req, res) =>{
         "timeStamp" : timestamp,
     };
 
-    customerSupport.create(contact).then(contact => {
+    customerSupportModel.create(contact).then(contact => {
         return res.status(200).json({});
     }).catch(error => {
         console.log('error happened by creating customerSupport');
