@@ -1,8 +1,8 @@
 import React from "react";
-import Navigation from "../../UIcomponents/PageDesign/Navigation";
-import Background from "../../Images/Homepage.jpg";
-import RegisterTab from "../../UIcomponents/PageDesign/Register";
-import RegisterService from "../../Services/RegisterService";
+import Navigation from "../UIcomponents/PageDesign/Navigation";
+import Background from "../Images/Homepage.jpg";
+import RegisterTab from "../UIcomponents/PageDesign/Register";
+import RegisterService from "../Services/RegisterService";
 
 export class RegisterView extends React.Component {
     constructor(props) {

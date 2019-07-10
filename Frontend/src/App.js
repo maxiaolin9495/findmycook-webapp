@@ -5,9 +5,10 @@ import {HashRouter as Router, Route, Switch, Redirect, Link} from 'react-router-
 
 import {SearchPageView} from "./ViewController/SearchView/SearchPageView.js";
 import {SearchResultView} from "./ViewController/SearchView/SearchResultView.js";
-import {LoginView} from "./ViewController/SearchView/LoginView.js";
-import {RegisterView} from "./ViewController/SearchView/RegisterView.js";
-
+import {LoginView} from "./ViewController/LoginView.js";
+import {RegisterView} from "./ViewController/RegisterView.js";
+import {AboutUsView} from "./ViewController/AboutUsView.js";
+import {ContactFormView} from "./ViewController/ContactFormView.js";
 export default class App extends React.Component {
 
     constructor(props) {
@@ -18,7 +19,9 @@ export default class App extends React.Component {
                 {component: SearchPageView, path: '/', exact: true},
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true},
-                {component: RegisterView, path: '/register', exact: true}
+                {component: RegisterView, path: '/register', exact: true},
+                {component: AboutUsView, path: '/about-us', exact: true},
+                {component: ContactFormView, path: '/contact-us', exact: true},
             ]
         };
     }

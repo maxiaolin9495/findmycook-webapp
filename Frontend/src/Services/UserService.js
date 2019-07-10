@@ -1,10 +1,13 @@
 import HttpService from './HttpService';
-import MD5 from "react-native-md5";
+import * as emailjs from 'emailjs-com';
+
+const service_id = "gmail";
+const template_id = "feedbackFindMyCook";
 
 export default class UserService {
 
     static baseURL() {
-        return "http://localhost:3000/user"
+        return "http://localhost:3000/"
     }
 
     static getCurrentUser() {
@@ -44,15 +47,41 @@ export default class UserService {
                 languages: user.languages,
                 introduction: user.introduction,
             } : {}
-            HttpService.post(this.baseURL() + '/addProfile', data, function (data) {
+            HttpService.post(this.baseURL() + '/user/addProfile', data, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);
             });
         });
     }
-
     static uploadProfile() {
 
+    }
+
+    static uploadMessage(message, email) {
+        return new Promise((resolve, reject) => {
+            let data = {
+                email: email,
+                message: message
+            }
+            HttpService.post(this.baseURL()+'/contact/saveMessage', data, function (data){
+                resolve(data);
+            } ,function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static contactUs(email, firstName, message){
+        let template_params = {
+            "to_email": email,
+            "to_name": firstName
+        }
+        emailjs.send(service_id, template_id, template_params).then(
+            function(response){
+                console.log('Success', response.status, response.text)
+            }, function (err){
+                console.log(err)
+            })
     }
 }
