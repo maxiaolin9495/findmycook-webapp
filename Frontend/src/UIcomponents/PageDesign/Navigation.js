@@ -78,6 +78,11 @@ const logInNavItems = [
         to: '/about-us',
         icon: 'book'
     },
+    {
+        label: 'My Bookings',
+        to: '/my-booking',
+        icon: 'store'
+    },
 ]
 
 

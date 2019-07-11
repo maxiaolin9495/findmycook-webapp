@@ -12,7 +12,7 @@ const search = async (req, res) => {
     res.status(200).json(chefs);
 };
 
-const getChefbyname = async (req, res) => {
+const getChefByName = async (req, res) => {
     const {
         chefname,
     } = req.params;
@@ -20,7 +20,7 @@ const getChefbyname = async (req, res) => {
     res.status(200).json(chef);
 };
 
-const filterchef = async (req, res) => {
+const filterChef = async (req, res) => {
     const {
       chefIds,
       city,
@@ -61,6 +61,6 @@ const filterchef = async (req, res) => {
 
 module.exports = {
     search,
-    filterchef,
-    getChefbyname
+    filterChef,
+    getChefByName
 };

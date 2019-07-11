@@ -1,10 +1,13 @@
 const bookingModel = require('../models/booking');
+const chefModel = require('../models/chef');
+const customerModel = require('../models/customer');
+
 
 const getBookingsForChefs = (req, res) =>{
-    console.log('received message');
-    const email = req.params.email;
-    bookingModel.find({$or: [{chefEmail: email}]})
-        .then(bookings =>{return res.status(200).json(bookings)})
+    const email = req.query.email;
+    bookingModel.find({chefEmail: email})
+        .then(bookings =>{
+            return res.status(200).json(bookings)})
         .catch(error => {
             console.log('internal error by searching')
             return req.status(400).json({error: error.message})
@@ -14,14 +17,43 @@ const getBookingsForChefs = (req, res) =>{
 
 
 const getBookingsForCustomers = (req, res) =>{
-    const email = req.params.email;
-    bookingModel.find({$or: [{customerEmail: email}]})
+    const email = req.query.email;
+    bookingModel.find({customerEmail: email})
         .then(bookings =>{
             return res.status(200).json(bookings)})
         .catch(error => {
             console.log('internal error by searching')
             return req.status(400).json({error: error.message})
         })
+}
+
+const getCustomerName = (req, res) =>{
+    const email = req.query.email;
+
+    customerModel.findOne({email: email}).exec().then(customer => {
+        return res.status(200).json({firstName: customer.firstName, lastName: customer.lastName});
+    }).catch(error => {
+        console.log('error by searching user')
+        return res.status(404).json({
+            error: 'User Not Found',
+            message: error.message
+        })
+    });
+
+}
+
+const getChefName = (req, res) =>{
+    const email = req.query.email;
+
+    chefModel.findOne({email: email}).exec().then(chef => {
+        return res.status(200).json({firstName: chef.firstName, lastName: chef.lastName});
+    }).catch(error => {
+        console.log('error by searching user')
+        return res.status(404).json({
+            error: 'User Not Found',
+            message: error.message
+        })
+    });
 }
 
 const createBooking = async (req, res) =>{
@@ -77,5 +109,7 @@ const createBooking = async (req, res) =>{
 module.exports = {
     getBookingsForCustomers,
     getBookingsForChefs,
-    createBooking
+    createBooking,
+    getChefName,
+    getCustomerName
 }

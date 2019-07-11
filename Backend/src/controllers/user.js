@@ -22,12 +22,12 @@ const login = (req, res) => {
             // check if the password is valid
             if (!(req.body.password === user.password)) return res.status(401).send({token: null});
             if (user.withProfile === 'No') {
-                const token = jwt.sign({id: user._id, email: user.email}, config.JwtSecret, {
+                const token = jwt.sign({id: user._id, email: user.email, userType: user.userType, withProfile: user.withProfile}, config.JwtSecret, {
                     expiresIn: 999999,
                 });
-                return res.status(200).json({token: token, userType: user.userType, withProfile: user.withProfile})
+                return res.status(200).json({token: token})
             }
-            if (user.userType === 'Customer') {
+            if (user.userType === 'Chef') {
                 chefModel.findOne({email: req.body.email}).exec().then(chef => {
                     const token = jwt.sign({
                         id: user._id,
@@ -56,7 +56,7 @@ const login = (req, res) => {
         })
         .catch(error => {
             console.log('error by searching user')
-            return es.status(404).json({
+            return res.status(404).json({
                 error: 'User Not Found',
                 message: error.message
             })

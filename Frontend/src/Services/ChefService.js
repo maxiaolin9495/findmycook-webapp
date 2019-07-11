@@ -1,5 +1,3 @@
-"use strict";
-
 import HttpService from './HttpService';
 
 export default class ChefService {
@@ -132,7 +130,7 @@ export default class ChefService {
         });
     }*/
 
-   static getChefbysearch(name) {
+   static getChefBySearch(name) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ChefService.baseURL()}/search?name=${name}`, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
@@ -162,7 +160,7 @@ export default class ChefService {
         });
     }*/
 
-    static filterchef(chefIds, city, foodtype, price) {
+    static filterChef(chefIds, city, foodtype, price) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${ChefService.baseURL()}/filter`, {
                 chefIds,

@@ -5,8 +5,8 @@ const chefController = require('../controllers/chef');
 
 
 router.get('/search', chefController.search); // List all chefs
-router.post('/filter', chefController.filterchef);
-router.get('/name/:chefname', chefController.getChefbyname);
+router.post('/filter', chefController.filterChef);
+router.get('/name/:chefname', chefController.getChefByName);
 
 
 module.exports = router;
