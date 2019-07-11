@@ -59,8 +59,17 @@ const filterChef = async (req, res) => {
     res.status(200).json(chef);
 };
 
+const readdetailinfo = async (req, res) => {
+    const {
+        chefId,
+    } = req.params;
+    const chef = await ChefModel.findById(chefId);
+
+    res.status(200).json(chef);
+};
+
 module.exports = {
-    search,
+
     filterChef,
     getChefByName
 };
