@@ -31,4 +31,4 @@ const BookingSchema = new mongoose.Schema({
 });
 
 // Export the chef model
-module.exports = mongoose.model('chef', BookingSchema);
+module.exports = mongoose.model('booking', BookingSchema);

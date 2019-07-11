@@ -1,25 +1,27 @@
 const bookingModel = require('../models/booking');
 
-const getBookingsForChefs = async (req, res) =>{
+const getBookingsForChefs = (req, res) =>{
     console.log('received message');
-    const email = req.query.email;
-    const bookings = await bookingModel.find({
-        $or: [
-            {chefEmail: email}
-        ]
-    })
-    res.status(200).json(bookings);
+    const email = req.params.email;
+    bookingModel.find({$or: [{chefEmail: email}]})
+        .then(bookings =>{return res.status(200).json(bookings)})
+        .catch(error => {
+            console.log('internal error by searching')
+            return req.status(400).json({error: error.message})
+        })
+
 };
 
 
-const getBookingsForCustomers = async (req, res) =>{
-    const email = req.query.email;
-    const bookings = await bookingModel.find({
-        $or: [
-            {customerEmail: email}
-        ]
-    })
-    res.status(200).json(bookings);
+const getBookingsForCustomers = (req, res) =>{
+    const email = req.params.email;
+    bookingModel.find({$or: [{customerEmail: email}]})
+        .then(bookings =>{
+            return res.status(200).json(bookings)})
+        .catch(error => {
+            console.log('internal error by searching')
+            return req.status(400).json({error: error.message})
+        })
 }
 
 const createBooking = async (req, res) =>{
@@ -75,5 +77,5 @@ const createBooking = async (req, res) =>{
 module.exports = {
     getBookingsForCustomers,
     getBookingsForChefs,
-    createBooking,
+    createBooking
 }

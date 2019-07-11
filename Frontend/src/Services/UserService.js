@@ -57,7 +57,11 @@ export default class UserService {
     static uploadProfile() {
 
     }
-
+    static getBookings(userType, email){
+        return new Promise((resolve, reject)=>{
+            let suffix = userType === 'Chef'?'/booking'
+        })
+    }
     static uploadMessage(message, email) {
         return new Promise((resolve, reject) => {
             HttpService.post(this.baseURL()+'/contact/saveMessage', {
