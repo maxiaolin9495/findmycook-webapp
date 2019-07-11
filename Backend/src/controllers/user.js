@@ -445,10 +445,15 @@ const getProfile = (req, res) => {
     }
 }
 
+const calendar  = (req, res) => {
+    return "Calendar"
+}
+
 module.exports = {
     login,
     register,
     addProfile,
     uploadProfile,
     getProfile,
+    calendar
 };
