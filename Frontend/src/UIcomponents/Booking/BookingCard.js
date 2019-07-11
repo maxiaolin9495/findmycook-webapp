@@ -85,7 +85,6 @@ class BookingCard extends Component {
                     }}>{this.getDate()}</h2>
                 </div>
                 <div style={{
-                    color: 'green',
                     marginTop: '120px',
                     marginRight: '50px',
                     fontSize: '30px',
