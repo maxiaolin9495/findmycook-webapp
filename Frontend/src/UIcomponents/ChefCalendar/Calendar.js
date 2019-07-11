@@ -12,6 +12,7 @@ export class Calendar extends Component {
         this.handleDayClick = this.handleDayClick.bind(this);
         this.state = {
           selectedDay: undefined,
+          startDate: undefined
         };
       }
 
@@ -31,15 +32,13 @@ export class Calendar extends Component {
                 
                 <div>
                     <DayPicker onDayClick={this.handleDayClick} selectedDays={this.state.selectedDay}/>
-                    {this.state.selectedDay ? (
-                    <h3 style = {{textAlign: 'center'}}>{this.state.selectedDay.toLocaleDateString()}</h3>
-                    ) : (
-                    <h3 style = {{textAlign: 'center'}}>Please select a day.</h3>
-                    )}
+                    {this.state.selectedDay ? 
+                    (<h3 style = {{textAlign: 'center'}}>{this.state.selectedDay.toLocaleDateString()}</h3>) : 
+                    (<h3 style = {{textAlign: 'center'}}>Please select a day.</h3>)}
                 </div>
 
                 <div>
-                    <DatePicker
+                    <DatePicker 
                     selected={this.state.startDate}
                     onChange={this.handleChange}
                     showTimeSelect
