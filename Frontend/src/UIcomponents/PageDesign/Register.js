@@ -1,7 +1,6 @@
 import React from 'react';
 import {withRouter} from "react-router-dom";
 import {Button, TextField, SelectionControlGroup, CardTitle} from 'react-md';
-import AlertMessage from './AlertMessage'
 
 
 
@@ -26,7 +25,8 @@ class RegisterTab extends React.Component {
                     background: 'white'}}>
                 <CardTitle title="Register" id='RegisterTitle' style={{
                     marginLeft: 'auto',
-                    marginRight: 'auto'
+                    marginRight: 'auto',
+                    minWidth: '200px'
                 }}/>
                 <form className="md-grid" onSubmit={this.handleSubmit}>
                 <SelectionControlGroup

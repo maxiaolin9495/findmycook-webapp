@@ -1,6 +1,7 @@
 import React from 'react';
-import ChefService from "../../services/ChefService";
-import ChefDetail from '../../UIcomponents/Search/ChefDetail';
+
+import ChefService from "../../Services/ChefService";
+import ChefDetail from '../../Components/Search/AttractionDetail';
 import Navigation from '../../UIcomponents/PageDesign/Navigation';
 
 export class ChefDetailView extends React.Component {

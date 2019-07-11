@@ -1,10 +1,10 @@
 import React from 'react';
 import {Route, Link, withRouter} from 'react-router-dom';
-import {FontIcon, ListItem, NavigationDrawer, Button, Avatar, IconSeparator} from 'react-md';
+import {FontIcon, ListItem, NavigationDrawer, Button, Avatar, IconSeparator, NavItemLink } from 'react-md';
 import imgURL from '../../Images/fmc.png';
 import NavigationMenuStyle from '../../css/Navigation.css';
 import LoginService from '../../Services/LoginService';
-
+import { upperFirst } from 'lodash/string';
 
 const Item = ({label, children}) => (
     <IconSeparator style={{fontFamily: 'cursive', fontSize: '25px', fontWeight: 'bold'}} label={label} iconBefore
@@ -34,40 +34,107 @@ const NavLink = ({label, to, exact, icon}) => (
     </Route>
 );
 
-const defaultNavItems = [{
-    exact: true,
-    label: 'Home',
-    to: '/',
-    icon: '',
-}, {
-    label: 'Login',
-    to: '/',
-    icon: 'how_to_reg',
-}, {
-    label: 'Register',
-    to: '/',
-    icon: '',
-}];
+const defaultNavItems = [
+    {
+        label: 'Home',
+        to: '/',
+        icon: 'home',
+    },
+    {
+        label: 'Search',
+        to:'/searchresult',
+        icon:'search',
+    },
+    {
+        label: 'Contact us',
+        to: '/contact-us',
+        icon: 'send'
+    },
+    {
+        label: 'About us',
+        to: '/about-us',
+        icon: 'book'
+    },
+];
+
+const logInNavItems = [
+    {
+        label: 'Home',
+        to: '/',
+        icon: 'home',
+    },
+    {
+        label: 'Search',
+        to:'/searchresult',
+        icon:'search',
+    },
+    {
+        label: 'Contact us',
+        to: '/contact-us',
+        icon: 'send'
+    },
+    {
+        label: 'About us',
+        to: '/about-us',
+        icon: 'book'
+    },
+    {
+        label: 'My Bookings',
+        to: '/my-booking',
+        icon: 'store'
+    },
+]
 
 
 class NavigationMenu extends React.Component {
 
+    componentWillReceiveProps = (nextProps) => {
+        this.setState({toolbarTitle: this.getCurrentTitle(nextProps)});
+    }
+
+    getCurrentTitle = ({location: {pathname}}) => {
+        const lastSection = pathname.substring(pathname.lastIndexOf('/') + 1);
+        if (lastSection === 'navigation-drawers') {
+            return 'Inbox';
+        }
+
+        return this.toTitle(lastSection);
+    };
+
+    toTitle = (str) => {
+        return str.split(/-|[A-Z]+/).reduce((s, split) => {
+            const capititalized = split.match(/svg$/) ? 'SVG' : upperFirst(split);
+            return `${s ? `${s} ` : ''}${capititalized}`;
+        }, '');
+    }
+
     constructor(props) {
         super(props);
-        const navMap = {
-
-        }
+        const navMap = {}
         this.state = {
             loading: false,
             data: [],
-            navItems: defaultNavItems,
             searchValue: [],
             attractions: [],
             titles: [],
+            toolbarTitle: this.getCurrentTitle(props),
+            navItems: LoginService.isAuthenticated() ? logInNavItems:defaultNavItems
         };
     }
 
-    logout=()=>{
+    componentWillReceiveProps = (nextProps) => {
+        this.setState({toolbarTitle: this.getCurrentTitle(nextProps)});
+    }
+
+    getCurrentTitle = ({location: {pathname}}) => {
+        const lastSection = pathname.substring(pathname.lastIndexOf('/') + 1);
+        if (lastSection === 'navigation-drawers') {
+            return 'Inbox';
+        }
+
+        return this.toTitle(lastSection);
+    };
+    logout = () => {
         LoginService.logout();
         this.props.history.push('/');
     }
@@ -78,23 +145,30 @@ class NavigationMenu extends React.Component {
                 <NavigationDrawer
 
                     style={NavigationMenuStyle}
-            desktopDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
-            className="NavigationMenuStyle"
-            drawerTitle="Menu"
-            toolbarActions={
-                LoginService.isAuthenticated()?
-                    <Button id="logoutButton" type = "button" flat primary swapTheming onClick={this.logout}>Log out</Button>:<div id="noneName">
-                        <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
-                        <Button type = "buttons" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
-                    </div>
-            }
-            toolbarTitle={
-                <Item label="FindMyCook.com" >
-                <Button onClick={() => this.props.history.push('/')}><Avatar src={imgURL} role="presentation"
-                                                                             suffix="green-300"/></Button>
-                    </Item>
+                    desktopDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
+                    className="NavigationMenuStyle"
+                    drawerTitle="Menu"
+                    toolbarActions={
+                        LoginService.isAuthenticated() ?
+                            <Button id="logoutButton" type="button" flat primary swapTheming onClick={this.logout}>Log
+                                out</Button> : <div id="noneName">
+                                <Button type="button" id="loginButton" flat primary swapTheming
+                                        onClick={() => this.props.history.push('/login')}>Login</Button>
+                                <Button type="buttons" id="RegistrationButton" flat primary swapTheming
+                                        onClick={() => this.props.history.push('/register')}>Register</Button>
+                            </div>
+                    }
+                    navItems={
+                        this.state.navItems.map(props => <NavLink {...props} key={props.to}/>)
+                    }
+                    toolbarTitle={
+                        <Item label="FindMyCook.com">
+                            <Button onClick={() => this.props.history.push('/')}><Avatar src={imgURL}
+                                                                                         role="presentation"
+                                                                                         suffix="green-300"/></Button>
+                        </Item>
 
-                }
+                    }
                 >
 
                 </NavigationDrawer>

@@ -3,7 +3,7 @@ import SearchResultCard from '../../UIcomponents/Search/SearchResultCard';
 import {Checkbox, Button, Divider, Slider} from 'react-md';
 
 const cities = {
-    City: ['Munich', 'Karlsruhe', 'Berlin', 'Ulm'],
+    City: ['Munich', 'Garching', 'Eching'],
 }
 const foodtypes = {
     Type: ['Asia Food', 'America Food', 'German Food', 'French Food'],

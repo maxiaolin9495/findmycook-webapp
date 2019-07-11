@@ -1,8 +1,8 @@
 import React from "react";
-import Navigation from "../../UIcomponents/PageDesign/Navigation";
-import Background from "../../Images/Homepage.jpg";
-import LoginTab from "../../UIcomponents/PageDesign/Login";
-import LoginService from "../../Services/LoginService";
+import Navigation from "../UIcomponents/PageDesign/Navigation";
+import Background from "../Images/Homepage.jpg";
+import LoginTab from "../UIcomponents/PageDesign/Login";
+import LoginService from "../Services/LoginService";
 
 export class LoginView extends React.Component {
     constructor(props) {
