@@ -85,7 +85,8 @@ class NavigationMenu extends React.Component {
                 LoginService.isAuthenticated()?
                     <Button id="logoutButton" type = "button" flat primary swapTheming onClick={this.logout}>Log out</Button>:<div id="noneName">
                         <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
-                        <Button type = "buttons" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
+                        <Button type = "button" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
+                        <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/calendar')}>Calendar</Button>
                     </div>
             }
             toolbarTitle={

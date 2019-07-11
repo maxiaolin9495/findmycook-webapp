@@ -7,6 +7,7 @@ import {SearchPageView} from "./ViewController/SearchView/SearchPageView.js";
 import {SearchResultView} from "./ViewController/SearchView/SearchResultView.js";
 import {LoginView} from "./ViewController/SearchView/LoginView.js";
 import {RegisterView} from "./ViewController/SearchView/RegisterView.js";
+import {CalendarView} from './ViewController/CalendarView/CalendarView.js';
 
 export default class App extends React.Component {
 
@@ -18,7 +19,8 @@ export default class App extends React.Component {
                 {component: SearchPageView, path: '/', exact: true},
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true},
-                {component: RegisterView, path: '/register', exact: true}
+                {component: RegisterView, path: '/register', exact: true},
+                {component: CalendarView, path: '/calendar', exact: true}
             ]
         };
     }
