@@ -1,23 +1,8 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import {Button, CardTitle, SelectionControlGroup, TextField} from "react-md";
-import HttpService from '../../Services/HttpService'
 import UserService from '../../Services/UserService'
 
-const CITY_LIST =[{
-    label: 'Munich',
-    value: 'Munich',
-},{
-    label: 'Garching',
-    value: 'Garching',
-},{
-    label: 'Eching',
-    value: 'Eching',
-},{
-    label: 'Rosenheim',
-    value: 'Rosenheim',
-}
-];
 class EditProfile extends React.Component {
     constructor(props) {
         super(props)
@@ -53,6 +38,7 @@ class EditProfile extends React.Component {
                 margin: '0 auto',
                 marginTop: '10%',
                 background: 'white',
+                minWidth: '200px'
             }}>
                 <form className="md-grid" onSubmit={this.handleSubmit}>
                     <CardTitle title="Profile" id='ProfileTitle'

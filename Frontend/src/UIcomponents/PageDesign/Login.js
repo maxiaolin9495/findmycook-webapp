@@ -1,7 +1,6 @@
 import React from 'react';
 import {TextField, Button, Card, CardTitle} from 'react-md';
 import {withRouter} from "react-router-dom";
-import AlertMessage from './AlertMessage'
 
 class LoginTab extends React.Component{
     constructor(props) {
@@ -19,6 +18,7 @@ class LoginTab extends React.Component{
                 margin: '0 auto',
                 marginTop: '10%',
                 background: 'white',
+                minWidth: '200px'
             }}>
                 <form className="md-grid" onSubmit={this.handleSubmit}>
                 <CardTitle title="Login" id='LoginTitle' style={{
