@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import DayPicker from 'react-day-picker';
-import DatePicker, {setHours, setMinutes} from 'react-datepicker'
+import { TimePicker } from 'antd';
+import moment from 'moment';
+import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -12,7 +14,7 @@ export class Calendar extends Component {
         this.handleDayClick = this.handleDayClick.bind(this);
         this.state = {
           selectedDay: undefined,
-          startDate: undefined
+          startTime: moment().date()
         };
       }
 
@@ -37,16 +39,12 @@ export class Calendar extends Component {
                     (<h3 style = {{textAlign: 'center'}}>Please select a day.</h3>)}
                 </div>
 
-                <div>
-                    <DatePicker 
-                    selected={this.state.startDate}
-                    onChange={this.handleChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="h:mm aa"
-                    timeCaption="Time"
-                />
+                <div style = {{marginLeft: '25%'}}> 
+                <TimePicker
+                size="large"
+                format = 'HH:mm'
+                minuteStep = {30}
+                placeholder='Pick a time' />
                 </div>
 
             </div>
