@@ -23,7 +23,7 @@ class ChefReviewDetails extends React.Component {
             <div style={this.getStyle()}>
                 <h3>
             
-                {this.props.review.review.title}
+                {this.props.review.title}
 
                 <h4>
                 <StarRatingComponent 
@@ -34,9 +34,9 @@ class ChefReviewDetails extends React.Component {
                         />
                 </h4>
 
-                <p> { this.props.review.review.text } </p>
+                <p> { this.props.review.text } </p>
 
-                <button onClick={this.props.deleteReview.bind(this, this.props.review.review.id)}>Remove</button>
+                <button onClick={this.props.deleteReview.bind(this, this.props.review.id)}>Remove</button>
                 </h3>
                 
             </div>

@@ -1,52 +1,67 @@
-import React, { Component } from 'react'
+import React from 'react'
 import StarRatingComponent from 'react-star-rating-component';
 import {Button, TextField, } from 'react-md';
 import ChefPicture from "../../Images/chef_michael.jpg";
 import '../../css/review.css'
 import ReviewChefService from '../../Services/ReviewChefService';
 
-export class ChefReviewForm extends Component {
+export class ChefReviewForm extends React.Component {
    
     constructor(props) {
         super(props);
         this.state = {
+            id: 1,
+            timeStamp: Date.now(),
+            reviewerName: '',
+            chefName: "Michael Scott",
+            title: '',
             qualityRating: 1,
             punctualityRating: 1,
             creativityRating: 1,
             socialSkillsRating: 1,
             overallRating: 1,
-            review: {
-                    id: 1,
-                    reviewerName: "test reviewer's name",
-                    chefName: "Michael Scott",
-                    timeStamp: Date.now(),
-                    title: '',
-                    text: '',
-            }
+            text: ''
         }
 
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
+        this.handleChangeText = this.handleChangeText.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
 
     handleChangeTitle(value) {
         this.setState(Object.assign({}, this.state, {title: value}));
     }
 
+    handleChangeText(value) {
+        this.setState(Object.assign({}, this.state, {text: value}));
+    }
+
     handleSubmit(event) {
+        alert('Thank you for your feedback');
         event.preventDefault();
 
         let review = this.props.review;
-        review = {}
+        if (review == undefined) {
+            review = {};
+        }
         review.qualityRating = this.state.qualityRating;
         review.punctualityRating = this.state.punctualityRating;
         review.creativityRating = this.state.creativityRating;
         review.socialSkillsRating = this.state.socialSkillsRating;
-        review.id = this.state.review.id;
-        review.reviewerName = this.state.review.reviewerName;
-        review.chefName = this.state.review.chefName;
-        review.title = this.state.review.title;
-        review.text = this.state.review.text;
+        review.id = this.state.id;
+        review.reviewerName = this.state.reviewerName;
+        review.chefName = this.state.chefName;
+        review.title = this.state.title; 
+        review.text = this.state.text;
+
+        this.setState({title: 'title deleted'});
+        this.setState({text: 'text deleted'});
+        this.setState({qualityRating: 1});
+        this.setState({punctualityRating: 1});
+        this.setState({creativityRating: 1});
+        this.setState({socialSkillsRating: 1});
 
         this.props.onSubmit(review);
     }
@@ -72,7 +87,6 @@ export class ChefReviewForm extends Component {
         const { punctualityRating } = this.state;
         const { creativityRating } = this.state;
         const { socialSkillsRating } = this.state;
-        const { title } = this.state.review;
 
         return (
             <div className="md-grid" id="reviewTable" label="Review" style={{
@@ -85,7 +99,7 @@ export class ChefReviewForm extends Component {
                 <div className = "chef-container" style = {{marginTop: '0.5%'}}>
                     <img src={ChefPicture}/>   
                     <h3>Chef</h3>
-                    <h1>{this.state.review.chefName}</h1>
+                    <h1>{this.state.chefName}</h1>
                     <div className = "overallRating"> 
                         <h1>
                         <StarRatingComponent 
@@ -94,8 +108,8 @@ export class ChefReviewForm extends Component {
                             value={(qualityRating+punctualityRating+creativityRating+socialSkillsRating)/4}
                             editing={false}
                         />
-                        <h2>354 reviews</h2>
                         </h1>
+                        <h2>354 reviews</h2>
                     </div>
                     
                 </div>
@@ -106,11 +120,11 @@ export class ChefReviewForm extends Component {
                     id="reviewTitle"
                     label="Title"
                     required
-                    value={title}
+                    value={this.state.title}
                     onChange={this.handleChangeTitle}
                     lineDirection="center"
                     placeholder="Add title"
-                    errorText="Title is required"
+                    errorText="required"
                 />
                 <div className = "qualityRating" style={{ marginTop: '10%'}}>
                     <h3>Quality {qualityRating}/5</h3>
@@ -165,24 +179,27 @@ export class ChefReviewForm extends Component {
                     id="reviewText"
                     label="Review"
                     required
-                    value= {this.state.review.text}
+                    value= {this.state.text}
+                    onChange={this.handleChangeText}
                     lineDirection="center"
                     placeholder="Please write your review"
+                    errorText="required"
                 />
                 </div>
 
-                <div className = "SubmitButton">
-                <Button id="submit" 
-                        type="submit"
-                        flat primary swapTheming
-                        style={{
+                <form onSubmit={this.handleSubmit}>
+                <input type="submit" value="Submit" style={{
                             marginTop: '10%',
                             marginBottom: '10%',
                             marginLeft: 'auto',
                             marginRight: 'auto',
-                            width: '200%'
-                        }}>Submit</Button>
-                </div>
+                            width: '200%',
+                            lineHeight: '25px',
+                            fontSize: '16px',
+                            backgroundColor: 'rgb(69,150,236)',
+                            color: 'white'
+                        }}/>
+                </form>
 
                 </div>
 

@@ -13,20 +13,22 @@ export class ReviewChefView extends React.Component {
 
     }
 
-    review=(text)=> {
-        ReviewChefService.review(text).catch((e) => {
+    createReview(review) {
+        /*
+        ReviewChefService.createReview(review).then((data) => {
+            this.props.history.push('/');
+        }).catch((e) => {
             console.error(e);
-            this.setState({
-                error: e
-            });
-        })
+            this.setState(Object.assign({}, this.state, {error: 'Error while creating review'}));
+        });*/
+        alert('Create review works -by ReviewChefView');
     }
     
     render(){
       return (
         <div className = "reviewPage">
                 <Navigation/>
-                <ChefReviewForm/>
+                <ChefReviewForm onSubmit={(review) => this.createReview(review)} />
 
                 <div>
                 <h3 style = {{
