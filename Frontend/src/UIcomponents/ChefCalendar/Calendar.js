@@ -36,10 +36,22 @@ export class Calendar extends Component {
                     <DayPicker onDayClick={this.handleDayClick} selectedDays={this.state.selectedDay}/>
                     {this.state.selectedDay ? 
                     (<h3 style = {{textAlign: 'center'}}>{this.state.selectedDay.toLocaleDateString()}</h3>) : 
-                    (<h3 style = {{textAlign: 'center'}}>Please select a day.</h3>)}
+                    (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}
                 </div>
 
-                <div style = {{marginLeft: '25%'}}> 
+                
+                <div style = {{marginLeft: '20%'}}> 
+                <h4>from</h4>
+                <TimePicker
+                size="large"
+                format = 'HH:mm'
+                minuteStep = {30}
+                placeholder='Pick a time' />
+                </div>
+
+                   
+                <div style = {{marginLeft: '20%'}}>   
+                <h4 style = {{marginTop: '10%'}}>to</h4> 
                 <TimePicker
                 size="large"
                 format = 'HH:mm'
