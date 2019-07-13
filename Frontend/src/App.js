@@ -1,7 +1,6 @@
 "use strict";
 
 import React from 'react';
-
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {SearchPageView} from "./ViewController/SearchView/SearchPageView";
 import {SearchResultView} from "./ViewController/SearchView/SearchResultView";
