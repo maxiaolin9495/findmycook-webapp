@@ -19,11 +19,12 @@ export class ChefDetailView extends React.Component {
             loading: true
         });
         let id = this.props.match.params.id;
-        ChefService.getchefDetail(id).then((data) => {
+        ChefService.getChefDetail(id).then((data) => {
             this.setState({
                 chef: data,
                 loading: false
             });
+            console.log(chef);
         }).catch((e) => {
             console.error(e);
         });
@@ -38,7 +39,6 @@ export class ChefDetailView extends React.Component {
                 <ChefDetail
                     loading={this.state.loading}
                     chef={this.state.chef}/>
-                <Footer/>
             </div>
         );
     }
