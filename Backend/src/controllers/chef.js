@@ -1,14 +1,14 @@
 const chefModel = require('../models/chef');
 
 const search = async (req, res) => {
-    const name = req.query.name;
+    const name = req.query.firstName;
     const nameRegex = new RegExp(name, 'g');
     const chefs = await chefModel.find({
         $or: [
-            {name: nameRegex},
+            {firstName: nameRegex},
             {type: nameRegex}
         ]
-    }, {name: 1, foodtype: 1, city: 1, rating: 1, introduction: 1, price: 1, time: 1, photo: 1});
+    }, {firstName: 1, lastName:1, foodType: 1, city: 1, rating: 1, introduction: 1, price: 1, photo: 1});
     res.status(200).json(chefs);
 };
 
@@ -46,8 +46,9 @@ const filterChef = async (req, res) => {
     if (city.length !== 0) query.city = {$in: city};
     if (foodtype.length !== 0) query.foodtype = {$in: foodtype};
     const chef = await chefModel.find(query, {
-        name: 1,
-        foodtype: 1,
+        firstName: 1,
+        lastName: 1,
+        foodType: 1,
         city: 1,
         rating: 1,
         introduction: 1,
@@ -61,15 +62,16 @@ const filterChef = async (req, res) => {
 
 const readdetailinfo = async (req, res) => {
     const {
-        chefId,
+        chefid,
     } = req.params;
-    const chef = await ChefModel.findById(chefId);
+    const chef = await chefModel.findById(chefid);
 
     res.status(200).json(chef);
 };
 
 module.exports = {
-
+    search,
+    readdetailinfo,
     filterChef,
     getChefByName
 };

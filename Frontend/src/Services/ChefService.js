@@ -145,9 +145,9 @@ export default class ChefService {
         });
     }
 
-     static getChefDetail(id) {
+     static getChefDetail(chefid) {
         return new Promise((resolve, reject) => {
-            HttpService.get(`${ChefService.baseURL()}/readdetail/${id}`, function (data) {
+            HttpService.get(`${ChefService.baseURL()}/readdetail/${chefid}`, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);
                 }
@@ -166,7 +166,7 @@ export default class ChefService {
             HttpService.post(`${ChefService.baseURL()}/filter`, {
                 chefIds,
                 city,
-                foodType,
+                foodtype,
                 price
             }, function (data) {
                 resolve(data);
