@@ -12,9 +12,12 @@ export class Calendar extends Component {
     constructor(props) {
         super(props);
         this.handleDayClick = this.handleDayClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
+          id : Math.floor((Math.random() * 100000000) + 1).toString(),
           selectedDay: undefined,
-          startTime: moment().date()
+          startTime: moment().date(),
+          endTime: moment().date()
         };
       }
 
@@ -25,7 +28,25 @@ export class Calendar extends Component {
           return;
         }
         this.setState({ selectedDay: day });
-      }
+    }
+
+    handleSubmit(event) {
+      alert('Booking Confirmed');
+      event.preventDefault();
+
+      let booking = this.props.booking;
+        if (booking == undefined) {
+          booking = {};
+        }
+      booking.id = this.state.id;
+      booking.selectedDay = this.state.selectedDay;
+      booking.startTime = this.state.startTime;
+      booking.endTime = this.state.endTime;
+      this.setState({ selectedDay: undefined });
+      this.setState({ startTime: undefined });
+      this.setState({ endTime: undefined });
+      this.props.onSubmit(booking);
+    }
 
       
     render() {
@@ -57,7 +78,22 @@ export class Calendar extends Component {
                 format = 'HH:mm'
                 minuteStep = {30}
                 placeholder='Pick a time' />
+
+                <form onSubmit={this.handleSubmit}>
+                <input type="submit" value="Book" style={{
+                            marginTop: '20%',
+                            marginLeft: '-25%',
+                            width: '180%',
+                            lineHeight: '25px',
+                            fontSize: '16px',
+                            backgroundColor: 'rgb(69,150,236)',
+                            color: 'white'
+                        }}/>
+                </form>
                 </div>
+
+                
+
 
             </div>
         )
