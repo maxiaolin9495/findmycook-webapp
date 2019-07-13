@@ -18,13 +18,13 @@ export class ChefDetailView extends React.Component {
         this.setState({
             loading: true
         });
-        let id = this.props.match.params.id;
-        ChefService.getChefDetail(id).then((data) => {
+        let chefid = this.props.match.params.id;
+        console.log(this.props.match.params.id);
+        ChefService.getChefDetail(chefid).then((data) => {
             this.setState({
                 chef: data,
                 loading: false
             });
-            console.log(chef);
         }).catch((e) => {
             console.error(e);
         });

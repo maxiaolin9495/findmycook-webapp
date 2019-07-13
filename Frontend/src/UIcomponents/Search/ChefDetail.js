@@ -49,11 +49,6 @@ class ChefDetail extends React.Component {
                                 fontFamily: 'San Francisco'
                             }}>€{this.props.chef.price}
                             </div>
-                            <p style={{
-                                width: '80%',
-                                marginTop: '30px',
-                                fontFamily: 'San Francisco'
-                            }}>{this.props.chef.introduction}</p>
                         </div>
                         <div style={{
                             width: '80%',
@@ -101,7 +96,7 @@ class ChefDetail extends React.Component {
                     <h4 style={{
                         fontSize: '20px',
                         fontFamily: 'San Francisco'
-                    }}>Introduction</h4>
+                    }}>{this.props.chef.introduction}</h4>
                     </div>
 
                 </div>

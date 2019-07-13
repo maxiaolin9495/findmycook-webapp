@@ -62,9 +62,9 @@ const filterChef = async (req, res) => {
 
 const readdetailinfo = async (req, res) => {
     const {
-        chefId,
+        chefid,
     } = req.params;
-    const chef = await ChefModel.findById(chefId);
+    const chef = await chefModel.findById(chefid);
 
     res.status(200).json(chef);
 };
