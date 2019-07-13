@@ -166,7 +166,7 @@ export default class ChefService {
             HttpService.post(`${ChefService.baseURL()}/filter`, {
                 chefIds,
                 city,
-                foodType,
+                foodtype,
                 price
             }, function (data) {
                 resolve(data);

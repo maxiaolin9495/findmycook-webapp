@@ -1,14 +1,14 @@
 const chefModel = require('../models/chef');
 
 const search = async (req, res) => {
-    const name = req.query.name;
+    const name = req.query.firstName;
     const nameRegex = new RegExp(name, 'g');
     const chefs = await chefModel.find({
         $or: [
             {firstName: nameRegex},
             {type: nameRegex}
         ]
-    }, {firstName: 1, foodType: 1, city: 1, rating: 1, introduction: 1, price: 1, time: 1, photo: 1});
+    }, {firstName: 1, lastName:1, foodType: 1, city: 1, rating: 1, introduction: 1, price: 1, photo: 1});
     res.status(200).json(chefs);
 };
 
