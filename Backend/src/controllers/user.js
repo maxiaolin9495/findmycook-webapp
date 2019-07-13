@@ -32,6 +32,7 @@ const login = (req, res) => {
                 chefModel.findOne({email: req.body.email}).exec().then(chef => {
                     const token = jwt.sign({
                         id: user._id, email: user.email, userType: user.userType, withProfile: user.withProfile,
+
                         firstName: chef.firstName,
                         lastName: chef.lastName
                     }, config.JwtSecret, {
