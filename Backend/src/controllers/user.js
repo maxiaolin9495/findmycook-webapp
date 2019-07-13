@@ -30,6 +30,7 @@ const login = (req, res) => {
             if (user.userType === 'Chef') {
                 chefModel.findOne({email: req.body.email}).exec().then(chef => {
                     const token = jwt.sign({
+
                         id: user._id,
                         email: user.email,
                         firstName: chef.firstName,
