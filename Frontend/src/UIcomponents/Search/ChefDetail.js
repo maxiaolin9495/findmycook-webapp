@@ -83,12 +83,6 @@ class ChefDetail extends React.Component {
                                     onChange={this.handleChange}
                                 ></DatePicker>
                                 </div>
-                                <h1 style={{
-                                    marginTop: '10%',
-                                    color: 'red',
-                                    fontSize: '30px',
-                                    fontFamily: 'San Francisco'
-                                }}>{this.state.remainingticket}</h1>
                             </div>
                         </div>
                         <div style={{

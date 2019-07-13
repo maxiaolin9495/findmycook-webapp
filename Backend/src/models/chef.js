@@ -35,7 +35,7 @@ const ChefSchema = new mongoose.Schema({
     },
     time: String,
     photo: String,
-    languages: Array
+    languages: String
 });
 
 ChefSchema.set('versionKey', false);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ChefService from "../../Services/ChefService";
-import ChefDetail from '../../Components/Search/AttractionDetail';
+import ChefDetail from '../../UIcomponents/Search/ChefDetail';
 import Navigation from '../../UIcomponents/PageDesign/Navigation';
 
 export class ChefDetailView extends React.Component {
@@ -38,7 +38,6 @@ export class ChefDetailView extends React.Component {
                 <ChefDetail
                     loading={this.state.loading}
                     chef={this.state.chef}/>
-                    console.log(chef);
                 <Footer/>
             </div>
         );

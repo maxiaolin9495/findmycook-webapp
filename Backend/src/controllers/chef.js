@@ -5,10 +5,10 @@ const search = async (req, res) => {
     const nameRegex = new RegExp(name, 'g');
     const chefs = await chefModel.find({
         $or: [
-            {name: nameRegex},
+            {firstName: nameRegex},
             {type: nameRegex}
         ]
-    }, {name: 1, foodtype: 1, city: 1, rating: 1, introduction: 1, price: 1, time: 1, photo: 1});
+    }, {firstName: 1, foodType: 1, city: 1, rating: 1, introduction: 1, price: 1, time: 1, photo: 1});
     res.status(200).json(chefs);
 };
 
@@ -46,8 +46,9 @@ const filterChef = async (req, res) => {
     if (city.length !== 0) query.city = {$in: city};
     if (foodtype.length !== 0) query.foodtype = {$in: foodtype};
     const chef = await chefModel.find(query, {
-        name: 1,
-        foodtype: 1,
+        firstName: 1,
+        lastName: 1,
+        foodType: 1,
         city: 1,
         rating: 1,
         introduction: 1,
@@ -69,7 +70,8 @@ const readdetailinfo = async (req, res) => {
 };
 
 module.exports = {
-
+    search,
+    readdetailinfo,
     filterChef,
     getChefByName
 };
