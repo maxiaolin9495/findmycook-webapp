@@ -180,9 +180,9 @@ const addProfile = (req, res) => {
             lastName: req.body.lastName,
             foodType: req.body.foodType,
             city: req.body.city,
-            rating: 0,
+            rating: 5,
             introduction: req.body.introduction,
-            price: req.body.price,
+            price: 20,
             phoneNumber: req.body.phoneNumber,
             languages: req.body.languages,
         });
