@@ -20,7 +20,6 @@ export class MyBookingsView extends React.Component {
         this.setState({
             loading: true
         });
-
         BookingService.getBookings(UserService.getCurrentUser().userType, UserService.getCurrentUser().email).then((data) => {
             this.setState({
                 data: [...data],

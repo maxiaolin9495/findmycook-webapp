@@ -1,5 +1,4 @@
 import React from 'react';
-
 import ChefService from "../../Services/ChefService";
 import ChefDetail from '../../UIcomponents/Search/ChefDetail';
 import Navigation from '../../UIcomponents/PageDesign/Navigation';
