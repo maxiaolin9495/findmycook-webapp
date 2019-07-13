@@ -10,18 +10,16 @@ export class ReviewChefView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-
     }
 
     createReview(review) {
-        /*
         ReviewChefService.createReview(review).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
             console.error(e);
             this.setState(Object.assign({}, this.state, {error: 'Error while creating review'}));
-        });*/
-        alert('Create review works -by ReviewChefView');
+        });
+        alert('Create review sent -by ReviewChefView');
     }
     
     render(){

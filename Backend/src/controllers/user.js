@@ -2,7 +2,9 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/loginPassword');
 const customerModel = require('../models/customer');
 const chefModel = require('../models/chef');
+const reviewModel = require('../models/review');
 const config = require('../config');
+
 
 
 const login = (req, res) => {
@@ -444,9 +446,29 @@ const getProfile = (req, res) => {
             });
     }
 }
-const review  = (req, res) => {
-    return "Review"
-}
+const addReview  = (req, res) => {
+    if (Object.keys(req.body).length === 0) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body is empty'
+    });
+
+    reviewModel.create(req.body)
+        .then(review => res.status(201).json(review))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
+const getReviews  = (req, res) => {
+    reviewModel.find({}).exec()
+        .then(reviews => res.status(200).json(reviews))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
 
 module.exports = {
     login,
@@ -454,5 +476,6 @@ module.exports = {
     addProfile,
     uploadProfile,
     getProfile,
-    review
+    getReviews,
+    addReview
 };

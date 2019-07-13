@@ -17,7 +17,7 @@ export default class ReviewChefService {
     }
 
     static createReview(review) {
-        review.id = Math.floor((Math.random() * 100000000) + 1).toString();
+        review.id = Math.floor((Math.random() * 100000000) + 1).toString()
         return new Promise((resolve, reject) => {
             HttpService.post(ReviewChefService.baseURL(), review, function(data) {
                 resolve(data);

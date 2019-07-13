@@ -10,8 +10,7 @@ export class ChefReviewForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 1,
-            timeStamp: Date.now(),
+            time: Date.now(),
             reviewerName: '',
             chefName: "Michael Scott",
             title: '',
@@ -50,7 +49,6 @@ export class ChefReviewForm extends React.Component {
         review.punctualityRating = this.state.punctualityRating;
         review.creativityRating = this.state.creativityRating;
         review.socialSkillsRating = this.state.socialSkillsRating;
-        review.id = this.state.id;
         review.reviewerName = this.state.reviewerName;
         review.chefName = this.state.chefName;
         review.title = this.state.title; 
@@ -65,21 +63,32 @@ export class ChefReviewForm extends React.Component {
 
         this.props.onSubmit(review);
     }
+
+    updateOverallRating(){
+        this.setState({overallRating: ((this.state.qualityRating+
+            this.state.punctualityRating+
+            this.state.creativityRating+
+            this.state.socialSkillsRating)/4)});
+    }
     
     onStarClickQualityRating(nextValue, prevValue, name) {
         this.setState({qualityRating: nextValue});
+        this.updateOverallRating();
     }
 
     onStarClickPunctualityRating(nextValue, prevValue, name) {
         this.setState({punctualityRating: nextValue});
+        this.updateOverallRating();
     }
 
     onStarClickCreativityRating(nextValue, prevValue, name) {
         this.setState({creativityRating: nextValue});
+        this.updateOverallRating();
     }
 
     onStarClicksocialSkillsRating(nextValue, prevValue, name) {
         this.setState({socialSkillsRating: nextValue});
+        this.updateOverallRating();
     }
 
     render() {
@@ -87,6 +96,8 @@ export class ChefReviewForm extends React.Component {
         const { punctualityRating } = this.state;
         const { creativityRating } = this.state;
         const { socialSkillsRating } = this.state;
+        const { overallRating } = this.state;
+        
 
         return (
             <div className="md-grid" id="reviewTable" label="Review" style={{
@@ -105,7 +116,7 @@ export class ChefReviewForm extends React.Component {
                         <StarRatingComponent 
                             name="rateOverall" 
                             starCount={5}
-                            value={(qualityRating+punctualityRating+creativityRating+socialSkillsRating)/4}
+                            value={overallRating}
                             editing={false}
                         />
                         </h1>
