@@ -16,10 +16,10 @@ export default class CalendarService {
         });
     }
 
-    static createBooking(booking) {
-        booking.id = Math.floor((Math.random() * 100000000) + 1).toString()
+    static createBooking(calendarBooking) {
+        calendarBooking.id = Math.floor((Math.random() * 100000000) + 1).toString()
         return new Promise((resolve, reject) => {
-            HttpService.post(CalendarService.baseURL(), booking, function(data) {
+            HttpService.post(CalendarService.baseURL(), calendarBooking, function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);

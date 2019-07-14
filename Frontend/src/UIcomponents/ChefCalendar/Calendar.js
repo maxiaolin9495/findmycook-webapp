@@ -15,10 +15,10 @@ export class Calendar extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
           selectedDay: undefined,
-          startTime: moment().toDate(),
-          endTime: moment().toDate()
+          startTime: null,
+          endTime: null
         };
-      }
+    }
 
     handleDayClick(day, { selected }) {
         if (selected) {
@@ -29,25 +29,33 @@ export class Calendar extends Component {
         this.setState({ selectedDay: day });
     }
 
+    onChangeStartTime = time => {
+      this.setState({ startTime: time });
+    };
+
+    onChangeEndTime = time => {
+      this.setState({ endTime: time });
+    };
+
     handleSubmit(event) {
       event.preventDefault();
 
-      let booking = this.props.booking;
-        if (booking == undefined) {
-          booking = {};
+      let calendarBooking = this.props.calendarBooking;
+        if (calendarBooking == undefined) {
+          calendarBooking = {};
         }
 
-      booking.reviewerName = "Ingo Glaser";
-      booking.chefName = "Michael Scott";
-      booking.selectedDay = this.state.selectedDay.toLocaleDateString;
-      booking.startTime = this.state.startTime.toLocaleTimeString();
-      booking.endTime = this.state.endTime.toLocaleTimeString();
+      calendarBooking.reviewerName = "Ingo Glaser";
+      calendarBooking.chefName = "Michael Scott";
+      calendarBooking.selectedDay = this.state.selectedDay.toLocaleDateString();
+      calendarBooking.startTime = "" + this.state.startTime.get('hour') + ":" + this.state.startTime.get('minute');
+      calendarBooking.endTime = "" + this.state.endTime.get('hour') + ":" + this.state.endTime.get('minute');;
 
       this.setState({ selectedDay: undefined });
-      this.setState({ startTime: moment().toDate() });
-      this.setState({ endTime: moment().toDate() });
+      this.setState({ startTime: null });
+      this.setState({ endTime: null });
 
-      this.props.onSubmit(booking);
+      this.props.onSubmit(calendarBooking);
     }
 
       
@@ -68,6 +76,8 @@ export class Calendar extends Component {
                 <TimePicker
                 size="large"
                 format = 'HH:mm'
+                value = {this.state.startTime}
+                onChange = {this.onChangeStartTime}
                 minuteStep = {30}
                 placeholder='Pick a time' />
                 </div>
@@ -78,6 +88,8 @@ export class Calendar extends Component {
                 <TimePicker
                 size="large"
                 format = 'HH:mm'
+                value = {this.state.endTime}
+                onChange = {this.onChangeEndTime}
                 minuteStep = {30}
                 placeholder='Pick a time' />
 

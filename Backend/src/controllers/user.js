@@ -453,7 +453,7 @@ const addCalendarBooking  = (req, res) => {
     });
 
     calendarBookingModel.create(req.body)
-        .then(review => res.status(201).json(review))
+        .then(calendarBooking => res.status(201).json(calendarBooking))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
             message: error.message
@@ -462,7 +462,7 @@ const addCalendarBooking  = (req, res) => {
 
 const getCalendarBookings  = (req, res) => {
     calendarBookingModel.find({}).exec()
-        .then(reviews => res.status(200).json(reviews))
+        .then(calendarBooking => res.status(200).json(calendarBooking))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
             message: error.message

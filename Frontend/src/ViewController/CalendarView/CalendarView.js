@@ -10,21 +10,21 @@ export class CalendarView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            bookings: []
+            calendarBookings: []
         };
     }
 
     componentWillMount(){
-        CalendarService.getBookings().then((bookings) => {
-            this.setState({bookings: [...bookings]});
+        CalendarService.getBookings().then((calendarBookings) => {
+            this.setState({calendarBookings: [...calendarBookings]});
         }).catch((e) => {
             console.error(e);
         });
     }
 
-    createBooking(booking) {
+    createBooking(calendarBooking) {
         alert('Booking request saved');
-        CalendarService.createBooking(booking).then((data) => {
+        CalendarService.createBooking(calendarBooking).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
             console.error(e);
@@ -38,7 +38,7 @@ export class CalendarView extends Component {
         return (    
             <div>
                 <Navigation/>
-                <Calendar onSubmit={(booking) => this.createBooking(booking)} />
+                <Calendar onSubmit={(calendarBooking) => this.createBooking(calendarBooking)} />
                 <section>
                     <img src={Background} className="bg"/>
                 </section>
