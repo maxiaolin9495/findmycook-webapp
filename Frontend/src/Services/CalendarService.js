@@ -17,6 +17,7 @@ export default class CalendarService {
     }
 
     static createBooking(booking) {
+        booking.id = Math.floor((Math.random() * 100000000) + 1).toString()
         return new Promise((resolve, reject) => {
             HttpService.post(CalendarService.baseURL(), booking, function(data) {
                 resolve(data);
@@ -25,20 +26,4 @@ export default class CalendarService {
             });
         });
     }
-
-    static deleteBooking(id) {
-        return new Promise((resolve, reject) => {
-            HttpService.remove(`${CalendarService.baseURL()}/${id}`, function(data) {
-                if(data.message != undefined) {
-                    resolve(data.message);
-                }
-                else {
-                    reject('Error while deleting');
-                }
-            }, function(textStatus) {
-                reject(textStatus);
-            });
-        });
-    }
-
 }

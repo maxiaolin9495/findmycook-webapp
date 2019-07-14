@@ -22,20 +22,15 @@ export class CalendarView extends Component {
         });
     }
 
-    deleteBooking = (id) => {
-        this.setState({ bookings: [...this.state.bookings.filter(booking => booking.id !== id)] });
-        alert('Deleting booking works -by CalendarView');
-    }
-
     createBooking(booking) {
-        /*
+        alert('Booking request saved');
         CalendarService.createBooking(booking).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
             console.error(e);
             this.setState(Object.assign({}, this.state, {error: 'Error while creating booking'}));
-        });*/
-        alert('Create booking works -by CalendarView');
+        });
+        
     }
 
 
@@ -43,7 +38,7 @@ export class CalendarView extends Component {
         return (    
             <div>
                 <Navigation/>
-                <Calendar onSubmit={(booking) => this.createBooking(booking)} deleteBooking={ (booking) => this.deleteBooking(booking.id)} />
+                <Calendar onSubmit={(booking) => this.createBooking(booking)} />
                 <section>
                     <img src={Background} className="bg"/>
                 </section>

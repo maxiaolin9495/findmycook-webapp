@@ -14,10 +14,9 @@ export class Calendar extends Component {
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-          id : Math.floor((Math.random() * 100000000) + 1).toString(),
           selectedDay: undefined,
-          startTime: moment().date(),
-          endTime: moment().date()
+          startTime: moment().toDate(),
+          endTime: moment().toDate()
         };
       }
 
@@ -31,20 +30,23 @@ export class Calendar extends Component {
     }
 
     handleSubmit(event) {
-      alert('Booking Confirmed');
       event.preventDefault();
 
       let booking = this.props.booking;
         if (booking == undefined) {
           booking = {};
         }
-      booking.id = this.state.id;
-      booking.selectedDay = this.state.selectedDay;
-      booking.startTime = this.state.startTime;
-      booking.endTime = this.state.endTime;
+
+      booking.reviewerName = "Ingo Glaser";
+      booking.chefName = "Michael Scott";
+      booking.selectedDay = this.state.selectedDay.toLocaleDateString;
+      booking.startTime = this.state.startTime.toLocaleTimeString();
+      booking.endTime = this.state.endTime.toLocaleTimeString();
+
       this.setState({ selectedDay: undefined });
-      this.setState({ startTime: undefined });
-      this.setState({ endTime: undefined });
+      this.setState({ startTime: moment().toDate() });
+      this.setState({ endTime: moment().toDate() });
+
       this.props.onSubmit(booking);
     }
 
