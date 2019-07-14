@@ -35,7 +35,6 @@ class ChefReviewDetails extends React.Component {
                 <p> { this.props.review.text } </p>
                 <button style = {{backgroundColor: 'red', color: 'white'}} onClick={this.props.deleteReview.bind(this, this.props.review.id)}>Remove</button>
                 </h3>
-                
             </div>
         )
     }

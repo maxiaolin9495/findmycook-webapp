@@ -35,6 +35,10 @@ export class ChefReviewForm extends React.Component {
     }
 
     handleSubmit(event) {
+        if(this.state.title || this.state.text == '') {
+            alert('Please fill in all the fields');
+            return;
+        }
         alert('Thank you for your feedback - by ReviewChefForm');
         event.preventDefault();
         let review = this.props.review;
@@ -103,11 +107,11 @@ export class ChefReviewForm extends React.Component {
                         <StarRatingComponent 
                             name="rateOverall" 
                             starCount={5}
-                            value={0} 
+                            value={this.props.averageOverallRating} 
                             editing={false}
                         />
                         </h1>
-                        <h2>354 reviews</h2>
+                        <h3 style = {{marginTop:'-5%', marginLeft: '1.1%'}}>{this.props.reviewsAmount} reviews</h3>
                     </div>
                     
                 </div>
@@ -199,7 +203,8 @@ export class ChefReviewForm extends React.Component {
                         }}/>
                 </form>
                 </div>
-
+                
+                
             </div>
         )
     }
