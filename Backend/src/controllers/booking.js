@@ -77,6 +77,11 @@ const createBooking = async (req, res) =>{
         message: 'The request body must contain a city property'
     });
 
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'address')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a city property'
+    });
+
     if (!Object.prototype.hasOwnProperty.call(req.body, 'price')) return res.status(400).json({
         error: 'Bad Request',
         message: 'The request body must contain a price property'
@@ -91,6 +96,7 @@ const createBooking = async (req, res) =>{
                 customerEmail: booking.customerEmail,
                 time: booking.time,
                 city: booking.city,
+                address: booking.address,
                 price: booking.price,
                 status: booking.status}
                 );

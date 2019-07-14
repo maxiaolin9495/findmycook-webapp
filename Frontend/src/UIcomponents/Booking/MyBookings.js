@@ -4,13 +4,14 @@ import UserService from "../../Services/UserService";
 import {withRouter} from "react-router-dom";
 
 
-const bookingCard = (key, userType, chefEmail, customerEmail, time, city, price, status) => <BookingCard
+const bookingCard = (key, userType, chefEmail, customerEmail, time, address, city, price, status) => <BookingCard
     key={key}
     id={key}
     userType={userType}
     chefEmail={chefEmail}
     customerEmail={customerEmail}
     time={time}
+    address={address}
     city={city}
     price={price}
     status={status}
@@ -26,7 +27,7 @@ class MyBookings extends Component {
 
     componentWillReceiveProps(props) {
         const bookingCards = props.data.map(data =>
-            bookingCard(data._id, UserService.getCurrentUser().userType ,data.chefEmail, data.customerEmail, data.time, data.city, data.price, data.status));
+            bookingCard(data._id, UserService.getCurrentUser().userType ,data.chefEmail, data.customerEmail, data.startTime, data.endTime, data.address, data.city, data.price, data.status));
         this.setState({bookingCards});
     }
 

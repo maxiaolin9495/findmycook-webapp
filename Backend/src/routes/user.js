@@ -6,6 +6,7 @@ router.post('/login', userController.login);
 router.post('/register', userController.register);
 router.post('/addProfile', userController.addProfile);
 router.post('/uploadProfile', userController.uploadProfile);
-router.get('/Profile', userController.getProfile);
+router.get('/profile', userController.getProfile);
+router.get('/photo', userController.getPhoto);
 
 module.exports = router;

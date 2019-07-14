@@ -3,7 +3,6 @@ import {Button} from "react-md/es";
 import {withRouter} from "react-router-dom";
 import React from "react";
 import BookingService from "../../Services/BookingService";
-import UserService from "../../Services/UserService";
 
 class BookingCard extends Component {
     constructor(props) {
@@ -42,8 +41,9 @@ class BookingCard extends Component {
     }
 
     getDate = () =>{
-        let date = new Date(parseInt(this.props.time));
-        return date.toDateString() + ' ' + date.toTimeString().split('GMT')[0];
+        let startTime = new Date(parseInt(this.props.startTime));
+        let endTime = new Date(parseInt(this.props.endTime));
+        return startTime.toDateString() + ' ' + startTime.toTimeString().split('GMT')[0] + '- '+ endTime.toTimeString().split(' GMT')[0];
     }
 
     render() {
@@ -77,6 +77,11 @@ class BookingCard extends Component {
                         color: 'grey'
                     }}
                     >{this.props.city}</div>
+                    <div style={{
+                        marginTop: '10px',
+                        color: 'grey'
+                    }}
+                    >{this.props.address}</div>
                     <h2 style={{
                         fontWeight: 'bolder',
                         fontFamily: 'Lucida Bright',
