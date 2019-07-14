@@ -14,13 +14,14 @@ class ChefReviewList extends React.Component {
         
     }
 
+    //TODO: Adjust the input to be dependent on the chef Name in line 24
     componentWillMount(){
         this.setState({
             loading: true
         });
         ReviewChefService.getReviews().then((reviews) => {
             this.setState({
-                reviews: [...reviews],
+                reviews: [...reviews].filter(review => review.chefName === 'Michael Scott'),
                 loading: false
             });
         }).catch((e) => {
@@ -53,15 +54,7 @@ class ChefReviewList extends React.Component {
         }
     }
 
-    deleteReview(id) {
-        ReviewChefService.deleteReview(id).then((message) => {
-            this.props.history.push('/');
-        }).catch((e) => {
-            console.log(e);
-        });
-    }
-
-    //TODO: Adjust the input to be dependent on the chef being clicked
+    //TODO: Adjust the input to be dependent on the chef being clicked in line 60
     calculateOverallRating(){
         let result = this.state.reviews.reduce((acc, val) => {
             return val.chefName == "Michael Scott" ? acc + val.overallRating : acc;
@@ -89,8 +82,7 @@ class ChefReviewList extends React.Component {
 
             {this.state.reviews.map((review) => (
             <ChefReviewDetails 
-                    review={review} 
-                    deleteReview={this.deleteReview}
+                    review={review}
                 />
             ))}
 

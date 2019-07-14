@@ -35,11 +35,6 @@ export class ChefReviewForm extends React.Component {
     }
 
     handleSubmit(event) {
-        if(this.state.title || this.state.text == '') {
-            alert('Please fill in all the fields');
-            return;
-        }
-        alert('Thank you for your feedback - by ReviewChefForm');
         event.preventDefault();
         let review = this.props.review;
         if (review == undefined) {
@@ -58,7 +53,6 @@ export class ChefReviewForm extends React.Component {
             this.state.punctualityRating +
             this.state.creativityRating +
             this.state.socialSkillsRating) /4);
-
         this.setState({title: ''});
         this.setState({text: ''});
         this.setState({qualityRating: 1});

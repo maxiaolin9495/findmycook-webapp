@@ -12,7 +12,7 @@ export class ReviewChefView extends React.Component {
     }
 
     createReview(review) {
-        alert('Create review sent -by ReviewChefView');
+        alert('Thank you for your feedback');
         ReviewChefService.createReview(review).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {

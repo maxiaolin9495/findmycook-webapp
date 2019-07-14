@@ -22,6 +22,7 @@ class ChefReviewDetails extends React.Component {
         return (
             <div style={this.getStyle()}>
                 <h3>{this.props.review.reviewerName} 
+                
                 <h4 >
                 <StarRatingComponent 
                             name="rateOverall" 
@@ -29,11 +30,19 @@ class ChefReviewDetails extends React.Component {
                             value={this.props.review.overallRating}
                             editing={false}
                         />
-                <h6 style = {{marginTop: '-10%', color: 'gray'}}>{this.props.review.time}</h6>
+                <h6 style = {{marginTop: '-10%', color: 'gray'}}>
+                    {this.props.review.time}
+                </h6>
                 </h4>
-                <h3 style = {{display: 'inline-block'}}>{this.props.review.title}</h3>
-                <p> { this.props.review.text } </p>
-                <button style = {{backgroundColor: 'red', color: 'white'}} onClick={this.props.deleteReview.bind(this, this.props.review.id)}>Remove</button>
+
+                <h3 style = {{display: 'inline-block'}}>
+                    {this.props.review.title}
+                </h3>
+
+                <p> 
+                    {this.props.review.text} 
+                </p>
+                
                 </h3>
             </div>
         )
