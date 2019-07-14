@@ -13,13 +13,13 @@ export class ReviewChefView extends React.Component {
     }
 
     createReview(review) {
+        alert('Create review sent -by ReviewChefView');
         ReviewChefService.createReview(review).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
             console.error(e);
             this.setState(Object.assign({}, this.state, {error: 'Error while creating review'}));
-        });
-        alert('Create review sent -by ReviewChefView');
+        });  
     }
     
     render(){

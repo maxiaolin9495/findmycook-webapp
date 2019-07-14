@@ -16,6 +16,21 @@ export default class ReviewChefService {
         });
     }
 
+    static getReview(id) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${ReviewChefService.baseURL()}/${id}`, function(data) {
+                if(data != undefined || Object.keys(data).length !== 0) {
+                    resolve(data);
+                }
+                else {
+                    reject('Error while retrieving review');
+                }
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
     static createReview(review) {
         review.id = Math.floor((Math.random() * 100000000) + 1).toString()
         return new Promise((resolve, reject) => {

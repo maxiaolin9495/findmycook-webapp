@@ -10,24 +10,21 @@ export class ChefReviewForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            time: Date.now(),
-            reviewerName: '',
+            time: new Date().toLocaleDateString(),
+            reviewerName: 'Ingo Glaser',
             chefName: "Michael Scott",
             title: '',
             qualityRating: 1,
             punctualityRating: 1,
             creativityRating: 1,
             socialSkillsRating: 1,
-            overallRating: 1,
             text: ''
         }
 
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleChangeText = this.handleChangeText.bind(this);
-
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
 
     handleChangeTitle(value) {
         this.setState(Object.assign({}, this.state, {title: value}));
@@ -38,13 +35,13 @@ export class ChefReviewForm extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('Thank you for your feedback');
+        alert('Thank you for your feedback - by ReviewChefForm');
         event.preventDefault();
-
         let review = this.props.review;
         if (review == undefined) {
             review = {};
         }
+        review.time = this.state.time
         review.qualityRating = this.state.qualityRating;
         review.punctualityRating = this.state.punctualityRating;
         review.creativityRating = this.state.creativityRating;
@@ -53,42 +50,34 @@ export class ChefReviewForm extends React.Component {
         review.chefName = this.state.chefName;
         review.title = this.state.title; 
         review.text = this.state.text;
+        review.overallRating = Math.round((this.state.qualityRating +
+            this.state.punctualityRating +
+            this.state.creativityRating +
+            this.state.socialSkillsRating) /4);
 
-        this.setState({title: 'title deleted'});
-        this.setState({text: 'text deleted'});
+        this.setState({title: ''});
+        this.setState({text: ''});
         this.setState({qualityRating: 1});
         this.setState({punctualityRating: 1});
         this.setState({creativityRating: 1});
         this.setState({socialSkillsRating: 1});
-
         this.props.onSubmit(review);
-    }
-
-    updateOverallRating(){
-        this.setState({overallRating: ((this.state.qualityRating+
-            this.state.punctualityRating+
-            this.state.creativityRating+
-            this.state.socialSkillsRating)/4)});
     }
     
     onStarClickQualityRating(nextValue, prevValue, name) {
         this.setState({qualityRating: nextValue});
-        this.updateOverallRating();
     }
 
     onStarClickPunctualityRating(nextValue, prevValue, name) {
         this.setState({punctualityRating: nextValue});
-        this.updateOverallRating();
     }
 
     onStarClickCreativityRating(nextValue, prevValue, name) {
         this.setState({creativityRating: nextValue});
-        this.updateOverallRating();
     }
 
     onStarClicksocialSkillsRating(nextValue, prevValue, name) {
         this.setState({socialSkillsRating: nextValue});
-        this.updateOverallRating();
     }
 
     render() {
@@ -96,8 +85,6 @@ export class ChefReviewForm extends React.Component {
         const { punctualityRating } = this.state;
         const { creativityRating } = this.state;
         const { socialSkillsRating } = this.state;
-        const { overallRating } = this.state;
-        
 
         return (
             <div className="md-grid" id="reviewTable" label="Review" style={{
@@ -116,7 +103,7 @@ export class ChefReviewForm extends React.Component {
                         <StarRatingComponent 
                             name="rateOverall" 
                             starCount={5}
-                            value={overallRating}
+                            value={0} 
                             editing={false}
                         />
                         </h1>
@@ -211,7 +198,6 @@ export class ChefReviewForm extends React.Component {
                             color: 'white'
                         }}/>
                 </form>
-
                 </div>
 
             </div>
