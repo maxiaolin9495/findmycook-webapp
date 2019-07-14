@@ -13,10 +13,14 @@ export class Calendar extends Component {
         super(props);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.disabledHoursForStartTime = this.disabledHoursForStartTime.bind(this);
+        this.disabledHoursForEndTime = this.disabledHoursForEndTime.bind(this);
         this.state = {
           selectedDay: undefined,
           startTime: null,
-          endTime: null
+          endTime: null,
+          disabledStartTime: [0,3,6,21],
+          disabledEndTime: [0,3,6,9]
         };
     }
 
@@ -48,8 +52,8 @@ export class Calendar extends Component {
       calendarBooking.reviewerName = "Ingo Glaser";
       calendarBooking.chefName = "Michael Scott";
       calendarBooking.selectedDay = this.state.selectedDay.toLocaleDateString();
-      calendarBooking.startTime = "" + this.state.startTime.get('hour') + ":" + this.state.startTime.get('minute');
-      calendarBooking.endTime = "" + this.state.endTime.get('hour') + ":" + this.state.endTime.get('minute');;
+      calendarBooking.startTime = "" + this.state.startTime.get('hour') + ":00";
+      calendarBooking.endTime = "" + this.state.endTime.get('hour') + ":00";;
 
       this.setState({ selectedDay: undefined });
       this.setState({ startTime: null });
@@ -58,7 +62,16 @@ export class Calendar extends Component {
       this.props.onSubmit(calendarBooking);
     }
 
-      
+    
+
+    disabledHoursForStartTime() {
+      return this.state.disabledStartTime
+    }
+
+    disabledHoursForEndTime() {
+      return this.state.disabledEndTime
+    }
+
     render() {
         return (
             <div className="md-grid" id="calendarBox" label="Calendar" style={{width: '15%', background: 'white'}}>
@@ -78,7 +91,10 @@ export class Calendar extends Component {
                 format = 'HH:mm'
                 value = {this.state.startTime}
                 onChange = {this.onChangeStartTime}
-                minuteStep = {30}
+                hideDisabledOptions = {true}
+                disabledHours = {this.disabledHoursForStartTime}
+                minuteStep = {60}
+                hourStep = {3}
                 placeholder='Pick a time' />
                 </div>
 
@@ -90,7 +106,10 @@ export class Calendar extends Component {
                 format = 'HH:mm'
                 value = {this.state.endTime}
                 onChange = {this.onChangeEndTime}
-                minuteStep = {30}
+                hideDisabledOptions = {true}
+                disabledHours = {this.disabledHoursForEndTime}
+                minuteStep = {60}
+                hourStep = {3}
                 placeholder='Pick a time' />
 
                 <form onSubmit={this.handleSubmit}>
@@ -116,10 +135,3 @@ export class Calendar extends Component {
 
 export default withRouter(Calendar);
 
-/*modifiers={{
-                    thursdays: { daysOfWeek: [4] }}}
-                modifiersStyles={{thursdays: {
-                    color: '#ffc107',
-                    backgroundColor: '#fffdee',
-                  }}}
-                */
