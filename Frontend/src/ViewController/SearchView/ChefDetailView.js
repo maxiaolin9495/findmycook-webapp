@@ -1,6 +1,6 @@
 import React from 'react';
-import ChefService from "../../services/ChefService";
-import ChefDetail from '../../components/Search/AttractionDetail';
+import ChefService from "../../Services/ChefService";
+import ChefDetail from '../../UIcomponents/Search/ChefDetail';
 import Navigation from '../../UIcomponents/PageDesign/Navigation';
 
 export class ChefDetailView extends React.Component {
@@ -17,8 +17,9 @@ export class ChefDetailView extends React.Component {
         this.setState({
             loading: true
         });
-        let id = this.props.match.params.id;
-        ChefService.getchefDetail(id).then((data) => {
+        let chefid = this.props.match.params.id;
+        console.log(this.props.match.params.id);
+        ChefService.getChefDetail(chefid).then((data) => {
             this.setState({
                 chef: data,
                 loading: false
@@ -26,7 +27,7 @@ export class ChefDetailView extends React.Component {
         }).catch((e) => {
             console.error(e);
         });
-        
+
     }
 
     render() {
@@ -37,7 +38,6 @@ export class ChefDetailView extends React.Component {
                 <ChefDetail
                     loading={this.state.loading}
                     chef={this.state.chef}/>
-                <Footer/>
             </div>
         );
     }

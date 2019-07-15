@@ -9,6 +9,8 @@ const middlewares = require('./middlewares');
 
 const chef = require('./routes/chef.js');
 const user = require('./routes/user.js');
+const contact = require('./routes/contact.js');
+const booking = require('./routes/booking.js');
 
 const api = express();
 
@@ -30,5 +32,7 @@ api.get('/', (req, res) => {
 // API routes
 api.use('/chef', chef);
 api.use('/user', user);
+api.use('/contact', contact);
+api.use('/booking', booking);
 
 module.exports = api;

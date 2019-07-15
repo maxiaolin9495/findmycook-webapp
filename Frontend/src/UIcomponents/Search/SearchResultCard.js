@@ -40,7 +40,7 @@ class SearchResultCard extends Component {
                     <h1 style={{
                         fontWeight: 'bolder',
                         fontFamily: 'Lucida Bright'
-                    }}>{this.props.name}</h1>
+                    }}>{this.props.firstName} {this.props.lastName}</h1>
                     <StarRatingComponent
                         name="rate2"
                         editing={false}
@@ -49,7 +49,7 @@ class SearchResultCard extends Component {
                     />
                     <div style={{
                         marginTop: '10px',
-                        color: 'grey'
+                        color: 'black'
                     }}
                     >{this.props.city}</div>
                     <h2 style={{
