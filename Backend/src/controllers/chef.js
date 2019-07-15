@@ -83,7 +83,7 @@ const getWorkTimeEntries  = (req, res) => {
             message: error.message
         }));
 };
-const readdetailinfo = async (req, res) => {
+const readDetailInfo = async (req, res) => {
     const {
         chefid,
     } = req.params;
@@ -95,8 +95,8 @@ const readdetailinfo = async (req, res) => {
 module.exports = {
     search,
     addWorkTimeEntry,
-    getWorkTimeEntries
-    readdetailinfo,
+    getWorkTimeEntries,
+    readDetailInfo,
     filterChef,
     getChefByName,
 };

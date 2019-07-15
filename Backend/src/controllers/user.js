@@ -516,6 +516,6 @@ module.exports = {
     uploadProfile,
     getProfile,
     getCalendarBookings,
-    addCalendarBooking
+    addCalendarBooking,
     getPhoto,
 };
