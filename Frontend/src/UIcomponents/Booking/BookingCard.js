@@ -70,7 +70,7 @@ class BookingCard extends Component {
     }
 
     cancelBooking = () => {
-        if(this.props.userType === 'Chef') {
+        if(this.props.userType === 'Customer') {
             BookingService.emailNotification(this.props.chefEmail, this.state.chefFirstName,
                 'Booking Canceled',
                 BookingService.cancel_booking + 'Your Customer ' + this.state.customerFirstName + '.').then(data => {
