@@ -6,7 +6,7 @@ const template_id = "Notification";
 const user_id = 'user_dSKdVGR3vH7TctvEXGiI7'
 const new_booking = 'You have new booking from findMyCook, please confirm it or cancel it in soon.';
 const confirm_booking = 'Your booking has just been confirmed by chef.';
-const concel_booking = 'Your booking has just been canceled by ';
+const cancel_booking = 'Your booking has just been canceled by ';
 
 export default class BookingService {
 
@@ -113,11 +113,11 @@ export default class BookingService {
         if(userType === 'Customer') {
             this.cancelBooking(_id, userType, status).then(this.emailNotification(chefEmail, chefFirstName,
                 'Booking Canceled',
-                concel_booking + customerFirstName + '.')).error(console.log(error))
+                cancel_booking + customerFirstName + '.')).error(console.log(error))
         }else if(userType === 'Chef'){
             this.cancelBooking(_id, userType, status).then(this.emailNotification(customerEmail, customerFirstName,
                 'Booking Canceled',
-                concel_booking + chefFirstName + '.')).error(console.log(error))
+                cancel_booking + chefFirstName + '.')).error(console.log(error))
         }
 
     }
