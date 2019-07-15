@@ -150,12 +150,12 @@ class NavigationMenu extends React.Component {
                     drawerTitle="Menu"
                     toolbarActions={
                         LoginService.isAuthenticated() ?
-                            <Button id="logoutButton" type="button" flat primary swapTheming onClick={this.logout}>Log
-                                out</Button> : <div id="noneName">
-                                <Button type="button" id="loginButton" flat primary swapTheming
-                                        onClick={() => this.props.history.push('/login')}>Login</Button>
-                                <Button type="buttons" id="RegistrationButton" flat primary swapTheming
-                                        onClick={() => this.props.history.push('/register')}>Register</Button>
+                            <Button id="logoutButton" type = "button" flat primary swapTheming onClick={this.logout}>Log out</Button>:
+                            <div id="noneName">
+                              <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
+                              <Button type = "button" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
+                              <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/userCalendar')}>User Calendar</Button>
+                              <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/chefCalendar')}>Chef Calendar</Button>
                             </div>
                     }
                     navItems={
@@ -167,7 +167,6 @@ class NavigationMenu extends React.Component {
                                                                                          role="presentation"
                                                                                          suffix="green-300"/></Button>
                         </Item>
-
                     }
                 >
 
