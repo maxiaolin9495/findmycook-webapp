@@ -63,7 +63,7 @@ class BookingCard extends Component {
     getDate = () => {
         let startTime = new Date(parseInt(this.props.startTime));
         let endTime = new Date(parseInt(this.props.endTime));
-        return startTime.toDateString() + ' ' + startTime.toTimeString().split('GMT')[0] + '- ' + endTime.toTimeString().split(' GMT')[0];
+        return startTime.toDateString() + '\n' + startTime.toTimeString().split('GMT')[0] + '- ' + endTime.toTimeString().split(' GMT')[0];
     }
 
     cancelBooking = () =>{
