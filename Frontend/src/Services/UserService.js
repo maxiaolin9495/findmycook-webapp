@@ -91,6 +91,5 @@ export default class UserService {
                 reject(err)
             });
         })
-
     }
 }

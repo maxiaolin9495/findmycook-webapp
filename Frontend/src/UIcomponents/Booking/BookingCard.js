@@ -10,6 +10,8 @@ class BookingCard extends Component {
         super(props);
         this.state = {
             _id: this.props.id,
+            customerFirstName: '',
+            chefFirstName: '',
             loading: false,
             name: '',
             date: '',
@@ -17,8 +19,8 @@ class BookingCard extends Component {
         }
     }
 
-    ifFinished =() =>{
-        if(status ==='canceled' || status === 'closed') return true;
+    ifFinished = () => {
+        if (status === 'canceled' || status === 'closed') return true;
         else return false;
     }
 
@@ -37,26 +39,26 @@ class BookingCard extends Component {
         this.setState({
             loading: true
         });
-        if (this.props.userType === 'Chef') {
-            BookingService.getCustomerName(this.props.customerEmail).then((data) => {
-                this.setState({
-                    name: data.firstName + ' ' + data.lastName,
-                    loading: false
-                });
-            }).catch((e) => {
-                console.error(e);
+        BookingService.getCustomerName(this.props.customerEmail).then((data) => {
+            this.setState({
+                name: data.firstName + ' ' + data.lastName,
+                customerFirstName: data.firstName,
+                loading: false
             });
-        } else {
-            BookingService.getChefNameAndImg(this.props.chefEmail).then((data) => {
-                this.setState({
-                    name: data.firstName + ' ' + data.lastName,
-                    photo: data.photo,
-                    loading: false
-                });
-            }).catch((e) => {
-                console.error(e);
+        }).catch((e) => {
+            console.error(e);
+        });
+
+        BookingService.getChefNameAndImg(this.props.chefEmail).then((data) => {
+            this.setState({
+                name: data.firstName + ' ' + data.lastName,
+                chefFirstName: data.firstName,
+                photo: data.photo,
+                loading: false
             });
-        }
+        }).catch((e) => {
+            console.error(e);
+        });
         this.setState({date: this.getDate()});
     }
 
@@ -66,21 +68,25 @@ class BookingCard extends Component {
         return startTime.toDateString() + ' ' + startTime.toTimeString().split('GMT')[0] + '- ' + endTime.toTimeString().split(' GMT')[0];
     }
 
-    cancelBooking = () =>{
-        BookingService.cancelBooking(this.props.id, this.props.userType, 'canceled').then((data) => {
+    cancelBooking = () => {
+        BookingService.handleCancelBooking(this.props.id, this.props.userType, 'canceled', this.props.chefEmail,
+            this.props.customerEmail, this.state.chefFirstName, this.state.customerEmail).then((data) => {
             window.location.reload();
         }).catch((e) => {
             console.error(e);
         });
     }
 
-    confirmBooking = ()=>{
-        BookingService.confirmBooking(this.props.id, this.props.userType, 'confirmed').then((data) => {
+    confirmBooking = () => {
+        console.log(this.state);
+        BookingService.handleConfirmBooking(this.props.id, this.props.userType, 'confirmed',
+            this.props.customerEmail, this.state.chefFirstName, this.state.customerEmail).then((data) => {
             window.location.reload();
         }).catch((e) => {
             console.error(e);
         });
     }
+
     render() {
         return (
             <Card style={{
@@ -106,10 +112,11 @@ class BookingCard extends Component {
                     flexDirection: 'row',
                 }}>
                     <div style={{width: '20%'}}>
-                        { this.props.userType === 'Customer'?
-                        <img src ={this.state.photo} alt="presentation" style={{maxWidth: '80%',maxHeight:'100%',
-                            objectFit: 'cover'
-                        }}/>:''
+                        {this.props.userType === 'Customer' ?
+                            <img src={this.state.photo} alt="presentation" style={{
+                                maxWidth: '80%', maxHeight: '100%',
+                                objectFit: 'cover'
+                            }}/> : ''
                         }
                     </div>
                     <div style={{
@@ -146,11 +153,12 @@ class BookingCard extends Component {
                             fontSize: '40px',
                         }}>€{this.props.price}</div>
                         {
-                            this.ifFinished()?'':this.ifCanceled()?'':
-                                <Dialog actionName = 'cancel'onClick={() => this.cancelBooking()}/>
+                            this.ifFinished() ? '' : this.ifCanceled() ? '' :
+                                <Dialog actionName='cancel' onClick={() => this.cancelBooking()}/>
                         }
-                        { this.props.userType === 'Customer'? ''
-                            :this.ifNeedConfirmation()?<Dialog actionName = 'confirm' onClick={() => this.confirmBooking()}/>:''}
+                        {this.props.userType === 'Customer' ? ''
+                            : this.ifNeedConfirmation() ?
+                                <Dialog actionName='confirm' onClick={() => this.confirmBooking()}/> : ''}
 
                     </div>
                 </div>

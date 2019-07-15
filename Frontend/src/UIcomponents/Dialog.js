@@ -31,7 +31,6 @@ export default class ScrollingContentAndSizing extends PureComponent {
         this.props.onClick();
     }
     hide = () => {
-        console.log(this.state.visible);
         this.setState({ visible: false });
     };
 
