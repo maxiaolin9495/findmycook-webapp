@@ -36,16 +36,20 @@ class EditProfile extends React.Component {
     }
 
     fileChangedHandler(event) {
-        console.log(event);
+        console.log(event.width);
         let fileInput = false;
         if(event) {
             fileInput = true
         }
+
+
         if(fileInput) {
+
+
             Resizer.imageFileResizer(
                 event,
-                120,
-                180,
+                200,
+                300,
                 'JPEG',
                 100,
                 0,

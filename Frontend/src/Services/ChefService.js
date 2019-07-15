@@ -161,12 +161,12 @@ export default class ChefService {
     }
 
 
-    static filterChef(chefIds, city, foodtype, price) {
+    static filterChef(chefIds, city, foodType, price) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${ChefService.baseURL()}/filter`, {
                 chefIds,
                 city,
-                foodtype,
+                foodType,
                 price
             }, function (data) {
                 resolve(data);

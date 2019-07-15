@@ -1,6 +1,5 @@
 import HttpService from './HttpService';
 
-
 export default class BookingService {
 
     static baseURL() {
@@ -23,9 +22,9 @@ export default class BookingService {
         })
     }
 
-    static getChefName(email){
+    static getChefNameAndImg(email){
         return new Promise((resolve, reject) => {
-            let suffix = '/get-chef-name?email=' + email;
+            let suffix = '/get-chef-name-and-image?email=' + email;
             HttpService.get(`${BookingService.baseURL()}${suffix}`, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);
@@ -45,6 +44,46 @@ export default class BookingService {
             if (suffix === '') return;
 
             HttpService.get(`${BookingService.baseURL()}${suffix}`, function (data) {
+                if (data != undefined || Object.keys(data).length !== 0) {
+                    resolve(data);
+                }
+                else {
+                    reject('Error while request booking details');
+                }
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        })
+    }
+
+    static confirmBooking(_id, userType, status){
+        return new Promise((resolve, reject) => {
+            let suffix = userType === 'Chef'?'/confirm-booking':'';
+            if (suffix === '') return;
+
+            HttpService.post(`${BookingService.baseURL()}${suffix}`, {
+                _id: _id,
+                status: status,
+            }, function (data) {
+                if (data != undefined || Object.keys(data).length !== 0) {
+                    resolve(data);
+                }
+                else {
+                    reject('Error while request booking details');
+                }
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        })
+    }
+    static cancelBooking(_id, userType, status){
+        return new Promise((resolve, reject) => {
+            let suffix = '/cancel-booking';
+
+            HttpService.post(`${BookingService.baseURL()}${suffix}`, {
+                _id: _id,
+                status: status,
+            }, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);
                 }

@@ -32,8 +32,8 @@ export class SearchResultView extends React.Component {
 
     }
 
-    filterChef =(chefIds, city, foodtype, price) =>{
-        ChefService.filterChef(chefIds, city, foodtype, price).then((data) => {
+    filterChef =(chefIds, city, foodType, price) =>{
+        ChefService.filterChef(chefIds, city, foodType, price).then((data) => {
             this.setState({
                 data: data,
                 loading: false
@@ -51,7 +51,7 @@ export class SearchResultView extends React.Component {
                 <Navigation/>
                 <img src={Background} className="bg"/>
                 <SearchResultPage data={this.state.data}
-                                  onFilter={(chefIds, city, foodtype, price) => this.filterChef(chefIds, city, foodtype, price)}
+                                  onFilter={(chefIds, city, foodType, price) => this.filterChef(chefIds, city, foodType, price)}
                                   error={this.state.error}/>
             </div>
         );

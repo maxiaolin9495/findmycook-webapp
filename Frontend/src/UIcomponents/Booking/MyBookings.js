@@ -4,13 +4,14 @@ import UserService from "../../Services/UserService";
 import {withRouter} from "react-router-dom";
 
 
-const bookingCard = (key, userType, chefEmail, customerEmail, time, address, city, price, status) => <BookingCard
+const bookingCard = (key, userType, chefEmail, customerEmail, startTime, endTime, address, city, price, status) => <BookingCard
     key={key}
     id={key}
     userType={userType}
     chefEmail={chefEmail}
     customerEmail={customerEmail}
-    time={time}
+    startTime={startTime}
+    endTime={endTime}
     address={address}
     city={city}
     price={price}
@@ -35,10 +36,8 @@ class MyBookings extends Component {
         return (
             <div style={{
                 display: 'relative',
-                width: '70%',
-                margin: '0 auto',
+                marginLeft: '10%',
                 marginTop: '10%',
-                minWidth: '200px'
             }}>
             {this.state.bookingCards}
         </div>);

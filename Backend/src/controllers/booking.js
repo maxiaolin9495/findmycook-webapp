@@ -42,11 +42,11 @@ const getCustomerName = (req, res) =>{
 
 }
 
-const getChefName = (req, res) =>{
+const getChefNameAndImg = (req, res) =>{
     const email = req.query.email;
 
     chefModel.findOne({email: email}).exec().then(chef => {
-        return res.status(200).json({firstName: chef.firstName, lastName: chef.lastName});
+        return res.status(200).json({firstName: chef.firstName, lastName: chef.lastName, photo: chef.photo});
     }).catch(error => {
         console.log('error by searching user')
         return res.status(404).json({
@@ -67,9 +67,14 @@ const createBooking = async (req, res) =>{
         message: 'The request body must contain a customerEmail property'
     });
 
-    if (!Object.prototype.hasOwnProperty.call(req.body, 'time')) return res.status(400).json({
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'startTime')) return res.status(400).json({
         error: 'Bad Request',
-        message: 'The request body must contain a time property'
+        message: 'The request body must contain a startTime property'
+    });
+
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'endTime')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a endTime property'
     });
 
     if (!Object.prototype.hasOwnProperty.call(req.body, 'city')) return res.status(400).json({
@@ -79,7 +84,7 @@ const createBooking = async (req, res) =>{
 
     if (!Object.prototype.hasOwnProperty.call(req.body, 'address')) return res.status(400).json({
         error: 'Bad Request',
-        message: 'The request body must contain a city property'
+        message: 'The request body must contain a address property'
     });
 
     if (!Object.prototype.hasOwnProperty.call(req.body, 'price')) return res.status(400).json({
@@ -94,7 +99,8 @@ const createBooking = async (req, res) =>{
             return res.status(200).json(
                 {chefEmail: booking.chefEmail,
                 customerEmail: booking.customerEmail,
-                time: booking.time,
+                startTime: booking.startTime,
+                endTime: booking.endTime,
                 city: booking.city,
                 address: booking.address,
                 price: booking.price,
@@ -111,11 +117,67 @@ const createBooking = async (req, res) =>{
         });
 }
 
+const confirmBooking = async (req, res) =>{
+    console.log('received request')
+    if (!Object.prototype.hasOwnProperty.call(req.body, '_id')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a _id property'
+    });
+
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'status')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a status property'
+    });
+
+    if(req.body.status === 'confirmed'){
+        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status}).then(booking => {
+            return res.status(200).json({
+                booking: booking,
+            })
+        }) .catch(error => {
+            console.log('error by creating a booking');
+            return res.status(500).json({
+                error: 'Internal error',
+                message: error.message
+            })
+        });
+    }
+
+}
+
+const cancelBooking = async (req, res) =>{
+    if (!Object.prototype.hasOwnProperty.call(req.body, '_id')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a _id property'
+    });
+
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'status')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a status property'
+    });
+
+    if(req.body.status === 'canceled'){
+        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status}).then(booking => {
+            return res.status(200).json({
+                booking: booking,
+            })
+        }) .catch(error => {
+            console.log('error by creating a booking');
+            return res.status(500).json({
+                error: 'Internal error',
+                message: error.message
+            })
+        });
+    }
+
+}
 
 module.exports = {
     getBookingsForCustomers,
     getBookingsForChefs,
     createBooking,
-    getChefName,
-    getCustomerName
+    getChefNameAndImg,
+    getCustomerName,
+    confirmBooking,
+    cancelBooking,
 }
