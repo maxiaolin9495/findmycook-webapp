@@ -5,7 +5,7 @@ import Background from "../../Images/Homepage.jpg";
 import UserCalendarService from '../../Services/UserCalendarService';
 
 
-export class CalendarView extends Component {
+export class UserCalendarView extends Component {
 
     constructor(props) {
         super(props);
