@@ -5,6 +5,7 @@ import {Card, CardTitle, TextField, CardText, Media, MediaOverlay, Grid, Cell, B
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
 import moment from 'moment';
+import { PayPalButton } from "react-paypal-button-v2";
 
 const style = {maxWidth: 500};
 
@@ -14,7 +15,10 @@ class ChefDetail extends React.Component {
       super(props);
   }
 
+
     render() {
+      var cashValue = String(this.props.chef.price)
+      console.log(this.props.chef.price);
       return (
                 <div style={{
                     display: 'grid',
@@ -64,19 +68,24 @@ class ChefDetail extends React.Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                         }}>
-                            <div>
-                                <Button style={{
-                                    background: 'green',
-                                    color: 'white',
-                                    fontSize: '20px',
-                                    paddingLeft: '25px',
-                                    paddingRight: '25px',
-                                    paddingTop: '15px',
-                                    fontFamily: 'San Francisco',
-                                    paddingBottom: '15px',
-                                    borderRadius: '20px',
-                                    marginTop: '100px',
-                                }} onClick={() => this.props.history.push('/chef')}>BOOK NOW</Button>
+                        <div>
+                        <PayPalButton
+                        amount= {cashValue}
+                        onSuccess={(details, data) => {
+                          alert("Transaction completed by " + details.payer.name.given_name);
+                          // OPTIONAL: Call your server to save the transaction
+                          return fetch("/paypal-transaction-complete", {
+                            method: "post",
+                            body: JSON.stringify({
+                              orderID: data.orderID
+                            })
+                          });
+                        }}
+                        options={{
+                          clientId: "ATU8nlBxIDUt7zr508CjRDWmHkM3kUqjDyMJufdwFhS-4ob5qrEMYtIsz43fcz27Eatcj96DG_w71XB7"
+                        }}
+                        />
+
                             </div>
                         </div>
                     </div>
