@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/loginPassword');
 const customerModel = require('../models/customer');
 const chefModel = require('../models/chef');
-const calendarBookingModel = require('../models/userCalendarBooking');
+const userCalendarBookingModel = require('../models/userCalendarBooking');
 const config = require('../config');
 
 
@@ -452,7 +452,7 @@ const addCalendarBooking  = (req, res) => {
         message: 'The request body is empty'
     });
 
-    calendarBookingModel.create(req.body)
+    userCalendarBookingModel.create(req.body)
         .then(userCalendarBooking => res.status(201).json(userCalendarBooking))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
@@ -461,7 +461,7 @@ const addCalendarBooking  = (req, res) => {
 };
 
 const getCalendarBookings  = (req, res) => {
-    calendarBookingModel.find({}).exec()
+    userCalendarBookingModel.find({}).exec()
         .then(userCalendarBooking => res.status(200).json(userCalendarBooking))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
