@@ -1,10 +1,7 @@
 "use strict";
 
 import React from 'react';
-
-import {HashRouter as Router, Route, Switch, Redirect, Link} from 'react-router-dom';
-
-
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {UserCalendarView} from './ViewController/CalendarView/UserCalendarView';
 import {ChefCalendarView} from './ViewController/CalendarView/ChefCalendarView';
 import {SearchPageView} from "./ViewController/SearchView/SearchPageView";
@@ -15,7 +12,6 @@ import {AboutUsView} from "./ViewController/AboutUsView";
 import {ContactFormView} from "./ViewController/ContactFormView";
 import {MyBookingsView} from "./ViewController/MyBookingsView";
 import {ChefDetailView} from "./ViewController/SearchView/ChefDetailView";
-
 
 export default class App extends React.Component {
 
