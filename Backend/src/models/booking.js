@@ -11,7 +11,15 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    time: {
+    startTime: {
+        type: String,
+        required: true
+    },
+    address:{
+        type: String,
+        required: true,
+    },
+    endTime: {
         type: String,
         required: true
     },
@@ -26,7 +34,7 @@ const BookingSchema = new mongoose.Schema({
     status:{
         type: String,
         required: true,
-        enum: ['closed', 'canceled', 'inProgress'],
+        enum: ['closed', 'canceled', 'inProgress', 'confirmed'],
     }
 });
 

@@ -22,7 +22,9 @@ const login = (req, res) => {
             if (!(req.body.password === user.password)) return res.status(401).send({token: null});
             if (user.withProfile === 'No') {
                 const token = jwt.sign({
-                    id: user._id, email: user.email, userType: user.userType, withProfile: user.withProfile
+                    email: user.email,
+                    userType: user.userType,
+                    withProfile: user.withProfile
                 }, config.JwtSecret, {
                     expiresIn: 999999,
                 });
@@ -31,8 +33,9 @@ const login = (req, res) => {
             if (user.userType === 'Chef') {
                 chefModel.findOne({email: req.body.email}).exec().then(chef => {
                     const token = jwt.sign({
-                        id: user._id, email: user.email, userType: user.userType, withProfile: user.withProfile,
-
+                        email: user.email,
+                        userType: user.userType,
+                        withProfile: user.withProfile,
                         firstName: chef.firstName,
                         lastName: chef.lastName
                     }, config.JwtSecret, {
@@ -43,8 +46,11 @@ const login = (req, res) => {
             } else {
                 customerModel.findOne({email: req.body.email}).exec().then(customer => {
                     const token = jwt.sign({
-                        id: user._id, email: user.email, userType: user.userType, withProfile: user.withProfile,
+                        email: user.email,
+                        userType: user.userType,
+                        withProfile: user.withProfile,
                         firstName: customer.firstName,
+                        address: customer.address,
                         lastName: customer.lastName
                     }, config.JwtSecret, {
                         expiresIn: 999999 // time in seconds until it expires
@@ -142,6 +148,10 @@ const addProfile = (req, res) => {
             error: 'Bad Request',
             message: 'The request body must contain a city property'
         });
+        if (!Object.prototype.hasOwnProperty.call(req.body, 'photo')) return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a photo property'
+        });
         if (!Object.prototype.hasOwnProperty.call(req.body, 'languages')) return res.status(400).json({
             error: 'Bad Request',
             message: 'The request body must contain a languages property'
@@ -181,6 +191,7 @@ const addProfile = (req, res) => {
             foodType: req.body.foodType,
             city: req.body.city,
             rating: 5,
+            photo: req.body.photo,
             introduction: req.body.introduction,
             price: 20,
             phoneNumber: req.body.phoneNumber,
@@ -208,7 +219,7 @@ const addProfile = (req, res) => {
             }
             else {
                 return res.status(500).json({
-                    error: 'Internal server error happens by add Chef Profile',
+                    error: 'Internal server error happens by add Profile',
                     message: error.message
                 })
             }
@@ -220,14 +231,15 @@ const addProfile = (req, res) => {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,
+            address: req.body.address
         });
         customerModel.create(customer).then(customer=>{
             const token = jwt.sign({
-                id: req.body._id,
                 email: customer.email,
                 firstName: customer.firstName,
                 lastName: customer.lastName,
                 userType: req.body.userType,
+                address: customer.address,
                 withProfile: 'Yes'
             }, config.JwtSecret, {
                 expiresIn: 999999 // time in seconds until it expires
@@ -283,6 +295,10 @@ const uploadProfile = (req, res) => {
             error: 'Bad Request',
             message: 'The request body must contain a city property'
         });
+        if (!Object.prototype.hasOwnProperty.call(req.body, 'photo')) return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a photo property'
+        });
         if (!Object.prototype.hasOwnProperty.call(req.body, 'languages')) return res.status(400).json({
             error: 'Bad Request',
             message: 'The request body must contain a languages property'
@@ -306,6 +322,7 @@ const uploadProfile = (req, res) => {
             price: req.body.price,
             phoneNumber: req.body.phoneNumber,
             languages: req.body.languages,
+            photo: req.body.photo,
         });
         chefModel.updateOne({email: chef.email}, chef).then(chef => {
             const token = jwt.sign({
@@ -371,6 +388,28 @@ const uploadProfile = (req, res) => {
         });
     }
 }
+
+const getPhoto = (req, res) =>{
+    const email = req.query.email;
+    if (req.body.userType === 'Chef') {
+        chefModel.findOne({email: email}).exec()//UseModel schema
+            .then(chef => {//user object
+                // check if the password is valid
+                return res.status(200).json({
+                    email: chef.email,
+                    photo: chef.photo,
+                })
+
+            })
+            .catch(error => {
+                console.log('error by searching user')
+                return es.status(404).json({
+                    error: 'User Not Found',
+                    message: error.message
+                })
+            });
+    }
+}
 const getProfile = (req, res) => {
     if (!Object.prototype.hasOwnProperty.call(req.body, 'email')) return res.status(400).json({
         error: 'Bad Request',
@@ -411,6 +450,7 @@ const getProfile = (req, res) => {
                     price: chef.price,
                     phoneNumber: chef.phoneNumber,
                     languages: chef.languages,
+                    photo: chef.photo,
                 })
 
             })
@@ -451,4 +491,5 @@ module.exports = {
     addProfile,
     uploadProfile,
     getProfile,
+    getPhoto,
 };

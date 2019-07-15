@@ -1,7 +1,8 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
-import {Button, CardTitle, SelectionControlGroup, TextField} from "react-md";
+import {Button, CardTitle, SelectionControlGroup, TextField, FileInput} from "react-md";
 import UserService from '../../Services/UserService'
+import Resizer from 'react-image-file-resizer';
 
 class EditProfile extends React.Component {
     constructor(props) {
@@ -11,6 +12,10 @@ class EditProfile extends React.Component {
             firstName: '',
             lastName: '',
             phoneNumber: '',
+            address:'',
+            price:'',
+            fileName: '',
+            photo:'',
             city: 'Munich',
             languages: [],
             userType: UserService.getCurrentUser().userType,
@@ -28,6 +33,34 @@ class EditProfile extends React.Component {
         this.setState({
             [key]: val
         })
+    }
+
+    fileChangedHandler(event) {
+        console.log(event.width);
+        let fileInput = false;
+        if(event) {
+            fileInput = true
+        }
+
+
+        if(fileInput) {
+
+
+            Resizer.imageFileResizer(
+                event,
+                200,
+                300,
+                'JPEG',
+                100,
+                0,
+                uri => {
+                    this.setState({'photo': uri,
+                    fileName: event.name})
+                    console.log(uri);
+                },
+                'base64'
+            );
+        }
     }
 
     render() {
@@ -63,6 +96,14 @@ class EditProfile extends React.Component {
                         placeholder="Please input your lastname"
                         onChange={value => this.handleChange('lastName', value)}
                     />
+                    {!this.isChef()?<TextField
+                        id="floating-center-lastName"
+                        label="address"
+                        required
+                        lineDirection="center"
+                        placeholder="Please input your address"
+                        onChange={value => this.handleChange('address', value)}
+                    />:''}
                     <TextField
                         id="floating-center-phoneNumber"
                         label="phonenumber"
@@ -72,7 +113,22 @@ class EditProfile extends React.Component {
                         onChange={value => this.handleChange('phoneNumber', value)}
                     />
                     {this.isChef() ?
-                        <div>
+                        <div style={{
+                            width: '100%'
+                        }}>
+                            <div id = "loading"/>
+                            <TextField
+                                style={{
+                                    marginTop: '10px'
+                                }}
+                                id="server-upload-file-field"
+                                placeholder="No Selfie chosen"
+                                value={this.state.fileName}
+                                className="file-inputs__upload-form__file-field"
+                                readOnly
+                            />
+                            <hr style={{color: 'none',border:0}}/>
+                            <FileInput type="file" id = 'photo' accept="image/*" onChange={values => this.fileChangedHandler(values)} primary/>
                             <TextField
                                 id="floating-center-foodType"
                                 label="cuisine"
@@ -80,6 +136,14 @@ class EditProfile extends React.Component {
                                 lineDirection="center"
                                 placeholder="Please input your best cuisine type"
                                 onChange={value => this.handleChange('foodType', value)}
+                            />
+                            <TextField
+                                id="floating-center-price"
+                                label="price"
+                                required
+                                lineDirection="center"
+                                placeholder="Please input your service fee"
+                                onChange={value => this.handleChange('price', value)}
                             />
                             <SelectionControlGroup
                                 id="selection-city-radios"
@@ -130,7 +194,8 @@ class EditProfile extends React.Component {
                             style={{
                                 marginTop: '10%',
                                 marginLeft: 'auto',
-                                marginRight: 'auto'
+                                marginRight: 'auto',
+                                position: 'relative',
                             }}>Upload</Button>
                 </form>
             </div>)
@@ -144,6 +209,7 @@ class EditProfile extends React.Component {
             userType: this.state.userType,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
+            address: this.state.address,
             phoneNumber: this.state.phoneNumber,
         } : UserService.getCurrentUser().userType === 'Chef' ? {
             email: this.state.email,
@@ -151,9 +217,11 @@ class EditProfile extends React.Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             phoneNumber: this.state.phoneNumber,
+            price: this.state.price,
             city: this.state.city,
             foodType: this.state.foodType,
             introduction: this.state.introduction,
+            photo: this.state.photo,
             languages: this.state.languages,
         } : {}
         console.log(user)

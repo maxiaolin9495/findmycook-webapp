@@ -35,6 +35,7 @@ export default class UserService {
                 userType: user.userType,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                address: user.address,
                 phoneNumber: user.phoneNumber
             } : user.userType === 'Chef' ? {
                 email: user.email,
@@ -43,6 +44,8 @@ export default class UserService {
                 lastName: user.lastName,
                 phoneNumber: user.phoneNumber,
                 foodType: user.foodType,
+                price: user.price,
+                photo: user.photo,
                 city: user.city,
                 languages: user.languages,
                 introduction: user.introduction,
