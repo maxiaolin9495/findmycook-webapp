@@ -8,6 +8,7 @@ import {SearchResultView} from "./ViewController/SearchView/SearchResultView.js"
 import {LoginView} from "./ViewController/SearchView/LoginView.js";
 import {RegisterView} from "./ViewController/SearchView/RegisterView.js";
 import {UserCalendarView} from './ViewController/CalendarView/UserCalendarView.js';
+import {ChefCalendarView} from './ViewController/CalendarView/ChefCalendarView.js';
 
 export default class App extends React.Component {
 
@@ -20,7 +21,8 @@ export default class App extends React.Component {
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true},
                 {component: RegisterView, path: '/register', exact: true},
-                {component: UserCalendarView, path: '/userCalendar', exact: true}
+                {component: UserCalendarView, path: '/userCalendar', exact: true},
+                {component: ChefCalendarView, path: '/chefCalendar', exact: true}
             ]
         };
     }

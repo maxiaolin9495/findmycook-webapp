@@ -1,6 +1,7 @@
 "use strict";
 
 const ChefModel = require('../models/chef');
+const WorkTimeModel = require('../models/chefCalendarWorkTime');
 
 const search = async (req, res) => {
     const name = req.query.name;
@@ -61,8 +62,33 @@ const filterchef = async (req, res) => {
     res.status(200).json(chef);
 };
 
+const addWorkTimeEntry  = (req, res) => {
+    if (Object.keys(req.body).length === 0) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body is empty'
+    });
+
+    WorkTimeModel.create(req.body)
+        .then(workTimeEntry => res.status(201).json(workTimeEntry))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
+const getWorkTimeEntries  = (req, res) => {
+    WorkTimeModel.find({}).exec()
+        .then(workTimeEntry => res.status(200).json(workTimeEntry))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
 module.exports = {
     search,
     filterchef,
-    getChefbyname
+    getChefbyname,
+    addWorkTimeEntry,
+    getWorkTimeEntries
 };
