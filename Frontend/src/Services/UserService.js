@@ -74,17 +74,12 @@ export default class UserService {
         });
     }
 
-    static handle(email, firstName, message){
-        this.contactUs(email,firstName).then(this.uploadMessage(message, email)).error(console.log(error))
-    }
-
     static contactUs(email, firstName) {
         return new Promise((resolve, reject) => {
             emailjs.send(service_id, template_id, {
                 "to_email": email,
                 "to_name": firstName
-            }, user_id, function (response) {
-                console.log('Success', response.status, response.text);
+            }, user_id).then (function (response) {
                 resolve(response)
             }, function (err) {
                 console.log(err);

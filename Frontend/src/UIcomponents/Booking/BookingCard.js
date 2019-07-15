@@ -4,6 +4,7 @@ import {withRouter} from "react-router-dom";
 import React from "react";
 import BookingService from "../../Services/BookingService";
 import Dialog from "../Dialog";
+import UserService from "../../Services/UserService";
 
 class BookingCard extends Component {
     constructor(props) {
@@ -69,21 +70,46 @@ class BookingCard extends Component {
     }
 
     cancelBooking = () => {
-        BookingService.handleCancelBooking(this.props.id, this.props.userType, 'canceled', this.props.chefEmail,
-            this.props.customerEmail, this.state.chefFirstName, this.state.customerEmail).then((data) => {
-            window.location.reload();
-        }).catch((e) => {
-            console.error(e);
-        });
+        if(this.props.userType === 'Chef') {
+            BookingService.emailNotification(this.props.chefEmail, this.state.chefFirstName,
+                'Booking Canceled',
+                BookingService.cancel_booking + 'Your Customer ' + this.state.customerFirstName + '.').then(data => {
+                BookingService.cancelBooking(this.props.id, this.props.userType, 'canceled').then(
+                    data => {
+                        alert('Successfully canceled');
+                        window.location.reload();
+                    }
+                )
+            }).catch(e => {
+                console.log(e)
+            })
+        }else {
+            BookingService.emailNotification(this.props.customerEmail, this.state.customerFirstName,
+                'Booking Canceled',
+                BookingService.cancel_booking + 'Chef ' + this.state.chefFirstName + '.').then(data => {
+                BookingService.cancelBooking(this.props.id, this.props.userType, 'canceled').then(
+                    data => {
+                        alert('Successfully canceled');
+                        window.location.reload();
+                    }
+                )
+            }).catch(e => {
+                console.log(e);
+            })
+        }
     }
 
     confirmBooking = () => {
         console.log(this.state);
-        BookingService.handleConfirmBooking(this.props.id, this.props.userType, 'confirmed',
-            this.props.customerEmail, this.state.chefFirstName, this.state.customerEmail).then((data) => {
-            window.location.reload();
-        }).catch((e) => {
-            console.error(e);
+        BookingService.emailNotification(this.props.customerEmail, this.state.customerFirstName,
+            'Booking Confirmed',
+            BookingService.confirm_booking + this.state.chefFirstName + '.').then(data =>
+            BookingService.confirmBooking(this.props.id, this.props.userType, 'confirmed').then(
+                data => {
+                    alert('Successfully confirmed');
+                    window.location.reload();
+                })).catch(e => {
+            console.log(e);
         });
     }
 

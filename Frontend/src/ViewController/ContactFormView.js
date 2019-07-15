@@ -5,26 +5,27 @@ import Background from "../Images/Homepage.jpg";
 import UserService from "../Services/UserService";
 
 export class ContactFormView extends React.Component {
-    validateInputs =(email)=>{
-        if(this.isEmail(email)) {
+    validateInputs = (email) => {
+        if (this.isEmail(email)) {
             return true;
         }
-        else{
+        else {
             alert('Please input valid email address')
             return false;
         }
     }
-    send=(contactForm) =>{
-        if(!this.validateInputs()) return;
-        UserService.handle(contactForm.email, contactForm.firstName, contactForm.message).then((data) => {
-        }).catch((e) => {
-            console.error(e);
-            this.setState({
-                error: e
-            });
+    send = (contactForm) => {
+        if (!this.validateInputs()) return;
+        UserService.contactUs(contactForm.email, contactForm.firstName).then(data => {
+            UserService.uploadMessage(contactForm.message, contactForm.email).then(data => {
+                alert('send successfully');
+                this.props.history.push('/');
+            })
+        }).catch(e => {
+            console.log(e);
         });
     }
-    isEmail = () =>{
+    isEmail = () => {
         let strEmail = document.getElementById('floating-center-email').value;
         if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
             return true;
@@ -34,6 +35,7 @@ export class ContactFormView extends React.Component {
             return false;
         }
     }
+
     constructor(props) {
         super(props);
 
@@ -42,6 +44,7 @@ export class ContactFormView extends React.Component {
             data: [],
         };
     }
+
     render() {
         return (
             <div>
