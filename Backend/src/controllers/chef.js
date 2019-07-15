@@ -25,7 +25,7 @@ const filterChef = async (req, res) => {
     const {
       chefIds,
       city,
-      foodtype,
+      foodType,
       price
     } = req.body;
 
@@ -45,7 +45,7 @@ const filterChef = async (req, res) => {
     if (chefIds.length !== 0) query._id = {$in: chefIds};
     if (price.length !== 0) query.$or = price.map(mapPriceRange);
     if (city.length !== 0) query.city = {$in: city};
-    if (foodtype.length !== 0) query.foodtype = {$in: foodtype};
+    if (foodType.length !== 0) query.foodtype = {$in: foodType};
     const chef = await chefModel.find(query, {
         firstName: 1,
         lastName: 1,
