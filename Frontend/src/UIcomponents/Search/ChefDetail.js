@@ -82,7 +82,8 @@ class ChefDetail extends React.Component {
                           });
                         }}
                         options={{
-                          clientId: "ATU8nlBxIDUt7zr508CjRDWmHkM3kUqjDyMJufdwFhS-4ob5qrEMYtIsz43fcz27Eatcj96DG_w71XB7"
+                          clientId: "ATU8nlBxIDUt7zr508CjRDWmHkM3kUqjDyMJufdwFhS-4ob5qrEMYtIsz43fcz27Eatcj96DG_w71XB7",
+                          currency: "EUR"
                         }}
                         />
 
