@@ -1,9 +1,9 @@
 import HttpService from './HttpService';
 
-export default class CalendarService {
+export default class UserCalendarService {
 
     static baseURL() {
-        return "http://localhost:3000/user/calendar"
+        return "http://localhost:3000/user/userCalendar"
     }
 
     static getBookings() {
@@ -16,10 +16,10 @@ export default class CalendarService {
         });
     }
 
-    static createBooking(calendarBooking) {
-        calendarBooking.id = Math.floor((Math.random() * 100000000) + 1).toString()
+    static createBooking(userCalendarBooking) {
+        userCalendarBooking.id = Math.floor((Math.random() * 100000000) + 1).toString()
         return new Promise((resolve, reject) => {
-            HttpService.post(CalendarService.baseURL(), calendarBooking, function(data) {
+            HttpService.post(UserCalendarService.baseURL(), userCalendarBooking, function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);

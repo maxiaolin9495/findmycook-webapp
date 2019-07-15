@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Navigation from '../../UIcomponents/PageDesign/Navigation';
-import Calendar from '../../UIcomponents/ChefCalendar/Calendar';
+import UserCalendar from '../../UIcomponents/Calendar/UserCalendar';
 import Background from "../../Images/Homepage.jpg";
-import CalendarService from '../../Services/CalendarService';
+import UserCalendarService from '../../Services/UserCalendarService';
 
 
 export class CalendarView extends Component {
@@ -10,21 +10,22 @@ export class CalendarView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            calendarBookings: []
+            userCalendarBookings: []
         };
     }
 
+    //TODO: Fetch actual chefName to use properly in line 21
     componentWillMount(){
-        CalendarService.getBookings().then((calendarBookings) => {
-            this.setState({calendarBookings: [...calendarBookings]});
+        UserCalendarService.getBookings().then((userCalendarBookings) => {
+            this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
         }).catch((e) => {
             console.error(e);
         });
     }
 
-    createBooking(calendarBooking) {
+    createBooking(userCalendarBooking) {
         alert('Booking request saved');
-        CalendarService.createBooking(calendarBooking).then((data) => {
+        UserCalendarService.createBooking(userCalendarBooking).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
             console.error(e);
@@ -38,7 +39,7 @@ export class CalendarView extends Component {
         return (    
             <div>
                 <Navigation/>
-                <Calendar onSubmit={(calendarBooking) => this.createBooking(calendarBooking)} />
+                <UserCalendar userCalendarBookings = {this.state.userCalendarBookings} onSubmit={(userCalendarBooking) => this.createBooking(userCalendarBooking)} />
                 <section>
                     <img src={Background} className="bg"/>
                 </section>

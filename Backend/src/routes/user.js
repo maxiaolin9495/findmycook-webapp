@@ -6,8 +6,8 @@ router.post('/login', userController.login);
 router.post('/register', userController.register);
 router.post('/addProfile', userController.addProfile);
 router.post('/uploadProfile', userController.uploadProfile);
-router.post('/calendar', userController.addCalendarBooking);
+router.post('/userCalendar', userController.addCalendarBooking);
 router.get('/Profile', userController.getProfile);
-router.get('/calendar', userController.getCalendarBookings);
+router.get('/userCalendar', userController.getCalendarBookings);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/loginPassword');
 const customerModel = require('../models/customer');
 const chefModel = require('../models/chef');
-const calendarBookingModel = require('../models/calendarBooking');
+const calendarBookingModel = require('../models/userCalendarBooking');
 const config = require('../config');
 
 
@@ -453,7 +453,7 @@ const addCalendarBooking  = (req, res) => {
     });
 
     calendarBookingModel.create(req.body)
-        .then(calendarBooking => res.status(201).json(calendarBooking))
+        .then(userCalendarBooking => res.status(201).json(userCalendarBooking))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
             message: error.message
@@ -462,7 +462,7 @@ const addCalendarBooking  = (req, res) => {
 
 const getCalendarBookings  = (req, res) => {
     calendarBookingModel.find({}).exec()
-        .then(calendarBooking => res.status(200).json(calendarBooking))
+        .then(userCalendarBooking => res.status(200).json(userCalendarBooking))
         .catch(error => res.status(500).json({
             error: 'Internal server error',
             message: error.message

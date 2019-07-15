@@ -20,7 +20,7 @@ export default class App extends React.Component {
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true},
                 {component: RegisterView, path: '/register', exact: true},
-                {component: CalendarView, path: '/calendar', exact: true}
+                {component: CalendarView, path: '/userCalendar', exact: true}
             ]
         };
     }

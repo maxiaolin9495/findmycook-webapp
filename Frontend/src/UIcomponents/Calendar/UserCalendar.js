@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import DayPicker from 'react-day-picker';
 import { TimePicker } from 'antd';
-import moment from 'moment';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
 
-export class Calendar extends Component {
+export class UserCalendar extends Component {
 
     constructor(props) {
         super(props);
@@ -15,12 +14,18 @@ export class Calendar extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.disabledHoursForStartTime = this.disabledHoursForStartTime.bind(this);
         this.disabledHoursForEndTime = this.disabledHoursForEndTime.bind(this);
+        //this.updateDisabledStartTimes =  this.updateDisabledStartTimes.bind(this);
+        //this.updateDisabledEndTimes = this.updateDisabledEndTimes.bind(this);
+        //this.filterCalendarBookingsPerDay = this.filterCalendarBookingsPerDay.bind(this);
+        
         this.state = {
           selectedDay: undefined,
           startTime: null,
           endTime: null,
-          disabledStartTime: [0,3,6,21],
-          disabledEndTime: [0,3,6,9]
+          fixedDisabledStartTimes: [0,3,6,21],
+          fixedDisabledEndTimes: [0,3,6,9],
+          disabledStartTimesList: [],
+          disabledEndTimesList: []
         };
     }
 
@@ -31,7 +36,34 @@ export class Calendar extends Component {
           return;
         }
         this.setState({ selectedDay: day });
+        //this.updateDisabledStartTimes();
+        //this.updateDisabledEndTimes();
     }
+
+    /*
+    filterCalendarBookingsPerDay(){
+      let filteredCalendarBookings = this.props.userCalendarBookings.filter(userCalendarBooking => {
+        return userCalendarBooking.selectedDay === (this.state.selectedDay.toLocaleDateString());
+      });
+      
+      return filteredCalendarBookings
+    }
+
+    updateDisabledStartTimes() {
+      let disabledStartTimesList = this.filterCalendarBookingsPerDay().map(userCalendarBooking => {
+        return Number(parseInt(userCalendarBooking.startTime, 10));
+      });
+      
+      this.setState({ disabledStartTimesList: disabledStartTimesList.concat(this.state.fixedDisabledStartTimes)});
+    }
+
+    updateDisabledEndTimes() {
+      let disabledEndTimesList = this.filterCalendarBookingsPerDay().map(userCalendarBooking => {
+        return Number(parseInt(userCalendarBooking.endTime, 10));
+      });
+      
+      this.setState({ disabledEndTimesList: disabledEndTimesList.concat(this.state.fixedDisabledEndTimes) });
+    }*/
 
     onChangeStartTime = time => {
       this.setState({ startTime: time });
@@ -44,37 +76,46 @@ export class Calendar extends Component {
     handleSubmit(event) {
       event.preventDefault();
 
-      let calendarBooking = this.props.calendarBooking;
-        if (calendarBooking == undefined) {
-          calendarBooking = {};
+      let userCalendarBooking = this.props.userCalendarBooking;
+        if (userCalendarBooking == undefined) {
+          userCalendarBooking = {};
         }
-
-      calendarBooking.reviewerName = "Ingo Glaser";
-      calendarBooking.chefName = "Michael Scott";
-      calendarBooking.selectedDay = this.state.selectedDay.toLocaleDateString();
-      calendarBooking.startTime = "" + this.state.startTime.get('hour') + ":00";
-      calendarBooking.endTime = "" + this.state.endTime.get('hour') + ":00";;
-
+      
+      userCalendarBooking.userName = "Ingo Glaser";
+      userCalendarBooking.chefName = "Michael Scott";
+      userCalendarBooking.address = "Zaunweg 3";
+      
+      //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
+      let convertedStartTime = this.state.startTime.toDate();
+      let convertedEndTime = this.state.endTime.toDate();
+      convertedStartTime.setDate(this.state.selectedDay.getDate());
+      convertedStartTime.setMonth(this.state.selectedDay.getMonth());
+      convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
+      convertedEndTime.setDate(this.state.selectedDay.getDate());
+      convertedEndTime.setMonth(this.state.selectedDay.getMonth());
+      convertedEndTime.setFullYear(this.state.selectedDay.getFullYear());
+      
+      userCalendarBooking.startTime = convertedStartTime.valueOf();
+      userCalendarBooking.endTime = convertedEndTime.valueOf();
+      
       this.setState({ selectedDay: undefined });
       this.setState({ startTime: null });
       this.setState({ endTime: null });
 
-      this.props.onSubmit(calendarBooking);
+      this.props.onSubmit(userCalendarBooking);
     }
 
-    
-
     disabledHoursForStartTime() {
-      return this.state.disabledStartTime
+      return this.state.disabledStartTimesList
     }
 
     disabledHoursForEndTime() {
-      return this.state.disabledEndTime
+      return this.state.disabledEndTimesList
     }
 
     render() {
         return (
-            <div className="md-grid" id="calendarBox" label="Calendar" style={{width: '15%', background: 'white'}}>
+            <div className="md-grid" id="calendarBox" label="UserCalendar" style={{width: '15%', background: 'white'}}>
                 
                 <div>
                     <DayPicker onDayClick={this.handleDayClick} selectedDays={this.state.selectedDay}/>
@@ -133,5 +174,5 @@ export class Calendar extends Component {
     }
 }
 
-export default withRouter(Calendar);
+export default withRouter(UserCalendar);
 
