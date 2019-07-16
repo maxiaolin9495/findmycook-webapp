@@ -5,6 +5,7 @@ import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
+import PaymentDialog from "../Booking/PaymentDialog";
 
 export class UserCalendar extends Component {
 
@@ -113,7 +114,6 @@ export class UserCalendar extends Component {
                     (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}
                 </div>
 
-                
                 <div style = {{marginLeft: '20%'}}> 
                 <h4>from</h4>
                 <TimePicker
@@ -142,17 +142,8 @@ export class UserCalendar extends Component {
                 hourStep = {3}
                 placeholder='Pick a time' />
 
-                <form onSubmit={this.handleSubmit}>
-                <input type="submit" value="Book" style={{
-                            marginTop: '20%',
-                            marginLeft: '-25%',
-                            width: '180%',
-                            lineHeight: '25px',
-                            fontSize: '16px',
-                            backgroundColor: 'rgb(69,150,236)',
-                            color: 'white'
-                        }}/>
-                </form>
+                <PaymentDialog price={this.props.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
+                </PaymentDialog>
                 </div>
 
                 

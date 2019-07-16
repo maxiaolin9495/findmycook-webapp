@@ -4,12 +4,9 @@ import React from 'react';
 import {Card, CardTitle, TextField, CardText, Media, MediaOverlay, Grid, Cell, Button, FontIcon} from 'react-md';
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
-import { PayPalButton } from "react-paypal-button";
 import {UserCalendar} from "../Calendar/UserCalendar";
 import BookingService from "../../Services/BookingService";
 import UserService from "../../Services/UserService";
-
-const style = {maxWidth: 500};
 
 
 
@@ -52,6 +49,7 @@ class ChefDetail extends React.Component {
         let cashValue = String(this.props.chef.price);
         return (
             <div style={{
+                marginTop: '5%',
                 display: 'flex',
             }}>
                 <div style={{
@@ -103,26 +101,6 @@ class ChefDetail extends React.Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                         }}>
-                        <div>
-                        <PayPalButton
-                        amount= {cashValue}
-                        onSuccess={(details, data) => {
-                          alert("Transaction completed by " + details.payer.name.given_name);
-                          // OPTIONAL: Call your server to save the transaction
-                          return fetch("/paypal-transaction-complete", {
-                            method: "post",
-                            body: JSON.stringify({
-                              orderID: data.orderID
-                            })
-                          });
-                        }}
-                        options={{
-                          clientId: "ATU8nlBxIDUt7zr508CjRDWmHkM3kUqjDyMJufdwFhS-4ob5qrEMYtIsz43fcz27Eatcj96DG_w71XB7",
-                          currency: "EUR"
-                        }}
-                        />
-
-                            </div>
                         </div>
                     </div>
                     <div style={{
@@ -145,7 +123,7 @@ class ChefDetail extends React.Component {
                     </div>
 
                 </div>
-                <UserCalendar onSubmit={values => this.handleBooking(values)}/>
+                <UserCalendar price={this.props.chef.price} onSubmit={values => this.handleBooking(values)}/>
             </div>
         );
     }
