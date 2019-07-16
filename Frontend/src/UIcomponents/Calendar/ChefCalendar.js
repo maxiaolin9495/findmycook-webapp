@@ -40,35 +40,43 @@ export class ChefCalendar extends Component {
     handleSubmit(event) {
       event.preventDefault();
 
-      let workTime = this.props.workTime;
-        if (workTime == undefined) {
-          workTime = {};
-        }
+      if(this.state.selectedDay == undefined || 
+         this.state.startTime == null ||
+         this.state.endTime == null) {
+           alert("Please select a day, start and end time")
+         } 
       
-      //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
-      let convertedStartTime = this.state.startTime.toDate();
-      let convertedEndTime = this.state.endTime.toDate();
-      convertedStartTime.setDate(this.state.selectedDay.getDate());
-      convertedStartTime.setMonth(this.state.selectedDay.getMonth());
-      convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
-      convertedEndTime.setDate(this.state.selectedDay.getDate());
-      convertedEndTime.setMonth(this.state.selectedDay.getMonth());
-      convertedEndTime.setFullYear(this.state.selectedDay.getFullYear());
-      
-      workTime.chefName = "Michael Scott";
-      workTime.startTime = convertedStartTime.valueOf();
-      workTime.endTime = convertedEndTime.valueOf();
-      
-      this.setState({ selectedDay: undefined });
-      this.setState({ startTime: null });
-      this.setState({ endTime: null });
+      else {
+        let workTime = this.props.workTime;
+          if (workTime == undefined) {
+            workTime = {};
+          }
+        
+        //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
+        let convertedStartTime = this.state.startTime.toDate();
+        let convertedEndTime = this.state.endTime.toDate();
+        convertedStartTime.setDate(this.state.selectedDay.getDate());
+        convertedStartTime.setMonth(this.state.selectedDay.getMonth());
+        convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
+        convertedEndTime.setDate(this.state.selectedDay.getDate());
+        convertedEndTime.setMonth(this.state.selectedDay.getMonth());
+        convertedEndTime.setFullYear(this.state.selectedDay.getFullYear());
+        
+        workTime.chefName = "Michael Scott";
+        workTime.startTime = convertedStartTime.valueOf();
+        workTime.endTime = convertedEndTime.valueOf();
+        
+        this.setState({ selectedDay: undefined });
+        this.setState({ startTime: null });
+        this.setState({ endTime: null });
 
-      this.props.onSubmit(workTime);
+        this.props.onSubmit(workTime);
+      }
     }
 
     render() {
         return (
-            <div className="md-grid" id="calendarBox" label="ChefCalendar" style={{width: '15%', background: 'white'}}>
+            <div className="md-grid" id="calendarBox" label="ChefCalendar" style={{width: '17.5%', background: 'white'}}>
                 
                 <div>
                     <DayPicker onDayClick={this.handleDayClick} selectedDays={this.state.selectedDay}/>
@@ -103,7 +111,7 @@ export class ChefCalendar extends Component {
                 placeholder='Pick a time' />
 
                 <form onSubmit={this.handleSubmit}>
-                <input type="submit" value="Book" style={{
+                <input type="submit" value="Submit" style={{
                             marginTop: '20%',
                             marginLeft: '-25%',
                             width: '180%',
