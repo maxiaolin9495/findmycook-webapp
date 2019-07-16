@@ -115,7 +115,8 @@ export default class BookingService {
                 city: booking.city,
                 address: booking.address,
                 price: booking.price,
-                status: "inProgress"
+                status: "inProgress",
+                payment:booking.payment
             }, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);

@@ -22,8 +22,10 @@ export default class PaymentDialog extends PureComponent {
 
     paymentSuccess = (res) =>{
         console.log(res);
+        alert('Successful payment')
         this.props.handleSubmit();
     }
+
     hide = () => {
         this.setState({ visible: false });
     };
@@ -41,11 +43,11 @@ export default class PaymentDialog extends PureComponent {
                     actions={<PayPalButton
                      amount= {this.props.price}
                      currency='EUR'
-                     sandboxID='ATU8nlBxIDUt7zr508CjRDWmHkM3kUqjDyMJufdwFhS-4ob5qrEMYtIsz43fcz27Eatcj96DG_w71XB7'
+                     sandboxID='AQmkwXCQvzEjf2jUqdTvG3hb_I9DlgZ0ahbE9cit9Izrvh0Wtz5cFTV_ZpZ4ICBS9tbc1zD94Hzdms7i'
                      onPaymentStart={() => console.log('payment started')}
                      onPaymentSuccess={(res) => this.paymentSuccess(res)}
-                     onPaymentError={(msg) => {alert('Unsuccessful payment');window.location.reload()}}
-                     onPaymentCancel={(msg) => {window.location.reload()}}
+                     onPaymentError={(msg) => {alert('Unsuccessful payment')}}
+                     onPaymentCancel={(msg) => {}}
                      env='sandbox'/>}
                 >
                     <p>

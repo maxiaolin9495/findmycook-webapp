@@ -27,7 +27,7 @@ class ChefDetail extends React.Component {
         console.log(customer);
         BookingService.emailNotification(this.props.chef.email, this.props.chef.firstName,
             'New Booking from FindMyCook',
-            this.new_booking).then(data =>
+            BookingService.new_booking).then(data =>
             BookingService.createBooking({
                 chefEmail: this.props.chef.email,
                 customerEmail: customer.email,
@@ -36,17 +36,18 @@ class ChefDetail extends React.Component {
                 address: customer.address,
                 price: this.props.chef.price,
                 city: customer.city,
+                payment: 'paid',
             }).then(
                 data => {
                     alert('Successfully booked');
-                    this.props.history.push('/');
+                    this.props.history.push('/my-booking');
                 })).catch(e => {
             console.log(e);
         })
     };
 
     render() {
-        let cashValue = String(this.props.chef.price);
+        setTimeout(() => window.scrollTo(0,0), 150);
         return (
             <div style={{
                 marginTop: '5%',

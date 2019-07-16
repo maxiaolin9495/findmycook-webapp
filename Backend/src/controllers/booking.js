@@ -92,7 +92,7 @@ const createBooking = async (req, res) =>{
         message: 'The request body must contain a price property'
     });
 
-    const booking = Object.assign(req.body, {status: 'inProgress', payment: 'inProgress'});
+    const booking = Object.assign(req.body, {status: 'inProgress'});
     bookingModel.create(booking)
         .then(booking => {
             return res.status(200).json(
@@ -159,7 +159,7 @@ const cancelBooking = async (req, res) =>{
     });
 
     if(req.body.status === 'canceled'){
-        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status, payment: 'inProgress'}).then(booking => {
+        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status}).then(booking => {
             return res.status(200).json({
                 booking: booking,
             })

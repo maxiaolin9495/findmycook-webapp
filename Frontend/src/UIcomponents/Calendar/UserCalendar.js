@@ -74,9 +74,7 @@ export class UserCalendar extends Component {
       this.setState({ endTime: time });
     };
 
-    handleSubmit(event) {
-      event.preventDefault();
-
+    handleSubmit() {
       let userCalendarBooking = {};
 
       //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
