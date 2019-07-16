@@ -83,9 +83,11 @@ export class UserCalendar extends Component {
       convertedStartTime.setDate(this.state.selectedDay.getDate());
       convertedStartTime.setMonth(this.state.selectedDay.getMonth());
       convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
+      convertedStartTime.setSeconds(0);
       convertedEndTime.setDate(this.state.selectedDay.getDate());
       convertedEndTime.setMonth(this.state.selectedDay.getMonth());
       convertedEndTime.setFullYear(this.state.selectedDay.getFullYear());
+      convertedEndTime.setSeconds(0);
       
       userCalendarBooking.startTime = convertedStartTime.valueOf();
       userCalendarBooking.endTime = convertedEndTime.valueOf();

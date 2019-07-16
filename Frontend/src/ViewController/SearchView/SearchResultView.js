@@ -45,7 +45,7 @@ export class SearchResultView extends React.Component {
     }
 
     render() {
-
+        setTimeout(() => window.scrollTo(0,0), 150);
         return (
             <div>
                 <Navigation/>
