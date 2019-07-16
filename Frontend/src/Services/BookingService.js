@@ -1,7 +1,15 @@
 import HttpService from './HttpService';
+import * as emailjs from "emailjs-com";
+
+
 
 export default class BookingService {
-
+    static service_id = "gmail";
+    static template_id = "Notification";
+    static user_id = 'user_dSKdVGR3vH7TctvEXGiI7'
+    static new_booking = 'You have new booking from findMyCook, please confirm it or cancel it in soon.';
+    static confirm_booking = 'Your booking has just been confirmed by chef ';
+    static cancel_booking = 'Your booking has just been canceled by ';
     static baseURL() {
         return "http://localhost:3000/booking"
     }
@@ -92,6 +100,53 @@ export default class BookingService {
                 }
             }, function (textStatus) {
                 reject(textStatus);
+            });
+        })
+    }
+    static handleNewBookoing(booking){
+        this.createBooking(booking).then(this.emailNotification(booking.chefEmail, booking.chefFirstName,
+            'New Booking from FindMyCook',
+            new_booking)).error(console.log(error))
+    }
+
+
+    static createBooking(booking){
+        return new Promise((resolve,reject) =>{
+            let suffix = 'create';
+            HttpService.post(`${BookingService.baseURL()}${suffix}`,
+            {
+                chefEmail: booking.chefEmail,
+                customerEmail: booking.customerEmail,
+                startTime: booking.startTime,
+                endTime: booking.endTime,
+                city: booking.city,
+                address: booking.address,
+                price: booking.price,
+                status: "inProgress"
+            }, function (data) {
+                if (data != undefined || Object.keys(data).length !== 0) {
+                    resolve(data);
+                }
+                else {
+                    reject('Error while request booking details');
+                }
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        })
+    }
+    static emailNotification(email, firstName, subject, message) {
+        return new Promise((resolve, reject) => {
+            emailjs.send(this.service_id, this.template_id, {
+                "to_email": email,
+                "to_name": firstName,
+                "subject": subject,
+                "message": message
+            }, this.user_id).then(function (response) {
+                resolve(response)
+            }, function (err) {
+                console.log(err);
+                reject(err)
             });
         })
     }
