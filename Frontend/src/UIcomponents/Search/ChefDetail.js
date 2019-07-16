@@ -5,7 +5,7 @@ import {Card, CardTitle, TextField, CardText, Media, MediaOverlay, Grid, Cell, B
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
 import moment from 'moment';
-import { PayPalButton } from "react-paypal-button-v2";
+import { PayPalButton } from "react-paypal-button";
 
 const style = {maxWidth: 500};
 

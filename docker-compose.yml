@@ -1,0 +1,30 @@
+version: '3'
+services:
+  FrontEnd:
+    build: ./Frontend
+    image: maxiaolin/seba_find_my_cook_front_end:latest
+    container_name: frontEnd
+    depends_on:
+      - BackEnd
+    ports:
+      - "8080:8080"
+    restart: always
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+    volumes:
+      - /data/db
+    ports:
+        - "27017:27017"
+  BackEnd:
+    build: ./Backend
+    image: maxiaolion/seba_find_my_cook_back_end:latest
+    container_name: backEnd
+    ports:
+        - "3000:3000"
+    depends_on:
+        - mongodb
+    environment:
+        - mongodb_uri=mongodb://mongodb:27017/findmycook

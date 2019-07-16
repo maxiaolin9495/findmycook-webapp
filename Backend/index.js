@@ -16,7 +16,8 @@ const server = http.createServer(api);
 
 //Connect to the MongoDB database; then start the server
 mongoose
-    .connect(config.mongoURI)
+    .connect(process.env.mongodb_uri ||
+        "mongodb://localhost:27017/findmycook",{ useNewUrlParser: true })
     .then(() => server.listen(config.port))
     .catch(err => {
         console.log('Error connecting to the database', err.message);
