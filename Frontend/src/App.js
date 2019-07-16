@@ -4,6 +4,7 @@ import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {UserCalendarView} from './ViewController/CalendarView/UserCalendarView';
 import {ChefCalendarView} from './ViewController/CalendarView/ChefCalendarView';
+import {ReviewChefView} from "./ViewController/ReviewChefView/ReviewChefView.js";
 import {SearchPageView} from "./ViewController/SearchView/SearchPageView";
 import {SearchResultView} from "./ViewController/SearchView/SearchResultView";
 import {LoginView} from "./ViewController/LoginView";
@@ -18,12 +19,13 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: 'FindMyCook.com',
+            title: 'Find my Cook',
             routes: [
                 {component: SearchPageView, path: '/', exact: true},
                 {component: SearchResultView, path: '/searchresult', exact: true},
-                {component: LoginView, path: '/login', exact: true},
+                {component: LoginView, path: '/login', exact: true}, 
                 {component: UserCalendarView, path: '/userCalendar', exact: true},
+                {component: ReviewChefView, path: '/review', exact: true},
                 {component: ChefCalendarView, path: '/chefCalendar', exact: true},
                 {component: ChefDetailView, path: '/chef/:id'},
                 {component: RegisterView, path: '/register', exact: true},
