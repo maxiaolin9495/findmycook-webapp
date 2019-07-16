@@ -16,12 +16,12 @@ export class SearchResultView extends React.Component {
         };
     }
 
-    componentWillMount(props){
+    componentWillMount(){
         this.setState({
             loading: true
         });
 
-        ChefService.getChefbysearch(this.props.location.search.split('=')[1]).then((data) => {
+        ChefService.getChefBySearch(this.props.location.search.split('=')[1]).then((data) => {
             this.setState({
                 data: [...data],
                 loading: false
@@ -32,8 +32,8 @@ export class SearchResultView extends React.Component {
 
     }
 
-    filterchef =(chefIds, city, foodtype, price) =>{
-        ChefService.filterchef(chefIds, city, foodtype, price).then((data) => {
+    filterChef =(chefIds, city, foodType, price) =>{
+        ChefService.filterChef(chefIds, city, foodType, price).then((data) => {
             this.setState({
                 data: data,
                 loading: false
@@ -51,7 +51,7 @@ export class SearchResultView extends React.Component {
                 <Navigation/>
                 <img src={Background} className="bg"/>
                 <SearchResultPage data={this.state.data}
-                                  onFilter={(chefIds, city, foodtype, price) => this.filterchef(chefIds, city, foodtype, price)}
+                                  onFilter={(chefIds, city, foodType, price) => this.filterChef(chefIds, city, foodType, price)}
                                   error={this.state.error}/>
             </div>
         );

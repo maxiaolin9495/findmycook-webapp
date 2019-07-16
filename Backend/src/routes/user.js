@@ -7,7 +7,10 @@ router.post('/register', userController.register);
 router.post('/addProfile', userController.addProfile);
 router.post('/review', userController.addReview);
 router.post('/uploadProfile', userController.uploadProfile);
-router.get('/Profile', userController.getProfile);
+router.post('/userCalendar', userController.addCalendarBooking);
 router.get('/review', userController.getReviews);
+router.get('/userCalendar', userController.getCalendarBookings);
+router.get('/profile', userController.getProfile);
+router.get('/photo', userController.getPhoto);
 
 module.exports = router;

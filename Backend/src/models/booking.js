@@ -11,18 +11,32 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    time: String,
-    city: String,
-    price: String,
+    startTime: {
+        type: String,
+        required: true
+    },
+    address:{
+        type: String,
+        required: true,
+    },
+    endTime: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: String,
+        required: true
+    },
     status:{
         type: String,
         required: true,
-        enum: ['closed', 'canceled', 'inProgress'],
+        enum: ['closed', 'canceled', 'inProgress', 'confirmed'],
     }
 });
 
-ChefSchema.set('versionKey', false);
-ChefSchema.set('timestamps', true);
-
 // Export the chef model
-module.exports = mongoose.model('chef', ChefSchema);
+module.exports = mongoose.model('booking', BookingSchema);

@@ -3,7 +3,7 @@ import SearchResultCard from '../../UIcomponents/Search/SearchResultCard';
 import {Checkbox, Button, Divider, Slider} from 'react-md';
 
 const cities = {
-    City: ['Munich', 'Karlsruhe', 'Berlin', 'Ulm'],
+    City: ['Munich', 'Garching', 'Eching'],
 }
 const foodtypes = {
     Type: ['Asia Food', 'America Food', 'German Food', 'French Food'],
@@ -13,11 +13,12 @@ const prices = {
     Price: ['€ 0 - 25', '€ 25 - 50', '€ 50 - 75', '€ 75 - 100']
 }
 
-const testCard = (key, id, name, foodtype, city, rating, introduction, price, photo) => <SearchResultCard
+const testCard = (key, id, firstName, lastName, foodType, city, rating, introduction, price, photo) => <SearchResultCard
     key={key}
     id={id}
-    name={name}
-    foodtype={foodtype}
+    firstName={firstName}
+    lastName={lastName}
+    foodtype={foodType}
     city={city}
     rating={rating}
     introduction={introduction}
@@ -40,7 +41,7 @@ class SearchResultPage extends Component {
 
     componentWillReceiveProps(props) {
         props.data.map(data => this.state.chefIds.push(data._id));
-        const testCards = props.data.map((data, i) => testCard(i, data._id, data.name, data.foodtype, data.city, data.rating, data.introduction, data.price, data.photo));
+        const testCards = props.data.map((data, i) => testCard(i, data._id, data.firstName, data.lastName, data.foodType, data.city, data.rating, data.introduction, data.price, data.photo));
         this.setState({testCards});
     }
 

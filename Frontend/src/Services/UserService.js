@@ -1,10 +1,13 @@
 import HttpService from './HttpService';
-import MD5 from "react-native-md5";
+import * as emailjs from 'emailjs-com';
 
+const service_id = "gmail";
+const template_id = "feedbackFindMyCook";
+const user_id = 'user_dSKdVGR3vH7TctvEXGiI7'
 export default class UserService {
 
     static baseURL() {
-        return "http://localhost:3000/user"
+        return "http://localhost:3000"
     }
 
     static getCurrentUser() {
@@ -32,6 +35,7 @@ export default class UserService {
                 userType: user.userType,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                address: user.address,
                 phoneNumber: user.phoneNumber
             } : user.userType === 'Chef' ? {
                 email: user.email,
@@ -40,19 +44,47 @@ export default class UserService {
                 lastName: user.lastName,
                 phoneNumber: user.phoneNumber,
                 foodType: user.foodType,
+                price: user.price,
+                photo: user.photo,
                 city: user.city,
                 languages: user.languages,
                 introduction: user.introduction,
             } : {}
-            HttpService.post(this.baseURL() + '/addProfile', data, function (data) {
+            HttpService.post(this.baseURL() + '/user/addProfile', data, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 reject(textStatus);
             });
         });
     }
-
     static uploadProfile() {
 
+    }
+
+    static uploadMessage(message, email) {
+        return new Promise((resolve, reject) => {
+            HttpService.post(this.baseURL()+'/contact/saveMessage', {
+                email: email,
+                message: message
+            }, function (data){
+                resolve(data);
+            } ,function (textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static contactUs(email, firstName) {
+        return new Promise((resolve, reject) => {
+            emailjs.send(service_id, template_id, {
+                "to_email": email,
+                "to_name": firstName
+            }, user_id).then (function (response) {
+                resolve(response)
+            }, function (err) {
+                console.log(err);
+                reject(err)
+            });
+        })
     }
 }

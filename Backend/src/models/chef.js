@@ -34,7 +34,10 @@ const ChefSchema = new mongoose.Schema({
         required: true
     },
     time: String,
-    photo: String,
+    photo: {
+        type: String,
+        required: true,
+    },
     languages: Array
 });
 

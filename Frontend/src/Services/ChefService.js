@@ -1,5 +1,3 @@
-"use strict";
-
 import HttpService from './HttpService';
 
 export default class ChefService {
@@ -132,9 +130,9 @@ export default class ChefService {
         });
     }*/
 
-   static getChefbysearch(name) {
+   static getChefBySearch(name) {
         return new Promise((resolve, reject) => {
-            HttpService.get(`${ChefService.baseURL()}/search?name=${name}`, function (data) {
+            HttpService.get(`${ChefService.baseURL()}/search?firstName=${name}`, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);
                 }
@@ -147,27 +145,28 @@ export default class ChefService {
         });
     }
 
-  /*   static getAttractionDetail(id) {
+     static getChefDetail(chefid) {
         return new Promise((resolve, reject) => {
-            HttpService.get(`${AttractionService.baseURL()}/readdetail/${id}`, function (data) {
+            HttpService.get(`${ChefService.baseURL()}/readdetail/${chefid}`, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);
                 }
                 else {
-                    reject('Error while retrieving movie');
+                    reject('Error while retrieving chef');
                 }
             }, function (textStatus) {
                 reject(textStatus);
             });
         });
-    }*/
+    }
 
-    static filterchef(chefIds, city, foodtype, price) {
+
+    static filterChef(chefIds, city, foodType, price) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${ChefService.baseURL()}/filter`, {
                 chefIds,
                 city,
-                foodtype,
+                foodType,
                 price
             }, function (data) {
                 resolve(data);
