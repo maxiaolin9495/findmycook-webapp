@@ -4,32 +4,67 @@ import React from 'react';
 import {Card, CardTitle, TextField, CardText, Media, MediaOverlay, Grid, Cell, Button, FontIcon} from 'react-md';
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
-import moment from 'moment';
 import { PayPalButton } from "react-paypal-button";
+import {UserCalendar} from "../Calendar/UserCalendar";
+import BookingService from "../../Services/BookingService";
+import UserService from "../../Services/UserService";
 
 const style = {maxWidth: 500};
 
+
+
 class ChefDetail extends React.Component {
 
-  constructor(props) {
-      super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
 
+    handleBooking = (values) => {
+        let token = window.localStorage['jwtTokenFMC'];
+        if (!token) {
+            alert('Please login first');
+            this.props.histroy.push('/login')
+        }
+        let customer = UserService.getCurrentUser();
+        console.log(this.props.chef);
+        console.log(customer);
+        BookingService.emailNotification(this.props.chef.email, this.props.chef.firstName,
+            'New Booking from FindMyCook',
+            this.new_booking).then(data =>
+            BookingService.createBooking({
+                chefEmail: this.props.chef.email,
+                customerEmail: customer.email,
+                startTime: values.startTime,
+                endTime: values.endTime,
+                address: customer.address,
+                price: this.props.chef.price,
+                city: customer.city,
+            }).then(
+                data => {
+                    alert('Successfully booked');
+                    this.props.history.push('/');
+                })).catch(e => {
+            console.log(e);
+        })
+    };
 
     render() {
-      var cashValue = String(this.props.chef.price)
-      console.log(this.props.chef.price);
-      return (
+        let cashValue = String(this.props.chef.price);
+        return (
+            <div style={{
+                display: 'flex',
+            }}>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 1fr'
+                    gridTemplateColumns: '1fr 1fr',
+                    width: '70%'
                 }}>
                     <div style={{
                         padding: '0 100px',
                     }}>
                         <div style={{}}>
                             <Media style={{borderRadius: '15px', boxShadow: '4px 4px 10px gray'}} aspectRatio="1-1">
-                                <img src={this.props.chef.photo} alt="Something from unsplash.it"/>
+                                <img src={this.props.chef.photo} alt="Something from unsplash it"/>
                             </Media></div>
                     </div>
                     <div>
@@ -98,19 +133,21 @@ class ChefDetail extends React.Component {
                         flexDirection: 'column',
                         justifyContent: 'space-between',
                     }}>
-                    <h4 style={{
-                        fontSize: '30px',
-                        fontWeight: 'bolder',
-                        fontFamily: 'San Francisco'
-                    }}>Short Bio</h4>
-                    <h4 style={{
-                        fontSize: '20px',
-                        fontFamily: 'San Francisco'
-                    }}>{this.props.chef.introduction}</h4>
+                        <h4 style={{
+                            fontSize: '30px',
+                            fontWeight: 'bolder',
+                            fontFamily: 'San Francisco'
+                        }}>Short Bio</h4>
+                        <h4 style={{
+                            fontSize: '20px',
+                            fontFamily: 'San Francisco'
+                        }}>{this.props.chef.introduction}</h4>
                     </div>
 
                 </div>
-      );
+                <UserCalendar onSubmit={values => this.handleBooking(values)}/>
+            </div>
+        );
     }
 }
 

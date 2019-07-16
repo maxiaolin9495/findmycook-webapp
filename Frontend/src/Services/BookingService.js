@@ -50,7 +50,6 @@ export default class BookingService {
         return new Promise((resolve, reject) => {
             let suffix = userType === 'Chef'?'/bookings-for-chef?email=' + email:userType==='Customer'?'/bookings-for-customer?email='+email:'';
             if (suffix === '') return;
-
             HttpService.get(`${BookingService.baseURL()}${suffix}`, function (data) {
                 if (data != undefined || Object.keys(data).length !== 0) {
                     resolve(data);
@@ -103,16 +102,10 @@ export default class BookingService {
             });
         })
     }
-    static handleNewBookoing(booking){
-        this.createBooking(booking).then(this.emailNotification(booking.chefEmail, booking.chefFirstName,
-            'New Booking from FindMyCook',
-            new_booking)).error(console.log(error))
-    }
-
-
     static createBooking(booking){
+        console.log(booking);
         return new Promise((resolve,reject) =>{
-            let suffix = 'create';
+            let suffix = '/create';
             HttpService.post(`${BookingService.baseURL()}${suffix}`,
             {
                 chefEmail: booking.chefEmail,

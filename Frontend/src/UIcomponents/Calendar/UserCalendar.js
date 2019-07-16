@@ -76,15 +76,8 @@ export class UserCalendar extends Component {
     handleSubmit(event) {
       event.preventDefault();
 
-      let userCalendarBooking = this.props.userCalendarBooking;
-        if (userCalendarBooking == undefined) {
-          userCalendarBooking = {};
-        }
-      
-      userCalendarBooking.userName = "Ingo Glaser";
-      userCalendarBooking.chefName = "Michael Scott";
-      userCalendarBooking.address = "Zaunweg 3";
-      
+      let userCalendarBooking = {};
+
       //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
       let convertedStartTime = this.state.startTime.toDate();
       let convertedEndTime = this.state.endTime.toDate();
@@ -97,10 +90,6 @@ export class UserCalendar extends Component {
       
       userCalendarBooking.startTime = convertedStartTime.valueOf();
       userCalendarBooking.endTime = convertedEndTime.valueOf();
-      
-      this.setState({ selectedDay: undefined });
-      this.setState({ startTime: null });
-      this.setState({ endTime: null });
 
       this.props.onSubmit(userCalendarBooking);
     }

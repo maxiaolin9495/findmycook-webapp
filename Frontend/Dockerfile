@@ -1,10 +1,8 @@
 FROM node:alpine
-
-RUN mkdir -p /usr/src/Frontend
-WORKDIR /usr/src/Frontend
-
-COPY . /usr/src/Frontend
-
+RUN mkdir -p /app
+WORKDIR /app
+COPY ./package.json /app
 RUN npm install
-
-CMD ["npm", "start"]
+COPY . /app
+RUN npm run build
+EXPOSE 8081

@@ -21,6 +21,8 @@ export default class UserService {
             email: JSON.parse(window.atob(base64)).email,
             userType: JSON.parse(window.atob(base64)).userType,
             withProfile: JSON.parse(window.atob(base64)).withProfile,
+            address: JSON.parse(window.atob(base64)).address,
+            city: JSON.parse(window.atob(base64)).city
         };
     }
 
@@ -29,6 +31,7 @@ export default class UserService {
     }
 
     static addProfile(user) {
+        console.log(user);
         return new Promise((resolve, reject) => {
             let data = user.userType === 'Customer' ? {
                 email: user.email,
@@ -36,6 +39,7 @@ export default class UserService {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 address: user.address,
+                city: user.city,
                 phoneNumber: user.phoneNumber
             } : user.userType === 'Chef' ? {
                 email: user.email,

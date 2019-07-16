@@ -92,19 +92,21 @@ const createBooking = async (req, res) =>{
         message: 'The request body must contain a price property'
     });
 
-    const booking = Object.assign(req.body, {status: 'inProgress'});
-
+    const booking = Object.assign(req.body, {status: 'inProgress', payment: 'inProgress'});
     bookingModel.create(booking)
         .then(booking => {
             return res.status(200).json(
-                {chefEmail: booking.chefEmail,
-                customerEmail: booking.customerEmail,
-                startTime: booking.startTime,
-                endTime: booking.endTime,
-                city: booking.city,
-                address: booking.address,
-                price: booking.price,
-                status: booking.status}
+                {
+                    chefEmail: booking.chefEmail,
+                    customerEmail: booking.customerEmail,
+                    startTime: booking.startTime,
+                    endTime: booking.endTime,
+                    city: booking.city,
+                    address: booking.address,
+                    price: booking.price,
+                    status: booking.status,
+                    payment: booking.payment
+                }
                 );
 
         })
