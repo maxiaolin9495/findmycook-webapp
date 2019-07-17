@@ -15,7 +15,7 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    address:{
+    address: {
         type: String,
         required: true,
     },
@@ -31,12 +31,12 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status:{
+    status: {
         type: String,
         required: true,
-        enum: ['closed', 'canceled', 'inProgress', 'confirmed'],
+        enum: ['closed', 'canceled', 'inProgress', 'confirmed', 'reviewed'],
     },
-    payment:{
+    payment: {
         type: String,
         required: true,
         enum: ['returned', 'inProgress', 'paid'],
