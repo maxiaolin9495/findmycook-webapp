@@ -1,4 +1,3 @@
-const emailjs = require('emailjs-com');
 const customerSupportModel = require('../models/customerSupport');
 
 

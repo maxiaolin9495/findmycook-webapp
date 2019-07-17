@@ -35,6 +35,11 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['closed', 'canceled', 'inProgress', 'confirmed'],
+    },
+    payment:{
+        type: String,
+        required: true,
+        enum: ['returned', 'inProgress', 'paid'],
     }
 });
 

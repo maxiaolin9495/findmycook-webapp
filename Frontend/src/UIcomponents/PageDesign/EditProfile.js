@@ -96,14 +96,32 @@ class EditProfile extends React.Component {
                         placeholder="Please input your lastname"
                         onChange={value => this.handleChange('lastName', value)}
                     />
-                    {!this.isChef()?<TextField
-                        id="floating-center-lastName"
-                        label="address"
-                        required
-                        lineDirection="center"
-                        placeholder="Please input your address"
-                        onChange={value => this.handleChange('address', value)}
-                    />:''}
+                    {!this.isChef()?<SelectionControlGroup
+                            id="selection-city-radios"
+                            name="city"
+                            type="radio"
+                            label="Please choose your city"
+                            defaultValue='Munich'
+                            onChange={value => this.handleChange('city', value)}
+                            controls={[{
+                                label: 'Munich',
+                                value: 'Munich',
+                            }, {
+                                label: 'Garching',
+                                value: 'Garching',
+                            }, {
+                                label: 'Eching',
+                                value: 'Eching',
+                            }]}
+                        />:''}
+                    {!this.isChef()?
+                        <TextField
+                            id="floating-center-lastName"
+                            label="address"
+                            required
+                            lineDirection="center"
+                            placeholder="Please input your address"
+                            onChange={value => this.handleChange('address', value)}/>:''}
                     <TextField
                         id="floating-center-phoneNumber"
                         label="phonenumber"
@@ -203,7 +221,7 @@ class EditProfile extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.state.languages = [this.state.language1, this.state.language2]
+        this.state.languages = [this.state.language1, this.state.language2];
         let user = UserService.getCurrentUser().userType === 'Customer' ? {
             email: this.state.email,
             userType: this.state.userType,
@@ -211,6 +229,7 @@ class EditProfile extends React.Component {
             lastName: this.state.lastName,
             address: this.state.address,
             phoneNumber: this.state.phoneNumber,
+            city: this.state.city,
         } : UserService.getCurrentUser().userType === 'Chef' ? {
             email: this.state.email,
             userType: this.state.userType,

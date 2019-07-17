@@ -5,6 +5,7 @@ import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
+import PaymentDialog from "../Booking/PaymentDialog";
 
 export class UserCalendar extends Component {
 
@@ -73,34 +74,23 @@ export class UserCalendar extends Component {
       this.setState({ endTime: time });
     };
 
-    handleSubmit(event) {
-      event.preventDefault();
+    handleSubmit() {
+      let userCalendarBooking = {};
 
-      let userCalendarBooking = this.props.userCalendarBooking;
-        if (userCalendarBooking == undefined) {
-          userCalendarBooking = {};
-        }
-      
-      userCalendarBooking.userName = "Ingo Glaser";
-      userCalendarBooking.chefName = "Michael Scott";
-      userCalendarBooking.address = "Zaunweg 3";
-      
       //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
       let convertedStartTime = this.state.startTime.toDate();
       let convertedEndTime = this.state.endTime.toDate();
       convertedStartTime.setDate(this.state.selectedDay.getDate());
       convertedStartTime.setMonth(this.state.selectedDay.getMonth());
       convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
+      convertedStartTime.setSeconds(0);
       convertedEndTime.setDate(this.state.selectedDay.getDate());
       convertedEndTime.setMonth(this.state.selectedDay.getMonth());
       convertedEndTime.setFullYear(this.state.selectedDay.getFullYear());
+      convertedEndTime.setSeconds(0);
       
       userCalendarBooking.startTime = convertedStartTime.valueOf();
       userCalendarBooking.endTime = convertedEndTime.valueOf();
-      
-      this.setState({ selectedDay: undefined });
-      this.setState({ startTime: null });
-      this.setState({ endTime: null });
 
       this.props.onSubmit(userCalendarBooking);
     }
@@ -124,7 +114,6 @@ export class UserCalendar extends Component {
                     (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}
                 </div>
 
-                
                 <div style = {{marginLeft: '20%'}}> 
                 <h4>from</h4>
                 <TimePicker
@@ -153,17 +142,8 @@ export class UserCalendar extends Component {
                 hourStep = {3}
                 placeholder='Pick a time' />
 
-                <form onSubmit={this.handleSubmit}>
-                <input type="submit" value="Book" style={{
-                            marginTop: '20%',
-                            marginLeft: '-25%',
-                            width: '180%',
-                            lineHeight: '25px',
-                            fontSize: '16px',
-                            backgroundColor: 'rgb(69,150,236)',
-                            color: 'white'
-                        }}/>
-                </form>
+                <PaymentDialog price={this.props.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
+                </PaymentDialog>
                 </div>
 
                 

@@ -168,6 +168,16 @@ const addProfile = (req, res) => {
             message: 'The request body must contain a introduction property'
         });
     }
+    if (req.body.userType === 'Customer') {
+        if (!Object.prototype.hasOwnProperty.call(req.body, 'city')) return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a city property'
+        });
+        if (!Object.prototype.hasOwnProperty.call(req.body, 'address')) return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a address property'
+        });
+    }
     userModel.findOne({email: req.body.email}).exec()//UseModel schema
         .then(user => {
             user.withProfile = 'Yes';
@@ -234,7 +244,8 @@ const addProfile = (req, res) => {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,
-            address: req.body.address
+            address: req.body.address,
+            city: req.body.city
         });
         customerModel.create(customer).then(customer=>{
             const token = jwt.sign({
@@ -243,6 +254,7 @@ const addProfile = (req, res) => {
                 lastName: customer.lastName,
                 userType: req.body.userType,
                 address: customer.address,
+                city: customer.city,
                 withProfile: 'Yes'
             }, config.JwtSecret, {
                 expiresIn: 999999 // time in seconds until it expires

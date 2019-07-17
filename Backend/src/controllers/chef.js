@@ -1,4 +1,4 @@
-const ChefModel = require('../models/chef');
+const chefModel = require('../models/chef');
 const WorkTimeModel = require('../models/chefCalendarWorkTime');
 
 const search = async (req, res) => {
