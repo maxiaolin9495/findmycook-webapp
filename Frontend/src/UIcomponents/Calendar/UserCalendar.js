@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
+import ChefCalendarService from '../../Services/ChefCalendarService';
 import DayPicker from 'react-day-picker';
 import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
@@ -12,20 +13,17 @@ export class UserCalendar extends Component {
         super(props);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.disabledHoursForStartTime = this.disabledHoursForStartTime.bind(this);
-        this.disabledHoursForEndTime = this.disabledHoursForEndTime.bind(this);
-        //this.updateDisabledStartTimes =  this.updateDisabledStartTimes.bind(this);
-        //this.updateDisabledEndTimes = this.updateDisabledEndTimes.bind(this);
-        //this.filterCalendarBookingsPerDay = this.filterCalendarBookingsPerDay.bind(this);
+        this.computeDisabledHours = this.computeDisabledHours.bind(this);
+        this.range = this.range.bind(this);
+        this.disabledHours = this.disabledHours.bind(this);
+        this.disabledMinutes = this.disabledMinutes.bind(this);
         
         this.state = {
+          chefWorkTimes: [],
           selectedDay: undefined,
           startTime: null,
           endTime: null,
-          fixedDisabledStartTimes: [0,3,6,21],
-          fixedDisabledEndTimes: [0,3,6,9],
-          disabledStartTimesList: [],
-          disabledEndTimesList: []
+          disabledHours: [...Array(24).keys()]
         };
     }
 
@@ -36,34 +34,8 @@ export class UserCalendar extends Component {
           return;
         }
         this.setState({ selectedDay: day });
-        //this.updateDisabledStartTimes();
-        //this.updateDisabledEndTimes();
+        this.computeDisabledHours();
     }
-
-    /*
-    filterCalendarBookingsPerDay(){
-      let filteredCalendarBookings = this.props.userCalendarBookings.filter(userCalendarBooking => {
-        return userCalendarBooking.selectedDay === (this.state.selectedDay.toLocaleDateString());
-      });
-      
-      return filteredCalendarBookings
-    }
-
-    updateDisabledStartTimes() {
-      let disabledStartTimesList = this.filterCalendarBookingsPerDay().map(userCalendarBooking => {
-        return Number(parseInt(userCalendarBooking.startTime, 10));
-      });
-      
-      this.setState({ disabledStartTimesList: disabledStartTimesList.concat(this.state.fixedDisabledStartTimes)});
-    }
-
-    updateDisabledEndTimes() {
-      let disabledEndTimesList = this.filterCalendarBookingsPerDay().map(userCalendarBooking => {
-        return Number(parseInt(userCalendarBooking.endTime, 10));
-      });
-      
-      this.setState({ disabledEndTimesList: disabledEndTimesList.concat(this.state.fixedDisabledEndTimes) });
-    }*/
 
     onChangeStartTime = time => {
       this.setState({ startTime: time });
@@ -73,13 +45,26 @@ export class UserCalendar extends Component {
       this.setState({ endTime: time });
     };
 
+    disabledHours(){
+      return this.state.disabledHours;
+    }
+
+    disabledMinutes(){
+      if (this.state.disabledHours.length == 24) {
+        return [0];
+      } else {
+        return [];
+      }
+    }
+
     handleSubmit(event) {
       event.preventDefault();
 
       if(this.state.selectedDay == undefined || 
         this.state.startTime == null ||
-        this.state.endTime == null) {
-          alert("Please select a day, start and end time")
+        this.state.endTime == null ||
+        this.state.startTime >= this.state.endTime) {
+          alert("Please select a day, valid start and end time")
         } 
      
      else {
@@ -113,13 +98,28 @@ export class UserCalendar extends Component {
      }
     }
 
-    disabledHoursForStartTime() {
-      return this.state.disabledStartTimesList
+    componentWillMount(){
+      ChefCalendarService.getWorkTimeEntries().then((chefWorkTimes) => {
+          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === 'Michael Scott')});
+      }).catch((e) => {
+          console.error(e);
+      });
     }
 
-    disabledHoursForEndTime() {
-      return this.state.disabledEndTimesList
+    range(start, end) {
+      if (start === end) return [start];
+      return [start, ...range(start + 1, end)];
     }
+
+    computeDisabledHours(){
+      if (this.state.chefWorkTimes.length == 0){
+        return;
+      }
+      let workTime = this.state.chefWorkTimes.filter((workTime) => (new Date(parseInt(workTime.startTime))).getDate() === this.state.selectedDay.getDate());
+      let enabledRange = this.range((new Date(parseInt(workTime[0].startTime, 10))).getHours(), (new Date(parseInt(workTime[0].endTime),10)).getHours());
+      let defaultDisabledRange = [...Array(23).keys()];
+      this.setState({ disabledHours: defaultDisabledRange.filter(value => !enabledRange.includes(value))});
+      }
 
     render() {
         return (
@@ -140,10 +140,11 @@ export class UserCalendar extends Component {
                 format = 'HH:mm'
                 value = {this.state.startTime}
                 onChange = {this.onChangeStartTime}
-                hideDisabledOptions = {true}
-                disabledHours = {this.disabledHoursForStartTime}
+                hideDisabledOptions = {false}
+                disabledHours = {this.disabledHours}
+                disabledMinutes = {this.disabledMinutes}
                 minuteStep = {60}
-                hourStep = {3}
+                hourStep = {1}
                 placeholder='Pick a time' />
                 </div>
 
@@ -155,10 +156,11 @@ export class UserCalendar extends Component {
                 format = 'HH:mm'
                 value = {this.state.endTime}
                 onChange = {this.onChangeEndTime}
-                hideDisabledOptions = {true}
-                disabledHours = {this.disabledHoursForEndTime}
+                hideDisabledOptions = {false}
+                disabledHours = {this.disabledHours}
+                disabledMinutes = {this.disabledMinutes}
                 minuteStep = {60}
-                hourStep = {3}
+                hourStep = {1}
                 placeholder='Pick a time' />
 
                 <form onSubmit={this.handleSubmit}>

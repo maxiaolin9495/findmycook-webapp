@@ -11,8 +11,7 @@ export class ChefCalendarView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            workTimes: [],
-            refreshFlag: true
+            workTimes: []
         };
     }
 
@@ -38,7 +37,7 @@ export class ChefCalendarView extends Component {
     }
 
     saveWorkTimeEntry(workTime) {
-        alert('Booking request saved');
+        alert('Worktime entry saved');
         ChefCalendarService.saveWorkTimeEntry(workTime).then((data) => {
             this.props.history.push('/chefCalendar');
         }).catch((e) => {
@@ -48,7 +47,6 @@ export class ChefCalendarView extends Component {
         
     }
     
-
     render() {
         return (    
             <div>
@@ -60,7 +58,7 @@ export class ChefCalendarView extends Component {
 
                 <div>
                     <h3 style = {this.getStyleForWorkTimeTitle()}>Worktime Entries</h3>
-                    {this.state.workTimes.map((workTime) => (  <ChefWorkTimeDetail workTime={workTime} />  ))}
+                    {this.state.workTimes.map((workTime) => (  <ChefWorkTimeDetail workTime={workTime}/>  ))}
                 </div>
 
             </div>

@@ -16,24 +16,24 @@ class ChefWorkTimeDetail extends React.Component {
     }
 
     render() {
-        return (
-            <div style={this.getStyle()}>
-                
-                <h3 style={{color: 'white'}}>{new Date(parseInt(this.props.workTime.startTime)).toLocaleDateString()} </h3>
-                
-                <h4 style={{color: 'white', marginLeft:'20%'}}>from</h4>
-                <h3 style={{color: 'white', marginLeft: '3%'}}> 
-                    {(new Date(parseInt(this.props.workTime.startTime)).toLocaleTimeString()).substring(0,5)}
-                </h3>
+            return (
+                <div style={this.getStyle()}>
+                    
+                    <h3 style={{color: 'white'}}>{new Date(parseInt(this.props.workTime.startTime)).toLocaleDateString()} </h3>
+                    
+                    <h4 style={{color: 'white', marginLeft:'20%'}}>from</h4>
+                    <h3 style={{color: 'white', marginLeft: '3%'}}> 
+                        {(new Date(parseInt(this.props.workTime.startTime)).toLocaleTimeString()).substring(0,5)}
+                    </h3>
 
-                <h4 style={{color: 'white', marginLeft: '3%'}}>to</h4>
-                <h3 style={{color: 'white', marginLeft: '3%'}}> 
-                    {(new Date(parseInt(this.props.workTime.endTime)).toLocaleTimeString()).substring(0,5)} 
-                </h3>
-      
-            </div>
-        )
+                    <h4 style={{color: 'white', marginLeft: '3%'}}>to</h4>
+                    <h3 style={{color: 'white', marginLeft: '3%'}}> 
+                        {(new Date(parseInt(this.props.workTime.endTime)).toLocaleTimeString()).substring(0,5)} 
+                    </h3>
+        
+                </div>
+            )
+        }
     }
-}
 
 export default withRouter(ChefWorkTimeDetail);

@@ -39,13 +39,16 @@ export class ChefCalendar extends Component {
 
     handleSubmit(event) {
       event.preventDefault();
+      let convertedStartTime = this.state.startTime.toDate();
+      let convertedEndTime = this.state.endTime.toDate();
 
       if(this.state.selectedDay == undefined || 
          this.state.startTime == null ||
-         this.state.endTime == null) {
-           alert("Please select a day, start and end time")
+         this.state.endTime == null ||
+         convertedStartTime >= convertedEndTime) {
+           alert("Please select a day, and a valid start/ end time")
          } 
-      
+
       else {
         let workTime = this.props.workTime;
           if (workTime == undefined) {
@@ -53,8 +56,7 @@ export class ChefCalendar extends Component {
           }
         
         //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
-        let convertedStartTime = this.state.startTime.toDate();
-        let convertedEndTime = this.state.endTime.toDate();
+        
         convertedStartTime.setDate(this.state.selectedDay.getDate());
         convertedStartTime.setMonth(this.state.selectedDay.getMonth());
         convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
