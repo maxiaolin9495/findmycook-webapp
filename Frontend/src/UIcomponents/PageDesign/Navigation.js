@@ -154,6 +154,7 @@ class NavigationMenu extends React.Component {
                             <div id="noneName">
                               <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
                               <Button type = "button" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
+                              <Button type = "button" id="ReviewButton" flat primary swapTheming onClick={()=> this.props.history.push('/review')}>Review</Button>
                               <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/chefCalendar')}>Chef Calendar</Button>
                             </div>
                     }
@@ -167,6 +168,7 @@ class NavigationMenu extends React.Component {
                                                                                          suffix="green-300"/></Button>
                         </Item>
                     }
+
                 >
 
                 </NavigationDrawer>
