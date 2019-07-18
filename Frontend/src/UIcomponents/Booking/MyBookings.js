@@ -26,6 +26,7 @@ class MyBookings extends Component {
         }
     }
 
+
     componentWillReceiveProps(props) {
         const bookingCards = props.data.map(data =>
             bookingCard(data._id, UserService.getCurrentUser().userType ,data.chefEmail, data.customerEmail, data.startTime, data.endTime, data.address, data.city, data.price, data.status));
