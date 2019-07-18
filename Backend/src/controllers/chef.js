@@ -17,8 +17,20 @@ const getChefByName = async (req, res) => {
     const {
         chefname,
     } = req.params;
-    const chef = await AttractionModel.findOne({name: chefname});
+    const chef = await chefModel.findOne({name: chefname});
     res.status(200).json(chef);
+};
+
+const getChefByCity = async (req, res) => {
+  const cityName = req.query.city;
+  chefModel.find({city: cityName}).exec().then(chefs =>{
+      return res.status(200).json(chefs)}).catch(error => {
+      console.log('error by searching chef')
+      return res.status(404).json({
+          error: 'User Not Found',
+          message: error.message
+      })
+  });
 };
 
 const filterChef = async (req, res) => {
@@ -45,7 +57,7 @@ const filterChef = async (req, res) => {
     if (chefIds.length !== 0) query._id = {$in: chefIds};
     if (price.length !== 0) query.$or = price.map(mapPriceRange);
     if (city.length !== 0) query.city = {$in: city};
-    if (foodType.length !== 0) query.foodtype = {$in: foodType};
+    if (foodType.length !== 0) query.foodType = {$in: foodType};
     const chef = await chefModel.find(query, {
         firstName: 1,
         lastName: 1,
@@ -99,4 +111,5 @@ module.exports = {
     readDetailInfo,
     filterChef,
     getChefByName,
+    getChefByCity,
 };

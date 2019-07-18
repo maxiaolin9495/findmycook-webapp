@@ -21,6 +21,7 @@ class SearchBarComponent extends React.Component {
                     margin: '0 auto'
                 }}>
                     <SearchBar className={"searchtoolbar"}
+                               placeholder={'Search City e.g Munich'}
                                onChange={(value) => this.setState({searchValue: value})}
                                onRequestSearch={() => this.props.history.push(`/searchresult?query=${this.state.searchValue}`)}
                                style={{
