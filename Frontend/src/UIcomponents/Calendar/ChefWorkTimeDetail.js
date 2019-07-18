@@ -7,7 +7,7 @@ class ChefWorkTimeDetail extends React.Component {
         return {
             display: 'flex',
             marginLeft: '20%',
-            marginBottom: '0.5%',
+            marginBottom: '0.2%',
             opacity: 0.8,
             width: '60%',
             background: 'black',

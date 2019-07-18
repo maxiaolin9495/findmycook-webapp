@@ -116,6 +116,7 @@ export class ChefCalendar extends Component {
                 <input type="submit" value="Submit" style={{
                             marginTop: '20%',
                             marginLeft: '-25%',
+                            marginBottom: '10%',
                             width: '180%',
                             lineHeight: '25px',
                             fontSize: '16px',

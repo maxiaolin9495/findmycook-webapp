@@ -6,6 +6,7 @@ import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
+import moment from 'moment';
 
 export class UserCalendar extends Component {
 
@@ -15,15 +16,18 @@ export class UserCalendar extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.computeDisabledHours = this.computeDisabledHours.bind(this);
         this.range = this.range.bind(this);
-        this.disabledHours = this.disabledHours.bind(this);
+        this.disabledHoursStartTime = this.disabledHoursStartTime.bind(this);
+        this.disabledHoursEndTime = this.disabledHoursEndTime.bind(this);
         this.disabledMinutes = this.disabledMinutes.bind(this);
-        
         this.state = {
           chefWorkTimes: [],
-          selectedDay: undefined,
+          selectedDay: null,
           startTime: null,
           endTime: null,
-          disabledHours: [...Array(24).keys()]
+          defaultOpenValueStartTime: moment(new Date()),
+          defaultOpenValueEndTime: moment(new Date()),
+          disabledHoursStartTime: [...Array(24).keys()],
+          disabledHoursEndTime: [...Array(24).keys()]
         };
     }
 
@@ -33,8 +37,10 @@ export class UserCalendar extends Component {
           this.setState({ selectedDay: undefined });
           return;
         }
+        this.setState({startTime: null})
+        this.setState({endTime: null})
         this.setState({ selectedDay: day });
-        this.computeDisabledHours();
+        this.computeDisabledHours(day);
     }
 
     onChangeStartTime = time => {
@@ -45,12 +51,16 @@ export class UserCalendar extends Component {
       this.setState({ endTime: time });
     };
 
-    disabledHours(){
-      return this.state.disabledHours;
+    disabledHoursStartTime(){
+      return this.state.disabledHoursStartTime
+    }
+
+    disabledHoursEndTime(){
+      return this.state.disabledHoursEndTime
     }
 
     disabledMinutes(){
-      if (this.state.disabledHours.length == 24) {
+      if (this.state.disabledHoursStartTime.length == 24) {
         return [0];
       } else {
         return [];
@@ -93,7 +103,8 @@ export class UserCalendar extends Component {
         this.setState({ selectedDay: undefined });
         this.setState({ startTime: null });
         this.setState({ endTime: null });
-
+        this.setState({ disabledHoursStartTime: [...Array(24).keys()]});
+        this.setState({ disabledHoursEndTime: [...Array(24).keys()]});
         this.props.onSubmit(userCalendarBooking);
      }
     }
@@ -107,18 +118,36 @@ export class UserCalendar extends Component {
     }
 
     range(start, end) {
-      if (start === end) return [start];
-      return [start, ...range(start + 1, end)];
+      let array = [...Array(end+1).keys()];
+      return array.filter(element => element >= start);
     }
 
-    computeDisabledHours(){
-      if (this.state.chefWorkTimes.length == 0){
+    computeDisabledHours(selected){
+      let workTime = this.state.chefWorkTimes.filter(workTime => new Date(parseInt(workTime.startTime)).toLocaleDateString() === selected.toLocaleDateString());
+      if (workTime.length == 0){
+        this.setState({defaultOpenValueStartTime: moment(new Date())})
+        this.setState({defaultOpenValueEndTime: moment(new Date())})
+        this.setState({startTime: null})
+        this.setState({endTime: null})
+        this.setState({ disabledHoursStartTime: [...Array(24).keys()]});
+        this.setState({ disabledHoursEndTime: [...Array(24).keys()]});
         return;
       }
-      let workTime = this.state.chefWorkTimes.filter((workTime) => (new Date(parseInt(workTime.startTime))).getDate() === this.state.selectedDay.getDate());
-      let enabledRange = this.range((new Date(parseInt(workTime[0].startTime, 10))).getHours(), (new Date(parseInt(workTime[0].endTime),10)).getHours());
-      let defaultDisabledRange = [...Array(23).keys()];
-      this.setState({ disabledHours: defaultDisabledRange.filter(value => !enabledRange.includes(value))});
+      //console.log(this.state.chefWorkTimes)
+      let start = new Date(parseInt(workTime[0].startTime))
+      let end = new Date(parseInt(workTime[0].endTime))
+      
+      let startHour = start.getHours()
+      let endHour = end.getHours()
+
+      let startEnabledRange = this.range(startHour,endHour-1);
+      let endEnabledRange = this.range(startHour+1,endHour);
+      let defaultDisabledRange = [...Array(24).keys()];
+
+      this.setState({defaultOpenValueStartTime: moment(start)})
+      this.setState({defaultOpenValueEndTime: moment(start.setHours(startHour + 1))})
+      this.setState({ disabledHoursStartTime: defaultDisabledRange.filter(value => !startEnabledRange.includes(value)) });
+      this.setState({ disabledHoursEndTime: defaultDisabledRange.filter(value => !endEnabledRange.includes(value)) });
       }
 
     render() {
@@ -126,7 +155,7 @@ export class UserCalendar extends Component {
             <div className="md-grid" id="calendarBox" label="UserCalendar" style={{width: '17.5%', background: 'white'}}>
                 
                 <div>
-                    <DayPicker onDayClick={this.handleDayClick} selectedDays={this.state.selectedDay}/>
+                    <DayPicker selectedDays={this.state.selectedDay} onDayClick={this.handleDayClick}/>
                     {this.state.selectedDay ? 
                     (<h3 style = {{textAlign: 'center'}}>{this.state.selectedDay.toLocaleDateString()}</h3>) : 
                     (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}
@@ -139,9 +168,10 @@ export class UserCalendar extends Component {
                 size="large"
                 format = 'HH:mm'
                 value = {this.state.startTime}
+                defaultOpenValue = {this.state.defaultOpenValueStartTime}
                 onChange = {this.onChangeStartTime}
                 hideDisabledOptions = {false}
-                disabledHours = {this.disabledHours}
+                disabledHours = {this.disabledHoursStartTime}
                 disabledMinutes = {this.disabledMinutes}
                 minuteStep = {60}
                 hourStep = {1}
@@ -155,9 +185,10 @@ export class UserCalendar extends Component {
                 size="large"
                 format = 'HH:mm'
                 value = {this.state.endTime}
+                defaultOpenValue = {this.state.defaultOpenValueEndTime}
                 onChange = {this.onChangeEndTime}
                 hideDisabledOptions = {false}
-                disabledHours = {this.disabledHours}
+                disabledHours = {this.disabledHoursEndTime}
                 disabledMinutes = {this.disabledMinutes}
                 minuteStep = {60}
                 hourStep = {1}
@@ -167,6 +198,7 @@ export class UserCalendar extends Component {
                 <input type="submit" value="Book" style={{
                             marginTop: '20%',
                             marginLeft: '-25%',
+                            marginBottom: '10%',
                             width: '180%',
                             lineHeight: '25px',
                             fontSize: '16px',
