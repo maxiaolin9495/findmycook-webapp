@@ -22,6 +22,7 @@ class RegisterTab extends React.Component {
         return (
             <div className="md-grid" id="registrationTable" label="Register"
             style={{width: '30%',
+                    marginTop: '10%',
                     background: 'white'}}>
                 <CardTitle title="Register" id='RegisterTitle' style={{
                     marginLeft: 'auto',
