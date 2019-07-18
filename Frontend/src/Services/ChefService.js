@@ -159,6 +159,18 @@ export default class ChefService {
             });
         });
     }
+    
+    static getChefBySearchCity(city) {
+      return new Promise((resolve, reject) => {
+          HttpService.post(`${ChefService.baseURL()}/searchCity`, {
+              city,
+          }, function (data) {
+             resolve(data);
+          }, function (textStatus) {
+              reject(textStatus);
+          });
+      });
+  }
 
 
     static filterChef(chefIds, city, foodType, price) {

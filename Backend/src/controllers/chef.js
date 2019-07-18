@@ -21,6 +21,26 @@ const getChefByName = async (req, res) => {
     res.status(200).json(chef);
 };
 
+const getChefByCity = async (req, res) => {
+const {
+  city,
+} = req.body;
+const query = {};
+if (city.length !== 0) query.city = {$in: city};
+const chef = await chefModel.find(query, {
+    firstName: 1,
+    lastName: 1,
+    foodType: 1,
+    city: 1,
+    rating: 1,
+    introduction: 1,
+    price: 1,
+    time: 1,
+    photo: 1
+});
+res.status(200).json(chef);
+};
+
 const filterChef = async (req, res) => {
     const {
       chefIds,
@@ -99,4 +119,5 @@ module.exports = {
     readDetailInfo,
     filterChef,
     getChefByName,
+    getChefByCity,
 };

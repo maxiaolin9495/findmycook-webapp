@@ -12,6 +12,6 @@ module.exports = merge(common, {
         host: '0.0.0.0',
         contentBase: path.resolve(__dirname, 'dist'),
         compress: true,
-        port: 8081
+        port: 8080
     }
 });
