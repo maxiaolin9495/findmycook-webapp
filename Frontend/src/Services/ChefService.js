@@ -47,19 +47,15 @@ export default class ChefService {
 
     static getChefBySearchCity(city) {
       return new Promise((resolve, reject) => {
-          let suffix = '/searchCity?city=' + city;
-          HttpService.get(`${ChefService.baseURL()}${suffix}`, function (data) {
-              if (data != undefined || Object.keys(data).length !== 0) {
-                  resolve(data);
-              }
-              else {
-                  reject('Error while request customer name');
-              }
+          HttpService.post(`${ChefService.baseURL()}/searchCity`, {
+              city,
+          }, function (data) {
+              resolve(data);
           }, function (textStatus) {
               reject(textStatus);
           });
-      })
-     }
+      });
+  }
 
      static getChefDetail(chefid) {
         return new Promise((resolve, reject) => {
