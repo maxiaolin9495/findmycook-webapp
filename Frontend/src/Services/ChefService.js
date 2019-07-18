@@ -163,7 +163,7 @@ export default class ChefService {
     static getChefBySearchCity(city) {
       return new Promise((resolve, reject) => {
           HttpService.post(`${ChefService.baseURL()}/searchCity`, {
-              city,
+              city: city,
           }, function (data) {
              resolve(data);
           }, function (textStatus) {
