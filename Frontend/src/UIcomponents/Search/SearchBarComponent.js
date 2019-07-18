@@ -12,7 +12,6 @@ class SearchBarComponent extends React.Component {
     }
 
     searchBySearchBar =() =>{
-
         if(this.state.searchValue === '') {
             alert('Please input a city name');
             return;

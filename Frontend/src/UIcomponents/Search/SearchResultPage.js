@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import SearchResultCard from '../../UIcomponents/Search/SearchResultCard';
-import {Checkbox, Button, Divider, Slider} from 'react-md';
+import {Checkbox, Button, Divider, TextField} from 'react-md';
+import { createHashHistory } from 'history'
+import {withRouter} from "react-router-dom";
+export const history = createHashHistory();
 
-const cities = {
-    City: ['Munich', 'Garching', 'Eching'],
-}
 const foodtypes = {
     Type: ['Asia Food', 'America Food', 'German Food', 'French Food'],
 }
@@ -26,6 +26,7 @@ const testCard = (key, id, firstName, lastName, foodType, city, rating, introduc
     photo={photo}
 />;
 
+
 class SearchResultPage extends Component {
     constructor(props) {
         super(props);
@@ -34,23 +35,26 @@ class SearchResultPage extends Component {
             chefIds: [],
             city: [],
             foodtype: [],
-            price: []
+            price: [],
+            searchValue: ''
         };
 
+    }
+
+    searchBySearchBar =() =>{
+        if(this.state.searchValue === '') {
+            alert('Please input a city name');
+            return;
+        }
+        console.log(this.props.history);
+        this.props.history.push(`/searchresult?query=${this.state.searchValue}`);
+        window.location.reload();
     }
 
     componentWillReceiveProps(props) {
         props.data.map(data => this.state.chefIds.push(data._id));
         const testCards = props.data.map((data, i) => testCard(i, data._id, data.firstName, data.lastName, data.foodType, data.city, data.rating, data.introduction, data.price, data.photo));
         this.setState({testCards});
-    }
-
-    handlecitiescheckbox(isChecked, value) {
-        if (isChecked) {
-            this.state.city.push(value);
-        } else {
-            this.state.city.splice(this.state.city.indexOf(value), 1)
-        }
     }
 
     handlefoodtypescheckbox(isChecked, value) {
@@ -82,28 +86,6 @@ class SearchResultPage extends Component {
     handlefilter() {
         this.props.onFilter(this.state.chefIds, this.state.city, this.state.foodtype, this.state.price);
     }
-
-    citiesCheckboxs = (cities) => {
-        const rendered = [];
-        let key = 0;
-        rendered.push(<h3>City:</h3>);
-        for (let city of cities.City) {
-            rendered.push(<Checkbox
-                className='filter-checkbox'
-                key={key++}
-                id={'checkbox-' + city}
-                name={city}
-                label={city}
-                value={city}
-                onChange={value => {
-                    this.handlecitiescheckbox(value, city)
-                }}
-            />)
-        }
-        rendered.push(<Divider key={key++}/>)
-        return rendered;
-
-    };
 
     foodtypesCheckboxs = (handlecitiescheckbox) => {
         const rendered = [];
@@ -166,7 +148,23 @@ class SearchResultPage extends Component {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}>
-                        {this.citiesCheckboxs(cities)}
+
+                        <TextField
+                            id="placeholder-only-title"
+                            placeholder="Type in other city name to search"
+                            leftIcon={<h3 style={{mappingTop: '20%'}}>City:</h3>}
+                            type='search'
+                            customSize='20px'
+                            rightIcon={<Button raised primary swapTheming style={{
+                                background: 'blue',
+                                color: 'white'
+                            }} onClick={() => this.searchBySearchBar()}
+                            >Search</Button>}
+                            style={{width: '90%',
+                            fontSize:'30px'}}
+                            onChange={(value) => this.setState({searchValue: value})}
+                        />
+
                     </div>
                     <div style={{
                         display: 'flex',
@@ -215,4 +213,4 @@ class SearchResultPage extends Component {
     }
 }
 
-export default SearchResultPage;
+export default withRouter(SearchResultPage);
