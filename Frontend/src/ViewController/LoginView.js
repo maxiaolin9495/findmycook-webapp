@@ -14,7 +14,8 @@ export class LoginView extends React.Component {
         LoginService.login(user.email, user.password).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
-            console.error(e);
+            alert('Please input correct email and password');
+            document.getElementById('floating-password').value = '';
             this.setState({
                 error: e
             });
