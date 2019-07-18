@@ -10,5 +10,6 @@ router.get('/get-chef-name-and-image', bookingController.getChefNameAndImg);
 router.get('/get-customer-name', bookingController.getCustomerName);
 router.post('/confirm-booking', bookingController.confirmBooking);
 router.post('/cancel-booking', bookingController.cancelBooking);
+router.post('/close-booking', bookingController.closeBooking);
 
 module.exports = router;

@@ -15,7 +15,7 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    address:{
+    address: {
         type: String,
         required: true,
     },
@@ -31,12 +31,17 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status:{
+    //inProgress is for new booking, which needs to be confirmed by the chef.
+    //confirmed, canceled is easy to understand.
+    //if the chef has provided the service, the booking status will be change to closed
+    //once the booking is closed and the customer has reviewed the chef, then the status will be turned to reviewed
+    status: {
         type: String,
         required: true,
-        enum: ['closed', 'canceled', 'inProgress', 'confirmed'],
+        enum: ['closed', 'canceled', 'inProgress', 'confirmed', 'reviewed'],
     },
-    payment:{
+    //inProgress means the booking is canceled, the money needs to be sent back, returned means the money has been sent back.
+    payment: {
         type: String,
         required: true,
         enum: ['returned', 'inProgress', 'paid'],

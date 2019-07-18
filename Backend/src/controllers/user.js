@@ -54,6 +54,7 @@ const login = (req, res) => {
                         withProfile: user.withProfile,
                         firstName: customer.firstName,
                         address: customer.address,
+                        city: customer.city,
                         lastName: customer.lastName
                     }, config.JwtSecret, {
                         expiresIn: 999999 // time in seconds until it expires
@@ -206,7 +207,7 @@ const addProfile = (req, res) => {
             rating: 5,
             photo: req.body.photo,
             introduction: req.body.introduction,
-            price: 20,
+            price: req.body.price,
             phoneNumber: req.body.phoneNumber,
             languages: req.body.languages,
         });

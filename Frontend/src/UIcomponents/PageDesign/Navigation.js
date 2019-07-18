@@ -38,12 +38,8 @@ const defaultNavItems = [
     {
         label: 'Home',
         to: '/',
+        exact: true,
         icon: 'home',
-    },
-    {
-        label: 'Search',
-        to:'/searchresult',
-        icon:'search',
     },
     {
         label: 'Contact us',
@@ -61,12 +57,8 @@ const logInNavItems = [
     {
         label: 'Home',
         to: '/',
+        exact: true,
         icon: 'home',
-    },
-    {
-        label: 'Search',
-        to:'/searchresult',
-        icon:'search',
     },
     {
         label: 'Contact us',
@@ -143,7 +135,7 @@ class NavigationMenu extends React.Component {
         return (
             <div className={this.props.className}>
                 <NavigationDrawer
-
+                    focusOnMount={false}
                     style={NavigationMenuStyle}
                     desktopDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
                     className="NavigationMenuStyle"

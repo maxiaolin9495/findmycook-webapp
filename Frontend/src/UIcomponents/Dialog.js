@@ -36,7 +36,7 @@ export default class ScrollingContentAndSizing extends PureComponent {
 
     render() {
         return (
-            <div style = {{marginTop: '10%'}}>
+            <div style = {{marginTop: '5%'}}>
                 {this.props.actionName === 'confirm' ?
                     <Button raised primary onClick={this.show}>{this.props.actionName}</Button>
                     :

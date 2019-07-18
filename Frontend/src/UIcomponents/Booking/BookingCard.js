@@ -17,21 +17,22 @@ class BookingCard extends Component {
             name: '',
             date: '',
             photo: '',
+            status: this.props.status,
         }
     }
 
     ifFinished = () => {
-        if (status === 'canceled' || status === 'closed') return true;
+        if (this.state.status  === 'closed' || this.state.status ==='reviewed') return true;
         else return false;
     }
 
     ifCanceled = () => {
-        if (this.props.status === 'canceled') return true;
+        if (this.state.status === 'canceled') return true;
         else return false;
     }
 
     ifNeedConfirmation = () => {
-        if (this.props.status === 'inProgress') return true;
+        if (this.state.status === 'inProgress') return true;
         else return false;
     }
 
@@ -40,7 +41,9 @@ class BookingCard extends Component {
         this.setState({
             loading: true
         });
+        this.verifyDate();
         BookingService.getCustomerName(this.props.customerEmail).then((data) => {
+            if(this.props.userType === 'Chef')
             this.setState({
                 name: data.firstName + ' ' + data.lastName,
                 customerFirstName: data.firstName,
@@ -51,6 +54,7 @@ class BookingCard extends Component {
         });
 
         BookingService.getChefNameAndImg(this.props.chefEmail).then((data) => {
+            if(this.props.userType === 'Customer')
             this.setState({
                 name: data.firstName + ' ' + data.lastName,
                 chefFirstName: data.firstName,
@@ -66,30 +70,67 @@ class BookingCard extends Component {
     getDate = () => {
         let startTime = new Date(parseInt(this.props.startTime));
         let endTime = new Date(parseInt(this.props.endTime));
-        return startTime.toDateString() + '\n' + startTime.toTimeString().split('GMT')[0] + '- ' + endTime.toTimeString().split(' GMT')[0];
+        return startTime.toDateString();
     }
 
-    cancelBooking = () => {
-        if(this.props.userType === 'Customer') {
+    getTimeSlot = () => {
+        let startTime = new Date(parseInt(this.props.startTime));
+        let endTime = new Date(parseInt(this.props.endTime));
+        return startTime.toTimeString().split('GMT')[0] + '- ' + endTime.toTimeString().split(' GMT')[0]
+    }
+
+
+    verifyDate = () => {
+        let now = new Date();
+        let bookingTime = new Date(parseInt(this.props.endTime));
+        if (this.state.status === 'confirmed') {
+            if (now.getFullYear() >= bookingTime.getFullYear()) {
+                if (now.getMonth() === bookingTime.getMonth()) {
+                    if (now.getDate() > bookingTime.getDate()) {
+                        this.closeBooking();
+                    }
+                } else if (now.getMonth() > bookingTime.getMonth()) {
+                    this.closeBooking();
+                }
+            }
+        } else if (this.state.status === 'inProgress') {
+            if (now.getFullYear() >= bookingTime.getFullYear()) {
+                if (now.getMonth() === bookingTime.getMonth()) {
+                    if (now.getDate() > bookingTime.getDate()) {
+                        this.cancelBooking(true);
+                    }
+                } else if (now.getMonth() > bookingTime.getMonth()) {
+                    this.cancelBooking(true);
+                }
+            }
+        }
+    }
+
+    cancelBooking = (automatically) => {
+        if (this.props.userType === 'Customer') {
             BookingService.emailNotification(this.props.chefEmail, this.state.chefFirstName,
                 'Booking Canceled',
                 BookingService.cancel_booking + 'Your Customer ' + this.state.customerFirstName + '.').then(data => {
                 BookingService.cancelBooking(this.props.id, this.props.userType, 'canceled').then(
                     data => {
-                        alert('Successfully canceled');
+                        if(!automatically) {
+                            alert('Successfully canceled');
+                        }
                         window.location.reload();
                     }
                 )
             }).catch(e => {
                 console.log(e)
             })
-        }else {
+        } else {
             BookingService.emailNotification(this.props.customerEmail, this.state.customerFirstName,
                 'Booking Canceled',
                 BookingService.cancel_booking + 'Chef ' + this.state.chefFirstName + '.').then(data => {
                 BookingService.cancelBooking(this.props.id, this.props.userType, 'canceled').then(
                     data => {
-                        alert('Successfully canceled');
+                        if(!automatically) {
+                            alert('Successfully canceled');
+                        }
                         window.location.reload();
                     }
                 )
@@ -97,6 +138,25 @@ class BookingCard extends Component {
                 console.log(e);
             })
         }
+        if (automatically) {
+            BookingService.cancelBooking(this.props.id, this.props.userType, 'canceled').then(
+                data => {
+                    alert('Successfully canceled');
+                    window.location.reload();
+                }
+            ).catch(e => {
+                console.log(e);
+            })
+        }
+    }
+
+    closeBooking = () =>{
+        BookingService.closeBooking(this.props.id, 'closed').then(data => {
+           this.state.status = 'closed';
+           console.log(this.status);
+        }).catch(e => {
+            console.log(e)
+        });
     }
 
     confirmBooking = () => {
@@ -127,11 +187,11 @@ class BookingCard extends Component {
                 <Toolbar style={{width: '100%', paddingBottom: '10px',}}
                          actions={<Button flat style={{
                              border: '2px yellow',
-                             fontSize: '20px',
+                             fontSize: 'block',
                              color: 'white',
                              background: this.ifCanceled() ? 'red' : this.ifNeedConfirmation() ? 'lightBlue' : 'green',
                              paddingBottom: '15px'
-                         }}>{this.props.status === 'inProgress' ? 'Need Confirmation' : this.props.status}</Button>}
+                         }}>{this.state.status === 'inProgress' ? 'Need Confirmation' : this.state.status}</Button>}
                 />
                 <div style={{
                     display: 'flex',
@@ -157,30 +217,26 @@ class BookingCard extends Component {
                             marginTop: '10px',
                             color: 'grey'
                         }}
-                        >{this.props.city}</div>
-                        <div style={{
-                            marginTop: '10px',
-                            color: 'grey'
-                        }}
-                        >{this.props.address}</div>
-                        <h2 style={{
+                        >{this.props.city + '  ' + this.props.address}</div>
+
+                        <h5 style={{
                             fontWeight: 'bolder',
                             fontFamily: 'Lucida Bright',
                             width: '90%',
-                            marginTop: '40px'
-                        }}>{this.getDate()}</h2>
+                            marginTop: '30px'
+                        }}>{this.getDate()} <br/> {this.getTimeSlot()}</h5>
                     </div>
                     <div style={{width: '20%', marginLeft: '15%'}}>
                         <div style={{
                             color: 'green',
-                            marginTop: '30%',
+                            marginTop: '10%',
                             matginLeft: '15%',
                             marginRight: '50px',
                             fontSize: '40px',
                         }}>€{this.props.price}</div>
                         {
                             this.ifFinished() ? '' : this.ifCanceled() ? '' :
-                                <Dialog actionName='cancel' onClick={() => this.cancelBooking()}/>
+                                <Dialog actionName='cancel' onClick={() => this.cancelBooking(false)}/>
                         }
                         {this.props.userType === 'Customer' ? ''
                             : this.ifNeedConfirmation() ?
