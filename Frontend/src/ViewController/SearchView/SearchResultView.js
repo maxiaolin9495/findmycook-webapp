@@ -23,7 +23,7 @@ export class SearchResultView extends React.Component {
 
         ChefService.getChefBySearchCity(this.props.location.search.split('=')[1]).then((data) => {
             this.setState({
-                data: [data],
+                data: [...data],
                 loading: false
             });
         }).catch((e) => {
