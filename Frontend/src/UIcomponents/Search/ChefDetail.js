@@ -39,7 +39,6 @@ class ChefDetail extends React.Component {
                 payment: 'paid',
             }).then(
                 data => {
-                    alert('Successfully booked');
                     this.props.history.push('/my-booking');
                 })).catch(e => {
             console.log(e);

@@ -102,6 +102,27 @@ export default class BookingService {
             });
         })
     }
+
+    static closeBooking(_id, status){
+        return new Promise((resolve, reject) => {
+            let suffix = '/close-booking';
+
+            HttpService.post(`${BookingService.baseURL()}${suffix}`, {
+                _id: _id,
+                status: status,
+            }, function (data) {
+                if (data != undefined || Object.keys(data).length !== 0) {
+                    resolve(data);
+                }
+                else {
+                    reject('Error while request booking details');
+                }
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        })
+    }
+
     static createBooking(booking){
         console.log(booking);
         return new Promise((resolve,reject) =>{
