@@ -7,6 +7,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import {UserCalendar} from "../Calendar/UserCalendar";
 import BookingService from "../../Services/BookingService";
 import UserService from "../../Services/UserService";
+import LoginService from "../../Services/LoginService";
 
 
 
@@ -17,6 +18,10 @@ class ChefDetail extends React.Component {
     }
 
     handleBooking = (values) => {
+        if(!LoginService.isAuthenticated()) {
+            alert('please login first')
+            this.props.history.push('/login')
+        }
         let token = window.localStorage['jwtTokenFMC'];
         if (!token) {
             alert('Please login first');
