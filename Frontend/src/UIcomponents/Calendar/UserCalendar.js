@@ -104,11 +104,6 @@ export class UserCalendar extends Component {
           }
         }
 
-        this.state.disabledHoursEndTime.forEach(element => {
-          if (!disabledRangeResult.includes(element)) {
-            disabledRangeResult.push(element)
-          }
-        });
         let sorted = disabledRangeResult.sort((a, b) => (a > b) ? 1 : -1)
         this.setState({disabledHoursEndTime: sorted})
       }
