@@ -120,7 +120,6 @@ const createBooking = async (req, res) =>{
 }
 
 const confirmBooking = async (req, res) =>{
-    console.log('received request')
     if (!Object.prototype.hasOwnProperty.call(req.body, '_id')) return res.status(400).json({
         error: 'Bad Request',
         message: 'The request body must contain a _id property'

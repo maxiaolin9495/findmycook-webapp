@@ -17,8 +17,28 @@ const getChefByName = async (req, res) => {
     const {
         chefname,
     } = req.params;
-    const chef = await AttractionModel.findOne({name: chefname});
+    const chef = await chefModel.findOne({name: chefname});
     res.status(200).json(chef);
+};
+
+const getChefByCity = async (req, res) => {
+  const {
+    city,
+  } = req.body;
+  const query = {};
+  if (city.length !== 0) query.city = {$in: city};
+  const chef = await chefModel.find(query, {
+      firstName: 1,
+      lastName: 1,
+      foodType: 1,
+      city: 1,
+      rating: 1,
+      introduction: 1,
+      price: 1,
+      time: 1,
+      photo: 1
+  });
+  res.status(200).json(chef);
 };
 
 const filterChef = async (req, res) => {
@@ -45,7 +65,7 @@ const filterChef = async (req, res) => {
     if (chefIds.length !== 0) query._id = {$in: chefIds};
     if (price.length !== 0) query.$or = price.map(mapPriceRange);
     if (city.length !== 0) query.city = {$in: city};
-    if (foodType.length !== 0) query.foodtype = {$in: foodType};
+    if (foodType.length !== 0) query.foodType = {$in: foodType};
     const chef = await chefModel.find(query, {
         firstName: 1,
         lastName: 1,
@@ -99,4 +119,5 @@ module.exports = {
     readDetailInfo,
     filterChef,
     getChefByName,
+    getChefByCity,
 };
