@@ -41,7 +41,6 @@ class SearchResultPage extends Component {
                 Type: [],
             }
         };
-
     }
     searchBySearchBar =() =>{
         if(this.state.searchValue === '') {
@@ -54,13 +53,14 @@ class SearchResultPage extends Component {
     }
 
     componentWillReceiveProps(props) {
+        console.log(props.filteredData);
       this.setState({
         checkType: props.data.map(function(obj) {
           return obj.foodType;
         })
       });
         props.data.map(data => this.state.chefIds.push(data._id));
-        const testCards = props.data.map((data, i) => testCard(i, data._id, data.firstName, data.lastName, data.foodType, data.city, data.rating, data.introduction, data.price, data.photo));
+        const testCards = props.filteredData.map((data, i) => testCard(i, data._id, data.firstName, data.lastName, data.foodType, data.city, data.rating, data.introduction, data.price, data.photo));
         this.setState({testCards});
     }
 
