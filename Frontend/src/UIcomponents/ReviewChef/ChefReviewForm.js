@@ -2,9 +2,7 @@ import React from 'react'
 import StarRatingComponent from 'react-star-rating-component';
 import {Button, TextField, } from 'react-md';
 import ChefPicture from "../../Images/chef_michael.jpg";
-import '../../css/review.css'
-import ReviewChefService from '../../Services/ReviewChefService';
-import { relativeTimeRounding } from 'moment';
+import '../../css/review.css';
 
 export class ChefReviewForm extends React.Component {
    
