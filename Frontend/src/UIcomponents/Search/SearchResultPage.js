@@ -36,11 +36,13 @@ class SearchResultPage extends Component {
             city: [],
             foodtype: [],
             price: [],
-            searchValue: ''
+            searchValue: '',
+            checkType : {
+                Type: [],
+            }
         };
 
     }
-
     searchBySearchBar =() =>{
         if(this.state.searchValue === '') {
             alert('Please input a city name');
@@ -52,6 +54,11 @@ class SearchResultPage extends Component {
     }
 
     componentWillReceiveProps(props) {
+      this.setState({
+        checkType: props.data.map(function(obj) {
+          return obj.foodType;
+        })
+      });
         props.data.map(data => this.state.chefIds.push(data._id));
         const testCards = props.data.map((data, i) => testCard(i, data._id, data.firstName, data.lastName, data.foodType, data.city, data.rating, data.introduction, data.price, data.photo));
         this.setState({testCards});
@@ -59,6 +66,7 @@ class SearchResultPage extends Component {
 
     handlefoodtypescheckbox(isChecked, value) {
         if (isChecked) {
+          console.log(this.state.checkType);
             this.state.foodtype.push(value);
         } else {
             this.state.foodtype.splice(this.state.foodtype.indexOf(value), 1)
@@ -91,7 +99,7 @@ class SearchResultPage extends Component {
         const rendered = [];
         let key = 0;
         rendered.push(<h3>Food Type:</h3>);
-        for (let type of foodtypes.Type) {
+        for (let type of Array.from(this.state.checkType)) {
             rendered.push(<Checkbox
                 className='filter-checkbox'
                 key={key++}
