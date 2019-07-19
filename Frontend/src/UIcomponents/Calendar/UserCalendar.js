@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import ChefCalendarService from '../../Services/ChefCalendarService';
+import UserCalendarService from '../../Services/UserCalendarService';
 import DayPicker from 'react-day-picker';
 import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
@@ -21,6 +22,8 @@ export class UserCalendar extends Component {
         this.disabledMinutes = this.disabledMinutes.bind(this);
         this.state = {
           chefWorkTimes: [],
+          userCalendarBookings: [], //the user bookings returned by the backend
+          userBookedTimes: [], //user booking times as an array
           selectedDay: null,
           startTime: null,
           endTime: null,
@@ -45,6 +48,9 @@ export class UserCalendar extends Component {
 
     onChangeStartTime = time => {
       this.setState({ startTime: time });
+
+      this.computeNewEnd(time);
+      //console.log(this.state.disabledHoursEndTime)
     };
 
     onChangeEndTime = time => {
@@ -55,12 +61,66 @@ export class UserCalendar extends Component {
       return this.state.disabledHoursStartTime
     }
 
-    disabledHoursEndTime(){
-      return this.state.disabledHoursEndTime
+    computeNewEnd(time) {
+      let startTime = time
+
+      // if start time value is set - adapt the computed disabled range to the selected start time as to avoid bridge booking
+      if (startTime != null) {
+        let start = startTime.toDate().getHours()
+
+        //Get current bookings
+        var disabledRangeResult = []
+        var userBookedTimes = this.state.userBookedTimes
+
+        //Disable values up to start value 
+        
+        let temp_disabledRangeResult = this.range(0,start)
+        temp_disabledRangeResult.forEach(element => {
+          if (!disabledRangeResult.includes(element)) {
+            disabledRangeResult.push(element)
+          }
+        });
+        disabledRangeResult = disabledRangeResult.sort((a, b) => (a > b) ? 1 : -1)
+
+        if (userBookedTimes.length != 0){
+          //Find next booking after selected start time and disable all open slots afterwards to avoid bridge booking 
+          userBookedTimes = userBookedTimes.sort();
+          //Find next booking after selected starting time
+          var nextBookingStartTime = -1;
+          userBookedTimes.forEach(element => {
+            if (element>start){
+              nextBookingStartTime = element
+              return;
+            }
+          });
+
+          if (nextBookingStartTime != -1) {
+            let temp_disabledRangeResult = this.range(nextBookingStartTime,24)
+            temp_disabledRangeResult.forEach(element => {
+              if (!disabledRangeResult.includes(element)) {
+                disabledRangeResult.push(element)
+              }
+            });
+          }
+        }
+
+        this.state.disabledHoursEndTime.forEach(element => {
+          if (!disabledRangeResult.includes(element)) {
+            disabledRangeResult.push(element)
+          }
+        });
+        let sorted = disabledRangeResult.sort((a, b) => (a > b) ? 1 : -1)
+        this.setState({disabledHoursEndTime: sorted})
+      }
+    }
+
+    //Computes the disabled endtime hours based on the click start time to avoid bridge booking
+    disabledHoursEndTime() {
+      return this.state.disabledHoursEndTime;
     }
 
     disabledMinutes(){
-      if (this.state.disabledHoursStartTime.length == 24) {
+      if (this.state.disabledHoursStartTime.length >= 24) {
         return [0];
       } else {
         return [];
@@ -115,6 +175,11 @@ export class UserCalendar extends Component {
       }).catch((e) => {
           console.error(e);
       });
+      UserCalendarService.getBookings().then((userCalendarBookings) => {
+        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
+    }).catch((e) => {
+        console.error(e);
+    });
     }
 
     range(start, end) {
@@ -124,30 +189,54 @@ export class UserCalendar extends Component {
 
     computeDisabledHours(selected){
       let workTime = this.state.chefWorkTimes.filter(workTime => new Date(parseInt(workTime.startTime)).toLocaleDateString() === selected.toLocaleDateString());
+      let userCalendarBookings = this.state.userCalendarBookings.filter(userCalendarBooking => new Date(parseInt(userCalendarBooking.startTime)).toLocaleDateString() === selected.toLocaleDateString());
+      console.log(userCalendarBookings)
+      
       if (workTime.length == 0){
         this.setState({defaultOpenValueStartTime: moment(new Date())})
         this.setState({defaultOpenValueEndTime: moment(new Date())})
         this.setState({startTime: null})
         this.setState({endTime: null})
-        this.setState({ disabledHoursStartTime: [...Array(24).keys()]});
-        this.setState({ disabledHoursEndTime: [...Array(24).keys()]});
+        this.setState({disabledHoursStartTime: [...Array(24).keys()]});
+        this.setState({disabledHoursEndTime: [...Array(24).keys()]});
         return;
       }
-      //console.log(this.state.chefWorkTimes)
+
+      var temp_userBookedTimes = []
+      for (var i = 0; i < userCalendarBookings.length; i++){
+        let start = new Date(parseInt(userCalendarBookings[i].startTime)).getHours();
+        let end = new Date(parseInt(userCalendarBookings[i].endTime)).getHours();
+        temp_userBookedTimes.push(this.range(start, end));
+      }
+
+      // Booking A: 9-12 & Booking B: 14-15 ==> userBookedTimes: [9,10,11,12,14,15]
+      let userBookedTimes = temp_userBookedTimes.flat()
+      this.setState({userBookedTimes: userBookedTimes})
+
+      //Creation of chef worktime range, ex. worktime is 9 to 17 ==> startEnabledRange [9,10,11,...,16]
       let start = new Date(parseInt(workTime[0].startTime))
       let end = new Date(parseInt(workTime[0].endTime))
-      
       let startHour = start.getHours()
       let endHour = end.getHours()
+      let startEnabledRange = this.range(startHour,endHour - 1);
+      let endEnabledRange = this.range(startHour + 1,endHour);
 
-      let startEnabledRange = this.range(startHour,endHour-1);
-      let endEnabledRange = this.range(startHour+1,endHour);
+      //filtered enableRange where userBookings are considered
+      let removedBookedStartEnabledRange =  startEnabledRange.filter(value => !userBookedTimes.includes(value)) 
+      let removedBookedEndEnabledRange =  endEnabledRange.filter(value => !userBookedTimes.includes(value))
+
+      //TimePicker starts at the next possible open slot
+      if (removedBookedStartEnabledRange.length != 0) {
+        var startMoment = moment({hour:removedBookedStartEnabledRange[0], minute: 0})
+        var endMoment = moment({hour:removedBookedStartEnabledRange[0], minute: 0})
+        this.setState({ defaultOpenValueStartTime: startMoment})
+        this.setState({ defaultOpenValueEndTime: endMoment})
+      }
+
+      //Set disabled hours for start & endtime considering chefCalendar worktimes & userCalendarBookings
       let defaultDisabledRange = [...Array(24).keys()];
-
-      this.setState({defaultOpenValueStartTime: moment(start)})
-      this.setState({defaultOpenValueEndTime: moment(start.setHours(startHour + 1))})
-      this.setState({ disabledHoursStartTime: defaultDisabledRange.filter(value => !startEnabledRange.includes(value)) });
-      this.setState({ disabledHoursEndTime: defaultDisabledRange.filter(value => !endEnabledRange.includes(value)) });
+      this.setState({ disabledHoursStartTime: defaultDisabledRange.filter(value => !removedBookedStartEnabledRange.includes(value)) });
+      this.setState({ disabledHoursEndTime: defaultDisabledRange.filter(value => !removedBookedEndEnabledRange.includes(value)) });
       }
 
     render() {
