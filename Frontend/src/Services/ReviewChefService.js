@@ -3,7 +3,7 @@ import HttpService from './HttpService';
 export default class ReviewChefService {
 
     static baseURL() {
-        return "http://localhost:3000/user/review"
+        return "http://192.168.1.16:3000/user/review"
     }
 
     static getReviews() {

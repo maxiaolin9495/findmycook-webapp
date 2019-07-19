@@ -21,7 +21,7 @@ class ChefReviewDetails extends React.Component {
     render() {
         return (
             <div style={this.getStyle()}>
-                <h3>{this.props.review.reviewerName} 
+                <h4>{this.props.review.reviewerName} 
                 
                 <h4 >
                 <StarRatingComponent 
@@ -30,7 +30,7 @@ class ChefReviewDetails extends React.Component {
                             value={this.props.review.overallRating}
                             editing={false}
                         />
-                <h6 style = {{marginTop: '-10%', color: 'gray'}}>
+                <h6 style = {{marginTop: '-2%', color: 'gray'}}>
                     {this.props.review.time}
                 </h6>
                 </h4>
@@ -39,11 +39,11 @@ class ChefReviewDetails extends React.Component {
                     {this.props.review.title}
                 </h3>
 
-                <p> 
+                <p style = {{marginTop: '-2%'}}> 
                     {this.props.review.text} 
                 </p>
                 
-                </h3>
+                </h4>
             </div>
         )
     }

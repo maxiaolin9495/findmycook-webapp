@@ -4,6 +4,7 @@ import {Button, TextField, } from 'react-md';
 import ChefPicture from "../../Images/chef_michael.jpg";
 import '../../css/review.css'
 import ReviewChefService from '../../Services/ReviewChefService';
+import { relativeTimeRounding } from 'moment';
 
 export class ChefReviewForm extends React.Component {
    
@@ -36,6 +37,10 @@ export class ChefReviewForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        if (this.state.title == '' || this.state.text == ''){
+            alert('Please fill in the required fields')
+            return;
+        }
         let review = this.props.review;
         if (review == undefined) {
             review = {};
@@ -87,15 +92,16 @@ export class ChefReviewForm extends React.Component {
         return (
             <div className="md-grid" id="reviewTable" label="Review" style={{
                 display: 'flex',
-                width: '60%',
+                maxWidth: '60%',
                 marginTop: '2%',
+                position:'relative',
                 background: 'rgb(255,255,255,0.8)'
                 }}>
 
                 <div className = "chef-container" style = {{marginTop: '0.5%'}}>
                     <img src={ChefPicture}/>   
-                    <h3>Chef</h3>
-                    <h1>{this.state.chefName}</h1>
+                    <h3 style = {{marginTop: '2%'}}>Chef</h3>
+                    <h1 style = {{marginTop: '-2%'}}>{this.state.chefName}</h1>
                     <div className = "overallRating"> 
                         <h1>
                         <StarRatingComponent 
@@ -105,7 +111,7 @@ export class ChefReviewForm extends React.Component {
                             editing={false}
                         />
                         </h1>
-                        <h3 style = {{marginTop:'-5%', marginLeft: '1.1%'}}>{this.props.reviewsAmount} reviews</h3>
+                        <h3 style = {{marginTop:'-5%', marginLeft: '1.1%'}}>{this.props.reviewsAmount} review(s)</h3>
                     </div>
                     
                 </div>
@@ -179,7 +185,11 @@ export class ChefReviewForm extends React.Component {
                     onChange={this.handleChangeText}
                     lineDirection="center"
                     placeholder="Please write your review"
-                    errorText="required"
+                    rows={4}
+                    paddedBlock
+                    style={{marginLeft: '1px', width: '100%'}}
+                    maxLength={1000}
+                    errorText="Max 1000 characters."
                 />
                 </div>
 
@@ -189,7 +199,7 @@ export class ChefReviewForm extends React.Component {
                             marginBottom: '10%',
                             marginLeft: 'auto',
                             marginRight: 'auto',
-                            width: '200%',
+                            width: '50%',
                             lineHeight: '25px',
                             fontSize: '16px',
                             backgroundColor: 'rgb(69,150,236)',

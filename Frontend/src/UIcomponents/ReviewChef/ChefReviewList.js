@@ -54,6 +54,18 @@ class ChefReviewList extends React.Component {
         }
     }
 
+    getStyleForNoReviews = () => {
+        return {
+            display: 'flex',
+            width: '60%',
+            padding: '10px',
+            marginLeft: '20%',
+            marginBottom: '0%',
+            opacity: '0.8',
+            color: 'white',
+            background: 'black'}
+    }
+
     //TODO: Adjust the input to be dependent on the chef being clicked in line 60
     calculateOverallRating(){
         let result = this.state.reviews.reduce((acc, val) => {
@@ -78,6 +90,9 @@ class ChefReviewList extends React.Component {
 
             <div>
                 <h3 style = {this.getStyleForReviewTitle()}>Reviews</h3>
+                {this.state.reviews.length == 0 ? 
+                    (<h4 style = {this.getStyleForNoReviews()}>No entries</h4>) : <h4></h4>}
+            
             </div>
 
             {this.state.reviews.map((review) => (
