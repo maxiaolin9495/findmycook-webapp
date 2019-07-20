@@ -4,7 +4,6 @@ import ChefCalendar from '../../UIcomponents/Calendar/ChefCalendar';
 import Background from "../../Images/Homepage.jpg";
 import ChefCalendarService from '../../Services/ChefCalendarService';
 import ChefWorkTimeDetail from '../../UIcomponents/Calendar/ChefWorkTimeDetail';
-import { configConsumerProps } from 'antd/lib/config-provider';
 
 
 export class ChefCalendarView extends Component {
@@ -48,8 +47,7 @@ export class ChefCalendarView extends Component {
                 return a.startTime - b.startTime;})});
         }).catch((e) => {
             console.error(e);
-        });
-        
+        });      
     }
 
     saveWorkTimeEntry(workTime) {  

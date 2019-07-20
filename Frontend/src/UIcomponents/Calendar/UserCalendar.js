@@ -129,7 +129,7 @@ export class UserCalendar extends Component {
         this.state.startTime == null ||
         this.state.endTime == null ||
         this.state.startTime >= this.state.endTime) {
-          alert("Please select a day, valid start and end time")
+          alert("Please make sure you selected a day, valid start and end time")
         } 
      
      else {

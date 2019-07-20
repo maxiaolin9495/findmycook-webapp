@@ -4,7 +4,8 @@ import DayPicker from 'react-day-picker';
 import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
-import 'react-datepicker/dist/react-datepicker.css'
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 export class ChefCalendar extends Component {
 
@@ -12,11 +13,14 @@ export class ChefCalendar extends Component {
         super(props);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
+        this.range = this.range.bind(this);
+        this.disabledHours = this.disabledHours.bind(this);
         this.state = {
           selectedDay: undefined,
           startTime: null,
-          endTime: null
+          endTime: null,
+          defaultOpenValueStartTime: moment(new Date().setHours(8)),
+          defaultOpenValueEndTime: moment(new Date().setHours(9))
         };
     }
 
@@ -30,6 +34,7 @@ export class ChefCalendar extends Component {
     }
 
     onChangeStartTime = time => {
+      this.setState({ endTime: null });
       this.setState({ startTime: time });
     };
 
@@ -38,49 +43,76 @@ export class ChefCalendar extends Component {
     };
 
     handleSubmit(event) {
+      event.preventDefault();
+
       if(this.state.selectedDay == undefined || 
         this.state.startTime == null ||
         this.state.endTime == null ||
         this.state.startTime >= this.state.endTime) {
-          alert("Please select a day, valid start and end time")
+          alert("Please make sure you selected a day, valid start and end time")
       }
 
-      event.preventDefault();
-      let convertedStartTime = this.state.startTime.toDate();
-      let convertedEndTime = this.state.endTime.toDate();
-
-      if(this.state.selectedDay == undefined || 
-         this.state.startTime == null ||
-         this.state.endTime == null ||
-         convertedStartTime >= convertedEndTime) {
-           alert("Please select a day, and a valid start/ end time")
-         } 
-
       else {
+        let convertedStartTime = this.state.startTime.toDate();
+        let convertedEndTime = this.state.endTime.toDate();
         let workTime = this.props.workTime;
           if (workTime == undefined) {
             workTime = {};
           }
         
-        //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
+        //Fetching Date from DatePicker and adding it to startTime/endTime timeStamp 
         convertedStartTime.setDate(this.state.selectedDay.getDate());
         convertedStartTime.setMonth(this.state.selectedDay.getMonth());
         convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
+
         convertedEndTime.setDate(this.state.selectedDay.getDate());
         convertedEndTime.setMonth(this.state.selectedDay.getMonth());
         convertedEndTime.setFullYear(this.state.selectedDay.getFullYear());
         
-        workTime.chefName = "Michael Scott";
-        workTime.startTime = convertedStartTime.valueOf();
-        workTime.endTime = convertedEndTime.valueOf();
-        
-        this.setState({ selectedDay: undefined });
-        this.setState({ startTime: null });
-        this.setState({ endTime: null });
+        let existingWorktimes = this.props.workTimes.filter(workTime => 
+          new Date(parseInt(workTime.startTime)).toLocaleDateString() === convertedStartTime.toLocaleDateString())
 
-        this.props.onSubmit(workTime);
-        window.location.reload();
+        console.log(existingWorktimes)
+
+        let entryIsValid = true;
+        for(var i = 0; i < existingWorktimes.length; i++){
+          let existingStartime = new Date(parseInt(existingWorktimes[i].startTime)).getHours()
+          let existingEndtime = new Date(parseInt(existingWorktimes[i].endTime)).getHours()
+
+          if((convertedStartTime.getHours() <  existingEndtime && convertedStartTime.getHours() >= existingStartime)
+              || convertedStartTime.getHours() == existingStartime 
+              || convertedEndTime.getHours() == existingEndtime
+              || (convertedEndTime.getHours() > existingStartime && convertedEndTime.getHours() < existingEndtime)
+              || (convertedStartTime.getHours() > existingStartime && convertedStartTime < existingEndtime)) {
+            alert("Your entry is invalid, an existing worktime is collidining. Please delete the colliding worktime.")
+            entryIsValid = false;
+          }
+        }
+
+        if(entryIsValid){
+          workTime.chefName = "Michael Scott";
+          workTime.startTime = convertedStartTime.valueOf();
+          workTime.endTime = convertedEndTime.valueOf();
+          this.setState({ selectedDay: undefined });
+          this.setState({ startTime: null });
+          this.setState({ endTime: null });
+          this.props.onSubmit(workTime);
+          window.location.reload();
+        }
+        
       }
+    }
+
+    range(start, end) {
+      let array = [...Array(end+1).keys()];
+      return array.filter(element => element >= start);
+    }
+
+    disabledHours(){
+      if (this.state.startTime != null) {
+        return this.range(0,(this.state.startTime).toDate().getHours());
+      }
+      return []
     }
 
     render() {
@@ -101,6 +133,7 @@ export class ChefCalendar extends Component {
                 size="large"
                 format = 'HH:mm'
                 value = {this.state.startTime}
+                defaultOpenValue = {this.state.defaultOpenValueStartTime}
                 onChange = {this.onChangeStartTime}
                 minuteStep = {60}
                 hourStep = {1}
@@ -115,6 +148,8 @@ export class ChefCalendar extends Component {
                 format = 'HH:mm'
                 value = {this.state.endTime}
                 onChange = {this.onChangeEndTime}
+                defaultOpenValue = {this.state.defaultOpenValueEndTime}
+                disabledHours = {this.disabledHours}
                 minuteStep = {60}
                 hourStep = {1}
                 placeholder='Pick a time' />
