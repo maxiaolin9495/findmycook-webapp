@@ -73,6 +73,7 @@ export class ChefCalendar extends Component {
         this.setState({ endTime: null });
 
         this.props.onSubmit(workTime);
+        window.location.reload();
       }
     }
 
