@@ -23,7 +23,8 @@ export class UserCalendar extends Component {
         this.state = {
           chefWorkTimes: [],
           userCalendarBookings: [], //the user bookings returned by the backend
-          userBookedTimes: [], //user booking times as an array
+          userBookedTimesForStartTime: [], //user booking times as an array
+          userBookedTimesForEndTime: [], //user booking times as an array
           selectedDay: null,
           startTime: null,
           endTime: null,
@@ -48,9 +49,7 @@ export class UserCalendar extends Component {
 
     onChangeStartTime = time => {
       this.setState({ startTime: time });
-
-      this.computeNewEnd(time);
-      //console.log(this.state.disabledHoursEndTime)
+      this.computePossibleEndTimes(time);
     };
 
     onChangeEndTime = time => {
@@ -61,55 +60,80 @@ export class UserCalendar extends Component {
       return this.state.disabledHoursStartTime
     }
 
-    computeNewEnd(time) {
+    identifyEndOfWorktime(chosenStartHour){
+      let worktimeSlot = this.state.chefWorkTimes.filter(workTime => chosenStartHour >= new Date(parseInt(workTime.startTime)).getHours()  && chosenStartHour <= new Date(parseInt(workTime.endTime)).getHours())
+      return new Date(parseInt(worktimeSlot[worktimeSlot.length-1].endTime)).getHours()
+    }
+
+    computePossibleEndTimes(time) {
       let startTime = time
 
       // if start time value is set - adapt the computed disabled range to the selected start time as to avoid bridge booking
       if (startTime != null) {
-        let start = startTime.toDate().getHours()
+        let startHour = startTime.toDate().getHours()
 
         //Get current bookings
         var disabledRangeResult = []
-        var userBookedTimes = this.state.userBookedTimes
+        var userBookedTimes = this.state.userBookedTimesForStartTime.sort(this.sortNumbers)
 
         //Disable values up to start value 
-        
-        let temp_disabledRangeResult = this.range(0,start)
+        let temp_disabledRangeResult = this.range(0,startHour)
         temp_disabledRangeResult.forEach(element => {
           if (!disabledRangeResult.includes(element)) {
             disabledRangeResult.push(element)
           }
         });
         disabledRangeResult = disabledRangeResult.sort((a, b) => (a > b) ? 1 : -1)
+        console.log("Disabled Range up to start time:")
+        console.log(disabledRangeResult)
 
         if (userBookedTimes.length != 0){
           //Find next booking after selected start time and disable all open slots afterwards to avoid bridge booking 
-          userBookedTimes = userBookedTimes.sort();
+          console.log("user booked times:")
+          console.log(userBookedTimes)
           //Find next booking after selected starting time
           var nextBookingStartTime = -1;
-          userBookedTimes.forEach(element => {
-            if (element>start){
-              nextBookingStartTime = element
-              return;
+          for(var i = 0; i < userBookedTimes.length; i++){
+            if(userBookedTimes[i] > startHour){
+              nextBookingStartTime = userBookedTimes[i]
+              break;
             }
-          });
+          }
+          console.log("Next Booking")
+          console.log(nextBookingStartTime)
+          }
 
           if (nextBookingStartTime != -1) {
-            let temp_disabledRangeResult = this.range(nextBookingStartTime,24)
+            let temp_disabledRangeResult = this.range(nextBookingStartTime+1,23)
+            console.log("Temp Disabled Range")
+            console.log(temp_disabledRangeResult)
             temp_disabledRangeResult.forEach(element => {
               if (!disabledRangeResult.includes(element)) {
                 disabledRangeResult.push(element)
               }
             });
+            console.log("Disabled Range")
+            console.log(disabledRangeResult)
           }
+
+          //identify end of work shift 
+          let endOfWorktime = this.identifyEndOfWorktime(startHour)
+          console.log("End of Shift")
+          console.log(endOfWorktime)
+          temp_disabledRangeResult = this.range(endOfWorktime+1,23)
+          temp_disabledRangeResult.forEach(element => {
+            if (!disabledRangeResult.includes(element)) {
+              disabledRangeResult.push(element)
+            }
+          });
         }
 
-        let sorted = disabledRangeResult.sort((a, b) => (a > b) ? 1 : -1)
+        let sorted = disabledRangeResult.sort(this.sortNumbers)
+        console.log("Disabled Range considering worktime slot")
+        console.log(sorted)
         this.setState({disabledHoursEndTime: sorted})
       }
-    }
 
-    //Computes the disabled endtime hours based on the click start time to avoid bridge booking
     disabledHoursEndTime() {
       return this.state.disabledHoursEndTime;
     }
@@ -182,12 +206,20 @@ export class UserCalendar extends Component {
       return array.filter(element => element >= start);
     }
 
+    sortNumbers(a, b) {
+      return a - b;
+    }
+
+    //Computes the disabled hours based on the chef's worktime and existent bookings
     computeDisabledHours(selected){
-      let workTime = this.state.chefWorkTimes.filter(workTime => new Date(parseInt(workTime.startTime)).toLocaleDateString() === selected.toLocaleDateString());
+      let workTimes = this.state.chefWorkTimes.filter(workTime => new Date(parseInt(workTime.startTime)).toLocaleDateString() === selected.toLocaleDateString());
       let userCalendarBookings = this.state.userCalendarBookings.filter(userCalendarBooking => new Date(parseInt(userCalendarBooking.startTime)).toLocaleDateString() === selected.toLocaleDateString());
-      console.log(userCalendarBookings)
-      
-      if (workTime.length == 0){
+      //console.log("User bookings on the selected date:")
+      //console.log(userCalendarBookings)
+      //console.log("Chef worktime on the selected date:")
+      //console.log(workTimes)
+
+      if (workTimes.length == 0){
         this.setState({defaultOpenValueStartTime: moment(new Date())})
         this.setState({defaultOpenValueEndTime: moment(new Date())})
         this.setState({startTime: null})
@@ -197,28 +229,53 @@ export class UserCalendar extends Component {
         return;
       }
 
-      var temp_userBookedTimes = []
+      var temp_userBookedTimesForStartTime = []
+      var temp_userBookedTimesForEndTime = []
       for (var i = 0; i < userCalendarBookings.length; i++){
         let start = new Date(parseInt(userCalendarBookings[i].startTime)).getHours();
         let end = new Date(parseInt(userCalendarBookings[i].endTime)).getHours();
-        temp_userBookedTimes.push(this.range(start, end));
+        temp_userBookedTimesForStartTime.push(this.range(start, end-1));
+        temp_userBookedTimesForEndTime.push(this.range(start, end));
       }
 
       // Booking A: 9-12 & Booking B: 14-15 ==> userBookedTimes: [9,10,11,12,14,15]
-      let userBookedTimes = temp_userBookedTimes.flat()
-      this.setState({userBookedTimes: userBookedTimes})
+      let userBookedTimesForStartTime = temp_userBookedTimesForStartTime.flat()
+      let userBookedTimesForEndTime = temp_userBookedTimesForEndTime.flat()
+      this.setState({userBookedTimesForStartTime: userBookedTimesForStartTime})
+      this.setState({userBookedTimesForEndTime: userBookedTimesForEndTime})
+      //console.log("Booked Slots by user for start time:")
+      //console.log(userBookedTimesForStartTime)
+      //console.log("Booked Slots by user for end time:")
+      //console.log(userBookedTimesForEndTime)
 
       //Creation of chef worktime range, ex. worktime is 9 to 17 ==> startEnabledRange [9,10,11,...,16]
-      let start = new Date(parseInt(workTime[0].startTime))
-      let end = new Date(parseInt(workTime[0].endTime))
-      let startHour = start.getHours()
-      let endHour = end.getHours()
-      let startEnabledRange = this.range(startHour,endHour - 1);
-      let endEnabledRange = this.range(startHour + 1,endHour);
+      var startEnabledRange = []
+      var endEnabledRange = []
 
-      //filtered enableRange where userBookings are considered
-      let removedBookedStartEnabledRange =  startEnabledRange.filter(value => !userBookedTimes.includes(value)) 
-      let removedBookedEndEnabledRange =  endEnabledRange.filter(value => !userBookedTimes.includes(value))
+      for(var i = 0; i < workTimes.length; i++){
+        let start = new Date(parseInt(workTimes[i].startTime))
+        let end = new Date(parseInt(workTimes[i].endTime))
+        let startHour = start.getHours()
+        let endHour = end.getHours()
+        let temp_startEnabledRange = this.range(startHour,endHour - 1);
+        let temp_endEnabledRange = this.range(startHour + 1,endHour);
+        startEnabledRange = startEnabledRange.concat(temp_startEnabledRange);
+        endEnabledRange =  endEnabledRange.concat(temp_endEnabledRange);
+      }
+      startEnabledRange.sort(this.sortNumbers)
+      endEnabledRange.sort(this.sortNumbers)
+      //console.log("Times that can be booked as startTime without considering the existent user bookings:")
+      //console.log(startEnabledRange)
+      //console.log("Times that can be booked as endTime without considering the existent user bookings:")
+      //console.log(endEnabledRange)
+
+      //computing open slots where userBookings are considered
+      let removedBookedStartEnabledRange =  startEnabledRange.filter(value => !userBookedTimesForStartTime.includes(value)) 
+      let removedBookedEndEnabledRange =  endEnabledRange.filter(value => !userBookedTimesForEndTime.includes(value))
+      //console.log("Times that can be booked as startTime considering the existent user bookings:")
+      //console.log(removedBookedStartEnabledRange)
+      //console.log("Times that can be booked as endTime considering the existent user bookings:")
+      //console.log(removedBookedEndEnabledRange)
 
       //TimePicker starts at the next possible open slot
       if (removedBookedStartEnabledRange.length != 0) {
