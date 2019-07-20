@@ -21,7 +21,7 @@ class ChefReviewList extends React.Component {
         });
         ReviewChefService.getReviews().then((reviews) => {
             this.setState({
-                reviews: [...reviews].filter(review => review.chefName === 'Michael Scott'),
+                reviews: [...reviews].filter(review => review.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName),
                 loading: false
             });
         }).catch((e) => {
@@ -54,10 +54,22 @@ class ChefReviewList extends React.Component {
         }
     }
 
-    //TODO: Adjust the input to be dependent on the chef being clicked in line 60
+    getStyleForNoReviews = () => {
+        return {
+            display: 'flex',
+            width: '60%',
+            padding: '10px',
+            marginLeft: '20%',
+            marginBottom: '0%',
+            opacity: '0.8',
+            color: 'white',
+            background: 'black'}
+    }
+
+    
     calculateOverallRating(){
         let result = this.state.reviews.reduce((acc, val) => {
-            return val.chefName == "Michael Scott" ? acc + val.overallRating : acc;
+            return val.chefName == this.props.chef.firstName + ' ' + this.props.chef.lastName ? acc + val.overallRating : acc;
           }, 0);
 
         return Math.round(result/ this.state.reviews.length);
@@ -74,10 +86,14 @@ class ChefReviewList extends React.Component {
                 onSubmit={(review) => this.props.onSubmit(review)}
                 reviewsAmount={this.state.reviews.length} 
                 averageOverallRating = {this.calculateOverallRating()}
+                chef={this.props.chef}
                 /> 
 
             <div>
                 <h3 style = {this.getStyleForReviewTitle()}>Reviews</h3>
+                {this.state.reviews.length == 0 ? 
+                    (<h4 style = {this.getStyleForNoReviews()}>No entries</h4>) : <h4></h4>}
+            
             </div>
 
             {this.state.reviews.map((review) => (

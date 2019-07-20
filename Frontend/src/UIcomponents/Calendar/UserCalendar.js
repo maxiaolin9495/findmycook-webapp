@@ -15,9 +15,6 @@ export class UserCalendar extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.disabledHoursForStartTime = this.disabledHoursForStartTime.bind(this);
         this.disabledHoursForEndTime = this.disabledHoursForEndTime.bind(this);
-        //this.updateDisabledStartTimes =  this.updateDisabledStartTimes.bind(this);
-        //this.updateDisabledEndTimes = this.updateDisabledEndTimes.bind(this);
-        //this.filterCalendarBookingsPerDay = this.filterCalendarBookingsPerDay.bind(this);
         
         this.state = {
           selectedDay: undefined,
@@ -37,34 +34,7 @@ export class UserCalendar extends Component {
           return;
         }
         this.setState({ selectedDay: day });
-        //this.updateDisabledStartTimes();
-        //this.updateDisabledEndTimes();
     }
-
-    /*
-    filterCalendarBookingsPerDay(){
-      let filteredCalendarBookings = this.props.userCalendarBookings.filter(userCalendarBooking => {
-        return userCalendarBooking.selectedDay === (this.state.selectedDay.toLocaleDateString());
-      });
-      
-      return filteredCalendarBookings
-    }
-
-    updateDisabledStartTimes() {
-      let disabledStartTimesList = this.filterCalendarBookingsPerDay().map(userCalendarBooking => {
-        return Number(parseInt(userCalendarBooking.startTime, 10));
-      });
-      
-      this.setState({ disabledStartTimesList: disabledStartTimesList.concat(this.state.fixedDisabledStartTimes)});
-    }
-
-    updateDisabledEndTimes() {
-      let disabledEndTimesList = this.filterCalendarBookingsPerDay().map(userCalendarBooking => {
-        return Number(parseInt(userCalendarBooking.endTime, 10));
-      });
-      
-      this.setState({ disabledEndTimesList: disabledEndTimesList.concat(this.state.fixedDisabledEndTimes) });
-    }*/
 
     onChangeStartTime = time => {
       this.setState({ startTime: time });

@@ -25,7 +25,7 @@ export default class App extends React.Component {
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true}, 
                 {component: UserCalendarView, path: '/userCalendar', exact: true},
-                {component: ReviewChefView, path: '/review', exact: true},
+                {component: ReviewChefView, path: '/review/:id', exact: true},
                 {component: ChefCalendarView, path: '/chefCalendar', exact: true},
                 {component: ChefDetailView, path: '/chef/:id'},
                 {component: RegisterView, path: '/register', exact: true},
