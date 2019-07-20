@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import {DialogContainer, Button } from 'react-md';
 import { PayPalButton } from "react-paypal-button";
+import LoginService from "../../Services/LoginService";
+import {withRouter} from "react-router-dom";
 
-export default class PaymentDialog extends PureComponent {
+class PaymentDialog extends PureComponent {
 
     constructor (props) {
         super(props);
@@ -17,6 +19,11 @@ export default class PaymentDialog extends PureComponent {
     }
 
     show = () => {
+        if(!LoginService.isAuthenticated()) {
+            alert('please login first');
+            this.props.history.push('/login');
+            return;
+        }
         this.setState({ visible: true });
     };
 
@@ -58,3 +65,4 @@ export default class PaymentDialog extends PureComponent {
         )
     }
 }
+export default withRouter(PaymentDialog);

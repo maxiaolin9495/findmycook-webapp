@@ -17,18 +17,7 @@ class ChefDetail extends React.Component {
     }
 
     handleBooking = (values) => {
-        if(!LoginService.isAuthenticated()) {
-            alert('please login first')
-            this.props.history.push('/login')
-        }
-        let token = window.localStorage['jwtTokenFMC'];
-        if (!token) {
-            alert('Please login first');
-            this.props.histroy.push('/login')
-        }
         let customer = UserService.getCurrentUser();
-        console.log(this.props.chef);
-        console.log(customer);
         BookingService.emailNotification(this.props.chef.email, this.props.chef.firstName,
             'New Booking from FindMyCook',
             BookingService.new_booking).then(data =>
