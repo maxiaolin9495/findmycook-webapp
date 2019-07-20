@@ -51,7 +51,8 @@ export class SearchResultView extends React.Component {
             <div>
                 <Navigation/>
                 <img src={Background} className="bg"/>
-                <SearchResultPage data={this.state.data}
+                <SearchResultPage
+                                  data={this.state.data}
                                   filteredData={this.state.filteredData}
                                   onFilter={(chefIds, city, foodType, price) => this.filterChef(chefIds, city, foodType, price)}
                                   error={this.state.error}/>
