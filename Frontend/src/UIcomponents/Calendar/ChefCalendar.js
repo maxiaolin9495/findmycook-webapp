@@ -38,6 +38,13 @@ export class ChefCalendar extends Component {
     };
 
     handleSubmit(event) {
+      if(this.state.selectedDay == undefined || 
+        this.state.startTime == null ||
+        this.state.endTime == null ||
+        this.state.startTime >= this.state.endTime) {
+          alert("Please select a day, valid start and end time")
+      }
+
       event.preventDefault();
       let convertedStartTime = this.state.startTime.toDate();
       let convertedEndTime = this.state.endTime.toDate();
@@ -56,7 +63,6 @@ export class ChefCalendar extends Component {
           }
         
         //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
-        
         convertedStartTime.setDate(this.state.selectedDay.getDate());
         convertedStartTime.setMonth(this.state.selectedDay.getMonth());
         convertedStartTime.setFullYear(this.state.selectedDay.getFullYear());
@@ -126,7 +132,6 @@ export class ChefCalendar extends Component {
                         }}/>
                 </form>
                 </div>
-
             </div>
         )
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button} from "react-md/es";
 import {withRouter} from 'react-router-dom';
 
 class ChefWorkTimeDetail extends React.Component {
@@ -30,6 +31,20 @@ class ChefWorkTimeDetail extends React.Component {
                     <h3 style={{color: 'white', marginLeft: '3%'}}> 
                         {(new Date(parseInt(this.props.workTime.endTime)).toLocaleTimeString()).substring(0,5)} 
                     </h3>
+                    <Button flat 
+                        onClick={() => this.props.deleteWorktime(this.props.workTime._id)} 
+                        style={{
+                             fontSize: '12px',
+                             textAlign: 'center',
+                             height: '6%',
+                             width: '5%',
+                             color: 'white',
+                             position: 'relative',
+                             background: 'red',
+                             marginLeft: '35%',
+                             marginTop: '2%',
+                             marginBottom: '2%'
+                         }}>Delete</Button>
         
                 </div>
             )

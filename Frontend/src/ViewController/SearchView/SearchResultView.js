@@ -39,8 +39,8 @@ export class SearchResultView extends React.Component {
                 loading: false
             });
         }).catch((e) => {
-            console.error(e + ' Error while updating movie');
-            this.setState(Object.assign({}, this.state, {error: 'Error while updating movie'}));
+            console.error(e + ' Error while updating chef');
+            this.setState(Object.assign({}, this.state, {error: 'Error while updating chef'}));
         });
     }
 

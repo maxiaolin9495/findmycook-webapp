@@ -9,5 +9,6 @@ router.get('/name/:chefname', chefController.getChefByName);
 router.get('/readdetail/:chefid', chefController.readDetailInfo);
 router.post('/chefCalendar', chefController.addWorkTimeEntry);
 router.get('/chefCalendar', chefController.getWorkTimeEntries);
+router.delete('/chefCalendar/:id', chefController.removeWorktime);
 
 module.exports = router;

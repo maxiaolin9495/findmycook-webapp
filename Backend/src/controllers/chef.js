@@ -92,6 +92,15 @@ const readDetailInfo = async (req, res) => {
     res.status(200).json(chef);
 };
 
+const removeWorktime = (req, res) => {
+    WorkTimeModel.findByIdAndRemove(req.params.id).exec()
+        .then(() => res.status(200).json({message: `Worktime with id${req.params.id} was deleted`}))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
 module.exports = {
     search,
     addWorkTimeEntry,
@@ -99,4 +108,5 @@ module.exports = {
     readDetailInfo,
     filterChef,
     getChefByName,
+    removeWorktime
 };

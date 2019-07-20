@@ -4,6 +4,7 @@ import ChefCalendar from '../../UIcomponents/Calendar/ChefCalendar';
 import Background from "../../Images/Homepage.jpg";
 import ChefCalendarService from '../../Services/ChefCalendarService';
 import ChefWorkTimeDetail from '../../UIcomponents/Calendar/ChefWorkTimeDetail';
+import { configConsumerProps } from 'antd/lib/config-provider';
 
 
 export class ChefCalendarView extends Component {
@@ -43,22 +44,32 @@ export class ChefCalendarView extends Component {
     componentWillMount(){
         ChefCalendarService.getWorkTimeEntries().then((workTimes) => {
             this.setState({workTimes: [...workTimes].filter(workTime => workTime.chefName === 'Michael Scott')});
+            this.setState({workTimes: workTimes.sort(function(a, b) {
+                return a.startTime - b.startTime;})});
         }).catch((e) => {
             console.error(e);
         });
+        
     }
 
-    saveWorkTimeEntry(workTime) {
+    saveWorkTimeEntry(workTime) {  
         alert('Worktime entry saved');
         ChefCalendarService.saveWorkTimeEntry(workTime).then((data) => {
-            this.props.history.push('/chefCalendar');
+            window.location.reload();
         }).catch((e) => {
             console.error(e);
             this.setState(Object.assign({}, this.state, {error: 'Error while creating booking'}));
         });
-        
     }
-    
+
+    deleteWorktime(id) {
+        ChefCalendarService.deleteWorktime(id).then((message) => {
+            window.location.reload();
+        }).catch((e) => {
+            console.log(e);
+        });
+    }
+
     render() {
         return (    
             <div>
@@ -72,7 +83,7 @@ export class ChefCalendarView extends Component {
                     <h3 style = {this.getStyleForWorkTimeTitle()}>Worktime Entries</h3>
                     {this.state.workTimes.length == 0 ? 
                     (<h4 style = {this.getStyleForNoEntry()}>No entries</h4>) : <h4></h4>}
-                    {this.state.workTimes.map((workTime) => (  <ChefWorkTimeDetail workTime={workTime}/>  ))}
+                    {this.state.workTimes.map((workTime) => (  <ChefWorkTimeDetail workTime={workTime} deleteWorktime={(id) => this.deleteWorktime(id)}/>  ))}
                 </div>
 
             </div>

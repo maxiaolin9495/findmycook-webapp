@@ -26,4 +26,19 @@ export default class ChefCalendarService {
             });
         });
     }
+
+    static deleteWorktime(id) {
+        return new Promise((resolve, reject) => {
+            HttpService.remove(`${ChefCalendarService.baseURL()}/${id}`, function(data) {
+                if(data.message != undefined) {
+                    resolve(data.message);
+                }
+                else {
+                    reject('Error while deleting');
+                }
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
 }
