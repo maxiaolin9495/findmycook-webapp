@@ -21,7 +21,7 @@ class ChefReviewList extends React.Component {
         });
         ReviewChefService.getReviews().then((reviews) => {
             this.setState({
-                reviews: [...reviews].filter(review => review.chefName === 'Michael Scott'),
+                reviews: [...reviews].filter(review => review.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName),
                 loading: false
             });
         }).catch((e) => {
@@ -66,10 +66,10 @@ class ChefReviewList extends React.Component {
             background: 'black'}
     }
 
-    //TODO: Adjust the input to be dependent on the chef being clicked in line 60
+    
     calculateOverallRating(){
         let result = this.state.reviews.reduce((acc, val) => {
-            return val.chefName == "Michael Scott" ? acc + val.overallRating : acc;
+            return val.chefName == this.props.chef.firstName + ' ' + this.props.chef.lastName ? acc + val.overallRating : acc;
           }, 0);
 
         return Math.round(result/ this.state.reviews.length);
@@ -86,6 +86,7 @@ class ChefReviewList extends React.Component {
                 onSubmit={(review) => this.props.onSubmit(review)}
                 reviewsAmount={this.state.reviews.length} 
                 averageOverallRating = {this.calculateOverallRating()}
+                chef={this.props.chef}
                 /> 
 
             <div>

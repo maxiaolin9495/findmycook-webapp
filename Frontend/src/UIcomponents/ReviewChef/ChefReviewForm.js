@@ -1,7 +1,7 @@
 import React from 'react'
 import StarRatingComponent from 'react-star-rating-component';
 import {Button, TextField, } from 'react-md';
-import ChefPicture from "../../Images/chef_michael.jpg";
+import UserService from "../../Services/UserService";
 import '../../css/review.css';
 
 export class ChefReviewForm extends React.Component {
@@ -10,19 +10,26 @@ export class ChefReviewForm extends React.Component {
         super(props);
         this.state = {
             time: new Date().toLocaleDateString(),
-            reviewerName: 'Ingo Glaser',
-            chefName: "Michael Scott",
+            reviewerName: '',
+            chefName: '',
             title: '',
             qualityRating: 1,
             punctualityRating: 1,
             creativityRating: 1,
             socialSkillsRating: 1,
-            text: ''
+            text: '',
+            customerName: ''
         }
 
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleChangeText = this.handleChangeText.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentWillMount(){
+        let customerName = UserService.getCurrentUser();
+        this.setState({customerName: customerName.firstName + ' ' + customerName.lastName});
+        this.setState({chefName: this.props.chef.firstName + ' ' + this.props.chef.lastName});
     }
 
     handleChangeTitle(value) {
@@ -48,7 +55,7 @@ export class ChefReviewForm extends React.Component {
         review.punctualityRating = this.state.punctualityRating;
         review.creativityRating = this.state.creativityRating;
         review.socialSkillsRating = this.state.socialSkillsRating;
-        review.reviewerName = this.state.reviewerName;
+        review.reviewerName = this.state.customerName;
         review.chefName = this.state.chefName;
         review.title = this.state.title; 
         review.text = this.state.text;
@@ -97,7 +104,7 @@ export class ChefReviewForm extends React.Component {
                 }}>
 
                 <div className = "chef-container" style = {{marginTop: '0.5%'}}>
-                    <img src={ChefPicture}/>   
+                    <img src={this.props.chef.photo}/>   
                     <h3 style = {{marginTop: '2%'}}>Chef</h3>
                     <h1 style = {{marginTop: '-2%'}}>{this.state.chefName}</h1>
                     <div className = "overallRating"> 
@@ -110,6 +117,7 @@ export class ChefReviewForm extends React.Component {
                         />
                         </h1>
                         <h3 style = {{marginTop:'-5%', marginLeft: '1.1%'}}>{this.props.reviewsAmount} review(s)</h3>
+                        <h6 style = {{color:'gray', marginLeft: '1.1%'}}>* scroll down to see reviews</h6>
                     </div>
                     
                 </div>

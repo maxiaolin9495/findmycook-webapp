@@ -18,6 +18,8 @@ export default class UserService {
         let base64 = base64Url.replace('-', '+').replace('_', '/');
         return {
             id: JSON.parse(window.atob(base64)).id,
+            firstName: JSON.parse(window.atob(base64)).firstName,
+            lastName: JSON.parse(window.atob(base64)).lastName,
             email: JSON.parse(window.atob(base64)).email,
             userType: JSON.parse(window.atob(base64)).userType,
             withProfile: JSON.parse(window.atob(base64)).withProfile,
