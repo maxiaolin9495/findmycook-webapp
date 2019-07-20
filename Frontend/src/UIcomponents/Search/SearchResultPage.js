@@ -99,19 +99,23 @@ class SearchResultPage extends Component {
         const rendered = [];
         let key = 0;
         rendered.push(<h3>Food Type:</h3>);
-        for (let type of Array.from(this.state.checkType)) {
-            rendered.push(<Checkbox
-                className='filter-checkbox'
-                key={key++}
-                id={'checkbox-' + type}
-                name={type}
-                label={type}
-                value={type}
-                onChange={value => {
-                    this.handlefoodtypescheckbox(value, type);
-                }}
-            />)
+        if (this.state.checkType === undefined || this.state.checkType.length == 0) {
+          alert(`No chef found in city ${this.props.location.search.split('=')[1]} \nPlease type in another city name`);
+          this.props.history.push('/');
         }
+        for (let type of Array.from(this.state.checkType)) {
+          rendered.push(<Checkbox
+            className='filter-checkbox'
+            key={key++}
+            id={'checkbox-' + type}
+            name={type}
+            label={type}
+            value={type}
+            onChange={value => {
+              this.handlefoodtypescheckbox(value, type);
+            }}
+            />)
+          }
         rendered.push(<Divider key={key++}/>)
         return rendered;
     };
