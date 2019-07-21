@@ -10,6 +10,7 @@ export default class BookingService {
     static new_booking = 'You have new booking from findMyCook, please confirm it or cancel it in soon.';
     static confirm_booking = 'Your booking has just been confirmed by chef ';
     static cancel_booking = 'Your booking has just been canceled by ';
+    static review_booking = 'Your booking has been just reviewed';
     static baseURL() {
         return "http://localhost:3000/booking"
     }
@@ -67,6 +68,25 @@ export default class BookingService {
         return new Promise((resolve, reject) => {
             let suffix = userType === 'Chef'?'/confirm-booking':'';
             if (suffix === '') return;
+
+            HttpService.post(`${BookingService.baseURL()}${suffix}`, {
+                _id: _id,
+                status: status,
+            }, function (data) {
+                if (data != undefined || Object.keys(data).length !== 0) {
+                    resolve(data);
+                }
+                else {
+                    reject('Error while request booking details');
+                }
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        })
+    }
+    static reviewBooking(_id, status){
+        return new Promise((resolve, reject) => {
+            let suffix = '/review-booking';
 
             HttpService.post(`${BookingService.baseURL()}${suffix}`, {
                 _id: _id,

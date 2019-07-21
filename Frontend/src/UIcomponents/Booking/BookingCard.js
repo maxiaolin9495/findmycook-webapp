@@ -37,6 +37,10 @@ class BookingCard extends Component {
         else return false;
     }
 
+    ifReviewed = () => {
+        if (this.state.status === 'reviewed') return true;
+        else return false;
+    }
 
     componentWillMount() {
         this.setState({
@@ -89,7 +93,15 @@ class BookingCard extends Component {
     }
 
     addReview(){
-        this.props.history.push(`/review/${this.state.reviewId[0]._id}`)
+        this.setState({status: 'reviewed'})
+        BookingService.reviewBooking(this.props.id, 'reviewed').then(
+            data => {
+                this.props.history.push(`/review/${this.state.reviewId[0]._id}`)
+            }
+        ).catch(e => {
+            console.log(e);
+        })
+        
     }
 
     verifyDate = () => {
@@ -162,7 +174,7 @@ class BookingCard extends Component {
         }
     }
 
-    closeBooking = () =>{
+    closeBooking = () => {
         BookingService.closeBooking(this.props.id, 'closed').then(data => {
            this.state.status = 'closed';
            console.log(this.status);
@@ -201,7 +213,7 @@ class BookingCard extends Component {
                              border: '2px yellow',
                              fontSize: 'block',
                              color: 'white',
-                             background: this.ifCanceled() ? 'red' : this.ifNeedConfirmation() ? 'lightBlue' : 'green',
+                             background: this.ifCanceled() ? 'red' : this.ifNeedConfirmation() ? 'lightBlue' : this.ifReviewed()? 'purple': 'green',
                              paddingBottom: '15px'
                          }}>{this.state.status === 'inProgress' ? 'Need Confirmation' : this.state.status}</Button>}
                 />
@@ -260,7 +272,7 @@ class BookingCard extends Component {
                 </div>
                 <div>
                     {
-                        this.props.userType === 'Customer' && this.ifFinished() ?
+                        this.props.userType === 'Customer' && this.ifFinished && !this.ifReviewed()?
                         <Button style = {{color: 'white', background: 'grey'}} raised primary onClick={() => this.addReview()}add review> add review</Button>
                         : ''
                     }
