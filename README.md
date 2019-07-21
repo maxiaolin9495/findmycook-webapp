@@ -30,7 +30,13 @@ mongod
 ```
 #### Create all database schemes and import data to begin with
 ```
-Open command shell in the backend folder and run: mongorestore dump/
+Open command shell in the root folder and run: 
+
+Windows
+mongorestore findmycook/
+
+MacOS
+mongorestore -d findmycook [your folder path]
 ```
 
 ## Run Project
