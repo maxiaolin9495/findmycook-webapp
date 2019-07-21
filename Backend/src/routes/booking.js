@@ -11,5 +11,5 @@ router.get('/get-customer-name', bookingController.getCustomerName);
 router.post('/confirm-booking', bookingController.confirmBooking);
 router.post('/cancel-booking', bookingController.cancelBooking);
 router.post('/close-booking', bookingController.closeBooking);
-
+router.post('/review-booking', bookingController.reviewBooking);
 module.exports = router;
