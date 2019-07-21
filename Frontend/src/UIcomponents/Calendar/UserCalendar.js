@@ -475,10 +475,7 @@ export class UserCalendar extends Component {
                     <PaymentDialog price={this.props.chef.price} handleSubmit={this.handleSubmit}
                                    onSubmit={this.handleSubmit}>
                     </PaymentDialog>
-
                 </div>
-
-
             </div>
         )
     }
