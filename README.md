@@ -9,7 +9,7 @@ Using Terminal
 
 ## Run the Example
 
-###Linux
+### Linux
 If you are using linux system, we recommand you to use docker
 Firstly you need to build the docker images in your local laptop
 
@@ -20,7 +20,7 @@ Then you can start the whole project with:
 `docker-compose up`
 
 
-###Windows/MacOS
+### Windows/MacOS
 #### Create a new directory where your database will be stored (it's a good idea to separate data and business logic - the data directory should be on a different place than your app)
 #### Start the database server
 ```
