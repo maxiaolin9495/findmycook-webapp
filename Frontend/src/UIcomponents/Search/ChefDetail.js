@@ -5,7 +5,6 @@ import {Card, CardTitle, TextField, CardText, Media, MediaOverlay, Grid, Cell, B
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
 import {UserCalendar} from "../Calendar/UserCalendar";
-import UserCalendarService from '../../Services/UserCalendarService';
 import BookingService from "../../Services/BookingService";
 import UserService from "../../Services/UserService";
 import Background from '../../Images/Homepage.jpg';
@@ -20,7 +19,7 @@ class ChefDetail extends React.Component {
     }
 
     createBooking = (values) => {
-        console.log('create Booking')
+        console.log('create Booking');
         let customer = UserService.getCurrentUser();
         BookingService.emailNotification(this.props.chef.email, this.props.chef.firstName,
             'New Booking from FindMyCook',
@@ -43,13 +42,10 @@ class ChefDetail extends React.Component {
         })
     };
 
-    addReview() {
-        this.props.history.push(`/review/${this.props.chef._id}`)
-    }
+    componentWillReceiveProps=(props)=> {
+        BookingService.getBookings('chef', props.chef.email).then((userCalendarBookings) => {
 
-    componentWillMount() {
-        UserCalendarService.getBookings().then((userCalendarBookings) => {
-            this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === this.props.chef.firstName + '' + this.props.chef.lastName)});
+            this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefEmail === props.chef.email)});
         }).catch((e) => {
             console.error(e);
         });

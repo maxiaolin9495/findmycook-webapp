@@ -145,7 +145,7 @@ class NavigationMenu extends React.Component {
         };
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    componentWillReceiveProps(nextProps){
         this.setState({toolbarTitle: this.getCurrentTitle(nextProps)});
     }
 

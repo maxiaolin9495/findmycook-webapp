@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import ChefCalendarService from '../../Services/ChefCalendarService';
-import UserCalendarService from '../../Services/UserCalendarService';
 import DayPicker, { DateUtils, ModifiersUtils } from 'react-day-picker';
 import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
@@ -10,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
 import UserService from "../../Services/UserService";
 import PaymentDialog from "../Booking/PaymentDialog";
+import BookingService from "../../Services/BookingService";
 
 
 const modifiers = {
@@ -224,19 +224,19 @@ export class UserCalendar extends Component {
         }
     }
 
-    componentWillMount() {
+    componentWillReceiveProps(props) {
         let customerName = UserService.getCurrentUser();
-        this.setState({customerName: customerName.firstName + ' ' + customerName.lastName});
         this.setState({address: customerName.address})
         ChefCalendarService.getWorkTimeEntries().then((chefWorkTimes) => {
-            this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName)});
-            this.colorizeCalendar([...chefWorkTimes].filter(workTime => workTime.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName))
+            this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === props.chef.firstName + ' ' + props.chef.lastName)});
+            this.colorizeCalendar([...chefWorkTimes].filter(workTime => workTime.chefName === props.chef.firstName + ' ' + props.chef.lastName))
         }).catch((e) => {
             console.error(e);
         });
-        UserCalendarService.getBookings().then((userCalendarBookings) => {
+        console.log(props.chef);
+        BookingService.getBookings('Chef',props.chef.email).then((userCalendarBookings) => {
             this.setState({
-                userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName
+                userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefEmail === props.chef.email
                     && userCalendarBooking.status !== 'canceled')
             });
         }).catch((e) => {
@@ -426,7 +426,7 @@ export class UserCalendar extends Component {
         //console.log(this.state.userCalendarBookings)
         return (
             <div className="md-grid" id="calendarBox" label="UserCalendar"
-                 style={{width: '50%', background: 'white'}}>
+                 style={{width: '60%', background: 'white'}}>
 
                 <div>
                     <DayPicker
