@@ -43,7 +43,7 @@ class ChefDetail extends React.Component {
         })
     };
 
-    addReview() {
+    addReview() { 
         this.props.history.push(`/review/${this.props.chef._id}`)
     }
 
@@ -113,7 +113,7 @@ class ChefDetail extends React.Component {
                                         marginBottom: '3%',
                                         fontSize: '20px',
                                         background: 'clear'
-                                    }}>{this.props.reviewsAmount} review(s)</Button>
+                                    }}onClick={() => this.addReview()}>{this.props.reviewsAmount} review(s)</Button>
                                 </div>
 
                                 <div style={{
