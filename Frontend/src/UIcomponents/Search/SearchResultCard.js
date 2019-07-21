@@ -2,11 +2,38 @@ import React, {Component} from 'react';
 import {Button, Media} from 'react-md';
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
+import ChefService from "../../Services/ChefService";
+import ReviewChefService from '../../Services/ReviewChefService';
 
 class SearchResultCard extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            chef: [],
+            reviews: []
+        }
+    }
 
+    componentWillMount(){
+        ChefService.getChefDetail(this.props.id).then((data) => {
+            this.setState({chef: data});
+        }).catch((e) => {
+            console.error(e);
+        });
+        ReviewChefService.getReviews().then((reviews) => {
+            this.setState({
+                reviews: [...reviews].filter(review => review.chefName === this.state.chef.firstName + ' ' + this.state.chef.lastName)
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+
+    calculateOverallRating(){
+        let result = this.state.reviews.reduce((acc, val) => {
+            return val.chefName == this.state.chef.firstName + ' ' + this.state.chef.lastName ? acc + val.overallRating : acc;
+          }, 0);
+        return Math.round(result/ this.state.reviews.length);
     }
 
 
@@ -41,24 +68,30 @@ class SearchResultCard extends Component {
                         fontWeight: 'bolder',
                         fontFamily: 'Lucida Bright'
                     }}>{this.props.firstName} {this.props.lastName}</h1>
+                    <h3>
                     <StarRatingComponent
                         name="rate2"
                         editing={false}
                         starCount={5}
-                        value={this.props.averageOverallRating}
+                        value={this.calculateOverallRating()}
                     />
+                    </h3>
+                    <h3 style = {{marginTop:'-5%', marginLeft: '1.1%'}}>{this.state.reviews.length} review(s)</h3>
                     <div style={{
                         marginTop: '10px',
-                        color: 'black'
+                        color: 'black',
+                        marginLeft: '1.1%'
                     }}
                     >{this.props.city}</div>
                     <h2 style={{
                         fontWeight: 'bolder',
                         fontFamily: 'Lucida Bright',
                         width: '70%',
-                        marginTop: '40px'
+                        marginTop: '40px',
+                        marginLeft: '1.1%'
                     }}>{this.props.foodtype}</h2>
-                    <div>{this.props.introduction.slice(0, 200) + '...'}
+                    <div style={{
+                        marginLeft: '1.1%'}}>{this.props.introduction.slice(0, 200) + '...'}
                     </div>
                 </div>
                 <div style={{width: '13%'}}>
