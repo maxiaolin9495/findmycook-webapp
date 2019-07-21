@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import ChefCalendarService from '../../Services/ChefCalendarService';
 import UserCalendarService from '../../Services/UserCalendarService';
 import DayPicker, { DateUtils, ModifiersUtils } from 'react-day-picker';
-import { TimePicker } from 'antd';
+import { TimePicker, Button } from 'antd';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
@@ -253,7 +253,7 @@ export class UserCalendar extends Component {
         let userCalendarBookings = this.state.userCalendarBookings.filter(userCalendarBooking => new Date(parseInt(userCalendarBooking.startTime)).toLocaleDateString() === selected.toLocaleDateString());
 
         console.log('Chef work times:')
-        console.log(workTimes)
+        console.log(userCalendarBookings)
         if (workTimes.length == 0) {
             return [...Array(24).keys()];
         }
@@ -476,6 +476,15 @@ export class UserCalendar extends Component {
                     <PaymentDialog price={this.props.chef.price} handleSubmit={this.handleSubmit}
                                    onSubmit={this.handleSubmit}>
                     </PaymentDialog>
+
+                    <Button style={{
+                                        height: '30px',
+                                        marginTop: '-10%',
+                                        marginLeft: '-1%',
+                                        marginBottom: '3%',
+                                        fontSize: '20px',
+                                        background: 'clear'
+                                    }}onClick={() =>this.handleSubmit() }>TEST</Button>
 
                 </div>
 

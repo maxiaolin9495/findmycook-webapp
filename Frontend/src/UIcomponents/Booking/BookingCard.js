@@ -258,15 +258,14 @@ class BookingCard extends Component {
                             fontSize: '40px',
                         }}>€{this.props.price}</div>
                 </div>
-                <Toolbar style={{width: '100%', paddingBottom: '10px',}}
-                         actions={<Button flat style={{
-                                height: '30px',
-                                border: '2px yellow',
-                                fontSize: 'block',
-                                background: 'blue',
-                                color: 'white',
-                                paddingBottom: '15px',
-                            }} onClick={() => this.addReview()}>add review</Button>}/>
+                <div>
+                    {
+                        this.props.userType === 'Customer' && this.ifFinished() ?
+                        <Button style = {{color: 'white', background: 'grey'}} raised primary onClick={() => this.addReview()}add review> add review</Button>
+                        : ''
+                    }
+                </div>
+                
             </Card>
         );
     }
