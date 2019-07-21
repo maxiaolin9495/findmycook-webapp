@@ -328,7 +328,6 @@ export class UserCalendar extends Component {
     onMonthChange(month) {
         this.setState({month: month});
         this.colorizeCalendar(this.state.chefWorkTimes);
-        //window.location.reload()
     }
 
     range(start, end) {
@@ -476,15 +475,6 @@ export class UserCalendar extends Component {
                     <PaymentDialog price={this.props.chef.price} handleSubmit={this.handleSubmit}
                                    onSubmit={this.handleSubmit}>
                     </PaymentDialog>
-
-                    <Button style={{
-                                        height: '30px',
-                                        marginTop: '-10%',
-                                        marginLeft: '-1%',
-                                        marginBottom: '3%',
-                                        fontSize: '20px',
-                                        background: 'clear'
-                                    }}onClick={() =>this.handleSubmit() }>TEST</Button>
 
                 </div>
 
