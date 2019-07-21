@@ -239,8 +239,8 @@ class BookingCard extends Component {
                             marginTop: '30px'
                         }}>{this.getDate()} <br/> {this.getTimeSlot()}</h5>
                     </div>
-                    
-                    <div style={{width: '20%', marginLeft: '15%'}}>
+                    <div style={{width: '100%'}}>
+                    <div style={{width: '100%', marginLeft: '85%'}}>
                         {
                             this.ifFinished() ? '' : this.ifCanceled() ? '' :
                                 <Dialog actionName='cancel' onClick={() => this.cancelBooking(false)}/>
@@ -253,19 +253,12 @@ class BookingCard extends Component {
                     <div style={{
                             color: 'green',
                             marginTop: '10%',
-                            matginLeft: '15%',
+                            marginLeft: '85%',
                             marginRight: '40px',
                             fontSize: '40px',
                         }}>€{this.props.price}</div>
                 </div>
-                <div>
-                    {
-                        this.props.userType === 'Customer' && this.ifFinished() ?
-                        <Button style = {{color: 'white', background: 'grey'}} raised primary onClick={() => this.addReview()}add review> add review</Button>
-                        : ''
-                    }
                 </div>
-                
             </Card>
         );
     }
