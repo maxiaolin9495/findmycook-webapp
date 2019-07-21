@@ -1,0 +1,8 @@
+"chefs": [
+{"id": "C0000001", "firstName": "Cesare", "lastName": "Russo", "phoneNumber":"01700000001", "email":"russo.cesare@mailinator.com","language":["German","English", "Italian"], "picture": "cesareRusso.jpg", "city": "Munich", foodType:"Italian"},
+{"id": "C0000002", "firstName": "Alexis", "lastName": "Soyer", "phoneNumber":"01700000002", "email":"soyer.alexis@mailinator.com","language":["German","English", "French"], "picture": "alexisSoyer.jpg", "city": "Munich", foodType:"French"},
+{"id": "C0000003", "firstName": "Miran", "lastName": "Novak", "phoneNumber":"01700000003", "email":"novak.miran@mailinator.com","language":["German","English", "Croatian"], "picture": "miranNovak.jpg", "city": "Munich", foodType:"Croatian"},
+{"id": "C0000004", "firstName": "Morimoto", "lastName": "Masaharu", "phoneNumber":"017000000004", "email":"Masaharu.Morimoto@mailinator.com","language":["German","English", "Japanese"], "picture": "morimotoMasaharu.jpg", "city": "Munich", foodType:"Japanese"},
+{"id": "C0000005", "firstName": "Tingfung", "lastName": "Tse", "phoneNumber":"01700000005", "email":"tingfung.tse@mailinator.com","language":["German","English", "Chinese","Cantonese"], "picture": "tingfungTse.jpg", "city": "Munich", foodType:"Chinese"},
+{"id": "C0000006", "firstName": "Nancy", "lastName": "Silverton", "phoneNumber":"01700000006", "email":"nancy.silverton@mailinator.com","language":["German","English"], "picture": "nancySilverton.jpg", "city": "Munich", foodType:"American"},
+]

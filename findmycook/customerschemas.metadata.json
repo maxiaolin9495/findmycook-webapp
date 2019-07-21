@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"findmycook.customerschemas"},{"v":2,"unique":true,"key":{"email":1},"name":"email_1","ns":"findmycook.customerschemas","background":true}],"uuid":"f963479fdf0c45f6abeb0c796348ac58"}
