@@ -1,7 +1,3 @@
-# Find My Cook WebApp
-
-"Find My Cook" backend can be found [here](https://github.com/itsJS/findmycook-backend)
-
 ## Installation
 Using Terminal
 
