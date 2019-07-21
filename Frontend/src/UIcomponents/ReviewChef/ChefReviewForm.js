@@ -117,7 +117,7 @@ export class ChefReviewForm extends React.Component {
                         />
                         </h1>
                         <h3 style = {{marginTop:'-5%', marginLeft: '1.1%'}}>{this.props.reviewsAmount} review(s)</h3>
-                        <h6 style = {{color:'gray', marginLeft: '1.1%'}}>* scroll down to see reviews</h6>
+                        <h6 style = {{color:'gray', marginLeft: '1.1%'}}>*scroll down to see all the reviews</h6>
                     </div>
                     
                 </div>
