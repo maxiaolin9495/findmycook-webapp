@@ -331,6 +331,7 @@ export class UserCalendar extends Component {
     onMonthChange(month){
       this.setState({month : month});
       this.colorizeCalendar(this.state.chefWorkTimes);
+      //window.location.reload()
     }
 
     range(start, end) {
@@ -475,16 +476,6 @@ export class UserCalendar extends Component {
                 hourStep = {1}
                 placeholder='Pick a time' />
 
-                <input type="submit" value="Book" style={{
-                            marginTop: '20%',
-                            marginLeft: '-25%',
-                            marginBottom: '10%',
-                            width: '180%',
-                            lineHeight: '25px',
-                            fontSize: '16px',
-                            backgroundColor: 'rgb(69,150,236)',
-                            color: 'white'
-                        }}/>
                 <PaymentDialog price={this.props.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
                 </PaymentDialog>
 
