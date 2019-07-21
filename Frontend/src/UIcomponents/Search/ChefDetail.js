@@ -42,14 +42,19 @@ class ChefDetail extends React.Component {
         })
     };
 
-    componentWillReceiveProps=(props)=> {
-        BookingService.getBookings('chef', props.chef.email).then((userCalendarBookings) => {
 
+    componentWillReceiveProps(props) {
+        BookingService.getBookings('chef', props.chef.email).then((userCalendarBookings) => {
             this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefEmail === props.chef.email)});
         }).catch((e) => {
             console.error(e);
         });
     }
+
+    addReview() { 
+        this.props.history.push(`/review/${this.props.chef._id}`)
+    }
+
 
     render() {
         //console.log(`Current user bookings for chef: ${this.props.chef.firstName}`)
@@ -109,7 +114,7 @@ class ChefDetail extends React.Component {
                                         marginBottom: '3%',
                                         fontSize: '20px',
                                         background: 'clear'
-                                    }}>{this.props.reviewsAmount} review(s)</Button>
+                                    }}onClick={() => this.addReview()}>{this.props.reviewsAmount} review(s)</Button>
                                 </div>
 
                                 <div style={{
