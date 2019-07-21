@@ -426,7 +426,7 @@ export class UserCalendar extends Component {
         //console.log(this.state.userCalendarBookings)
         return (
             <div className="md-grid" id="calendarBox" label="UserCalendar"
-                 style={{width: '17.5%', background: 'white'}}>
+                 style={{width: '50%', background: 'white'}}>
 
                 <div>
                     <DayPicker
