@@ -5,16 +5,20 @@
 ## Installation
 Using Terminal
 
-`git clone https://github.com/itsJS/findMyCook-frontend.git`
+`git clone https://github.com/itsJS/findmycook-webapp.git`
 
 ## Run the Example
 
 ###Linux
 If you are using linux system, we recommand you to use docker
 Firstly you need to build the docker images in your local laptop
+
 `docker-compose build`
+
 Then you can start the whole project with:
+
 `docker-compose up`
+
 
 ###Windows/MacOS
 #### Create a new directory where your database will be stored (it's a good idea to separate data and business logic - the data directory should be on a different place than your app)
