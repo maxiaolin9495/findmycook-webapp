@@ -4,6 +4,7 @@ import ChefCalendar from '../../UIcomponents/Calendar/ChefCalendar';
 import Background from "../../Images/Homepage.jpg";
 import ChefCalendarService from '../../Services/ChefCalendarService';
 import ChefWorkTimeDetail from '../../UIcomponents/Calendar/ChefWorkTimeDetail';
+import UserService from "../../Services/UserService";
 
 
 export class ChefCalendarView extends Component {
@@ -41,13 +42,16 @@ export class ChefCalendarView extends Component {
 
     //TODO: Fetch actual chefName to use properly in line 21
     componentWillMount(){
+        let currentUser = UserService.getCurrentUser();
+        let chefName = currentUser.firstName + ' ' + currentUser.lastName;
         ChefCalendarService.getWorkTimeEntries().then((workTimes) => {
-            this.setState({workTimes: [...workTimes].filter(workTime => workTime.chefName === 'Michael Scott')});
+            this.setState({workTimes: [...workTimes].filter(workTime => workTime.chefName === chefName)});
             this.setState({workTimes: workTimes.sort(function(a, b) {
                 return a.startTime - b.startTime;})});
         }).catch((e) => {
             console.error(e);
-        });      
+        });  
+        console.log(this.state.workTimes)    
     }
 
     saveWorkTimeEntry(workTime) {  

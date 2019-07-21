@@ -2,12 +2,37 @@ import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import ChefCalendarService from '../../Services/ChefCalendarService';
 import UserCalendarService from '../../Services/UserCalendarService';
-import DayPicker from 'react-day-picker';
+import DayPicker, { DateUtils, ModifiersUtils } from 'react-day-picker';
 import { TimePicker } from 'antd';
 import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
+import UserService from "../../Services/UserService";
+
+
+const modifiers = {
+  enabled: [],
+  disabled: [],
+  past: { 
+    before: new Date(),
+  }
+};
+
+const modifiersStyles = {
+  enabled: {
+    color: "white",
+    backgroundColor: "green"
+  },
+  disabled: {
+    color: "white",
+    backgroundColor: "red"
+  },
+  past:{
+    color: "rgb(230, 230, 230)",
+    backgroundColor: "clear"
+  }
+};
 
 export class UserCalendar extends Component {
 
@@ -20,12 +45,16 @@ export class UserCalendar extends Component {
         this.disabledHoursStartTime = this.disabledHoursStartTime.bind(this);
         this.disabledHoursEndTime = this.disabledHoursEndTime.bind(this);
         this.disabledMinutes = this.disabledMinutes.bind(this);
+        this.onMonthChange = this.onMonthChange.bind(this);
         this.state = {
           chefWorkTimes: [],
+          customerName: '',
+          address:'',
           userCalendarBookings: [], //the user bookings returned by the backend
           userBookedTimesForStartTime: [], //user booking times as an array
           userBookedTimesForEndTime: [], //user booking times as an array
           selectedDay: null,
+          month: new Date(),
           startTime: null,
           endTime: null,
           defaultOpenValueStartTime: moment(new Date()),
@@ -33,7 +62,7 @@ export class UserCalendar extends Component {
           disabledHoursStartTime: [...Array(24).keys()],
           disabledHoursEndTime: [...Array(24).keys()]
         };
-    }
+    } 
 
     handleDayClick(day, { selected }) {
         if (selected) {
@@ -45,6 +74,8 @@ export class UserCalendar extends Component {
         this.setState({endTime: null})
         this.setState({ selectedDay: day });
         this.computeDisabledHours(day);
+        console.log("State:")
+        console.log(this.state.month.getMonth())
     }
 
     onChangeStartTime = time => {
@@ -162,9 +193,9 @@ export class UserCalendar extends Component {
             userCalendarBooking = {};
           }
         
-        userCalendarBooking.userName = "Ingo Glaser";
-        userCalendarBooking.chefName = "Michael Scott";
-        userCalendarBooking.address = "Zaunweg 3";
+        userCalendarBooking.userName = this.state.customerName;
+        userCalendarBooking.chefName = "Silke Stein";
+        userCalendarBooking.address = this.state.address;
         
         //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
         let convertedStartTime = this.state.startTime.toDate();
@@ -178,7 +209,7 @@ export class UserCalendar extends Component {
         
         userCalendarBooking.startTime = convertedStartTime.valueOf();
         userCalendarBooking.endTime = convertedEndTime.valueOf();
-        
+        userCalendarBooking.status = 'inProgress';
         this.setState({ selectedDay: undefined });
         this.setState({ startTime: null });
         this.setState({ endTime: null });
@@ -189,16 +220,52 @@ export class UserCalendar extends Component {
     }
 
     componentWillMount(){
+      let customerName = UserService.getCurrentUser();
+      this.setState({customerName: customerName.firstName + ' ' + customerName.lastName});
+      this.setState({address: customerName.address})
       ChefCalendarService.getWorkTimeEntries().then((chefWorkTimes) => {
-          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === 'Michael Scott')});
+          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === 'Silke Stein')});
       }).catch((e) => {
           console.error(e);
       });
       UserCalendarService.getBookings().then((userCalendarBookings) => {
-        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
+        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Silke Stein')});
     }).catch((e) => {
         console.error(e);
     });
+      this.colorizeCalendar()
+      console.log(modifiers)
+    }
+
+    daysInMonth (month, year) {
+      return new Date(year, month, 0).getDate();
+    }
+
+    colorizeCalendar(){
+      let today = new Date();
+      today.setDate(1);
+      today.setMonth(this.state.month.getMonth());
+      today.setFullYear(this.state.month.getFullYear());
+      let tomorrow = new Date();
+      tomorrow.setDate(1);
+      tomorrow.setMonth(this.state.month.getMonth());
+      tomorrow.setFullYear(this.state.month.getFullYear());
+
+      //compute disabled days for a given month
+      for(var i=0; i <= this.daysInMonth(this.state.month.getMonth(),this.state.month.getFullYear()); i++){
+        tomorrow.setDate(today.getDate()+1);
+        this.computeDisabledHours(tomorrow);
+        if(this.state.disabledHoursStartTime == 24){
+          modifiers.disabled.push(tomorrow)
+        } else {
+          modifiers.enabled.push(tomorrow)
+        }
+      } 
+    }
+
+    onMonthChange(month){
+      this.setState({month : month});
+      this.colorizeCalendar();
     }
 
     range(start, end) {
@@ -291,12 +358,19 @@ export class UserCalendar extends Component {
       this.setState({ disabledHoursEndTime: defaultDisabledRange.filter(value => !removedBookedEndEnabledRange.includes(value)) });
       }
 
+    
     render() {
         return (
             <div className="md-grid" id="calendarBox" label="UserCalendar" style={{width: '17.5%', background: 'white'}}>
                 
                 <div>
-                    <DayPicker selectedDays={this.state.selectedDay} onDayClick={this.handleDayClick}/>
+                    <DayPicker 
+                    selectedDays={this.state.selectedDay} 
+                    onDayClick={this.handleDayClick}
+                    modifiers={modifiers}
+                    modifiersStyles={modifiersStyles}
+                    onMonthChange = {this.onMonthChange}
+                    />
                     {this.state.selectedDay ? 
                     (<h3 style = {{textAlign: 'center'}}>{this.state.selectedDay.toLocaleDateString()}</h3>) : 
                     (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}

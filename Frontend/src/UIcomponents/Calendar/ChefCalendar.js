@@ -6,6 +6,7 @@ import 'antd/es/time-picker/style/css'
 import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import UserService from "../../Services/UserService";
 
 export class ChefCalendar extends Component {
 
@@ -90,7 +91,8 @@ export class ChefCalendar extends Component {
         }
 
         if(entryIsValid){
-          workTime.chefName = "Michael Scott";
+          let currentUser = UserService.getCurrentUser();
+          workTime.chefName = currentUser.firstName + ' ' + currentUser.lastName;
           workTime.startTime = convertedStartTime.valueOf();
           workTime.endTime = convertedEndTime.valueOf();
           this.setState({ selectedDay: undefined });

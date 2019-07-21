@@ -69,6 +69,16 @@ const logInNavItems = [
         icon:'search',
     },
     {
+        label: 'My Bookings',
+        to: '/my-booking',
+        icon: 'store'
+    }, 
+    {
+        label: 'My Calendar',
+        to: '/chefCalendar',
+        icon: 'store'
+    },
+    {
         label: 'Contact us',
         to: '/contact-us',
         icon: 'send'
@@ -78,11 +88,7 @@ const logInNavItems = [
         to: '/about-us',
         icon: 'book'
     },
-    {
-        label: 'My Bookings',
-        to: '/my-booking',
-        icon: 'store'
-    },
+   
 ]
 
 
@@ -155,7 +161,6 @@ class NavigationMenu extends React.Component {
                               <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
                               <Button type = "button" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
                               <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/userCalendar')}>User Calendar</Button>
-                              <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/chefCalendar')}>Chef Calendar</Button>
                             </div>
                     }
                     navItems={
