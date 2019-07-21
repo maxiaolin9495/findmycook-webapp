@@ -475,7 +475,6 @@ export class UserCalendar extends Component {
                 hourStep = {1}
                 placeholder='Pick a time' />
 
-                <form onSubmit={this.handleSubmit}>
                 <input type="submit" value="Book" style={{
                             marginTop: '20%',
                             marginLeft: '-25%',
@@ -486,8 +485,6 @@ export class UserCalendar extends Component {
                             backgroundColor: 'rgb(69,150,236)',
                             color: 'white'
                         }}/>
-                </form>
-
                 <PaymentDialog price={this.props.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
                 </PaymentDialog>
 

@@ -62,11 +62,6 @@ const logInNavItemsCustomer = [
         icon: 'home',
     },
     {
-        label: 'Search',
-        to:'/searchresult',
-        icon:'search',
-    },
-    {
         label: 'My Bookings',
         to: '/my-booking',
         icon: 'store'
@@ -89,11 +84,6 @@ const logInNavItemsChef = [
         to: '/',
         exact: true,
         icon: 'home',
-    },
-    {
-        label: 'Search',
-        to:'/searchresult',
-        icon:'search',
     },
     {
         label: 'My Bookings',
