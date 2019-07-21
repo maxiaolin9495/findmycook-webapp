@@ -33,7 +33,7 @@ mongod
 Open command shell in the root folder and run: 
 
 Windows
-mongorestore findmycook/
+mongorestore -d findmycook [your folder path]
 
 MacOS
 mongorestore -d findmycook [your folder path]
