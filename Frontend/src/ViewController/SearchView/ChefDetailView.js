@@ -29,7 +29,6 @@ export class ChefDetailView extends React.Component {
         }).catch((e) => {
             console.error(e);
         });
-
         ReviewChefService.getReviews().then((reviews) => {
             this.setState({
                 reviews: [...reviews].filter(review => review.chefName === this.state.chef.firstName + ' ' + this.state.chef.lastName),
@@ -49,7 +48,6 @@ export class ChefDetailView extends React.Component {
     }
 
     render() {
-
         return (
             <div>
                 <Navigation/>
