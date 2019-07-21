@@ -14,7 +14,8 @@ export class LoginView extends React.Component {
         LoginService.login(user.email, user.password).then((data) => {
             this.props.history.push('/');
         }).catch((e) => {
-            console.error(e);
+            alert('Please input correct email and password');
+            document.getElementById('floating-password').value = '';
             this.setState({
                 error: e
             });
@@ -22,6 +23,7 @@ export class LoginView extends React.Component {
     }
 
     render(){
+        setTimeout(() => window.scrollTo(0,0), 150);
         return (
             <div>
                 <Navigation/>

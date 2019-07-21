@@ -33,6 +33,7 @@ export default class UserService {
     }
 
     static addProfile(user) {
+        console.log(user);
         return new Promise((resolve, reject) => {
             let data = user.userType === 'Customer' ? {
                 email: user.email,
@@ -40,6 +41,7 @@ export default class UserService {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 address: user.address,
+                city: user.city,
                 phoneNumber: user.phoneNumber
             } : user.userType === 'Chef' ? {
                 email: user.email,

@@ -38,12 +38,8 @@ const defaultNavItems = [
     {
         label: 'Home',
         to: '/',
+        exact: true,
         icon: 'home',
-    },
-    {
-        label: 'Search',
-        to:'/searchresult',
-        icon:'search',
     },
     {
         label: 'Contact us',
@@ -61,6 +57,7 @@ const logInNavItems = [
     {
         label: 'Home',
         to: '/',
+        exact: true,
         icon: 'home',
     },
     {
@@ -149,7 +146,7 @@ class NavigationMenu extends React.Component {
         return (
             <div className={this.props.className}>
                 <NavigationDrawer
-
+                    focusOnMount={false}
                     style={NavigationMenuStyle}
                     desktopDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
                     className="NavigationMenuStyle"
@@ -161,6 +158,7 @@ class NavigationMenu extends React.Component {
                               <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
                               <Button type = "button" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
                               <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/userCalendar')}>User Calendar</Button>
+
                             </div>
                     }
                     navItems={
@@ -173,6 +171,7 @@ class NavigationMenu extends React.Component {
                                                                                          suffix="green-300"/></Button>
                         </Item>
                     }
+
                 >
 
                 </NavigationDrawer>

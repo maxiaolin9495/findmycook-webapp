@@ -2,8 +2,10 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/loginPassword');
 const customerModel = require('../models/customer');
 const chefModel = require('../models/chef');
+const reviewModel = require('../models/review');
 const userCalendarBookingModel = require('../models/userCalendarBooking');
 const config = require('../config');
+
 
 
 const login = (req, res) => {
@@ -52,6 +54,7 @@ const login = (req, res) => {
                         withProfile: user.withProfile,
                         firstName: customer.firstName,
                         address: customer.address,
+                        city: customer.city,
                         lastName: customer.lastName
                     }, config.JwtSecret, {
                         expiresIn: 999999 // time in seconds until it expires
@@ -166,6 +169,16 @@ const addProfile = (req, res) => {
             message: 'The request body must contain a introduction property'
         });
     }
+    if (req.body.userType === 'Customer') {
+        if (!Object.prototype.hasOwnProperty.call(req.body, 'city')) return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a city property'
+        });
+        if (!Object.prototype.hasOwnProperty.call(req.body, 'address')) return res.status(400).json({
+            error: 'Bad Request',
+            message: 'The request body must contain a address property'
+        });
+    }
     userModel.findOne({email: req.body.email}).exec()//UseModel schema
         .then(user => {
             user.withProfile = 'Yes';
@@ -194,7 +207,7 @@ const addProfile = (req, res) => {
             rating: 5,
             photo: req.body.photo,
             introduction: req.body.introduction,
-            price: 20,
+            price: req.body.price,
             phoneNumber: req.body.phoneNumber,
             languages: req.body.languages,
         });
@@ -232,7 +245,8 @@ const addProfile = (req, res) => {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phoneNumber: req.body.phoneNumber,
-            address: req.body.address
+            address: req.body.address,
+            city: req.body.city
         });
         customerModel.create(customer).then(customer=>{
             const token = jwt.sign({
@@ -241,6 +255,7 @@ const addProfile = (req, res) => {
                 lastName: customer.lastName,
                 userType: req.body.userType,
                 address: customer.address,
+                city: customer.city,
                 withProfile: 'Yes'
             }, config.JwtSecret, {
                 expiresIn: 999999 // time in seconds until it expires
@@ -485,6 +500,29 @@ const getProfile = (req, res) => {
             });
     }
 }
+const addReview  = (req, res) => {
+    if (Object.keys(req.body).length === 0) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body is empty'
+    });
+
+    reviewModel.create(req.body)
+        .then(review => res.status(201).json(review))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
+const getReviews  = (req, res) => {
+    reviewModel.find({}).exec()
+        .then(reviews => res.status(200).json(reviews))
+        .catch(error => res.status(500).json({
+            error: 'Internal server error',
+            message: error.message
+        }));
+};
+
 
 const addCalendarBooking  = (req, res) => {
     if (Object.keys(req.body).length === 0) return res.status(400).json({
@@ -515,6 +553,8 @@ module.exports = {
     addProfile,
     uploadProfile,
     getProfile,
+    getReviews,
+    addReview,
     getCalendarBookings,
     addCalendarBooking,
     getPhoto,

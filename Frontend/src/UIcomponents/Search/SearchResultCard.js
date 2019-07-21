@@ -45,7 +45,7 @@ class SearchResultCard extends Component {
                         name="rate2"
                         editing={false}
                         starCount={5}
-                        value={this.props.rating}
+                        value={this.props.averageOverallRating}
                     />
                     <div style={{
                         marginTop: '10px',

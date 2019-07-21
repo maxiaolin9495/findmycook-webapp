@@ -7,11 +7,17 @@ class SearchBarComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchValue: []
+            searchValue: ''
         };
     }
 
-
+    searchBySearchBar =() =>{
+        if(this.state.searchValue === '') {
+            alert('Please input a city name');
+            return;
+        }
+        this.props.history.push(`/searchresult?query=${this.state.searchValue}`)
+    }
     render() {
         return (
             <div>
@@ -21,8 +27,9 @@ class SearchBarComponent extends React.Component {
                     margin: '0 auto'
                 }}>
                     <SearchBar className={"searchtoolbar"}
+                               placeholder={'Search City e.g Munich'}
                                onChange={(value) => this.setState({searchValue: value})}
-                               onRequestSearch={() => this.props.history.push(`/searchresult?query=${this.state.searchValue}`)}
+                               onRequestSearch={() => this.searchBySearchBar()}
                                style={{
                                    flex: '1'
                                }}
@@ -32,7 +39,7 @@ class SearchBarComponent extends React.Component {
                         fontSize: '15px',
                         background: 'blue',
                         color: 'white'
-                    }} onClick={() => this.props.history.push('/searchresult')}
+                    }} onClick={() => this.searchBySearchBar()}
                     >Search</Button>
                 </div>
 

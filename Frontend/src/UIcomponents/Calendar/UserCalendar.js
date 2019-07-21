@@ -9,6 +9,7 @@ import 'react-day-picker/lib/style.css';
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
 import UserService from "../../Services/UserService";
+import PaymentDialog from "../Booking/PaymentDialog";
 
 
 const modifiers = {
@@ -34,6 +35,7 @@ const modifiersStyles = {
   }
 };
 
+
 export class UserCalendar extends Component {
 
     constructor(props) {
@@ -46,6 +48,7 @@ export class UserCalendar extends Component {
         this.disabledHoursEndTime = this.disabledHoursEndTime.bind(this);
         this.disabledMinutes = this.disabledMinutes.bind(this);
         this.onMonthChange = this.onMonthChange.bind(this);
+
         this.state = {
           chefWorkTimes: [],
           customerName: '',
@@ -376,7 +379,6 @@ export class UserCalendar extends Component {
                     (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}
                 </div>
 
-                
                 <div style = {{marginLeft: '20%'}}> 
                 <h4>from</h4>
                 <TimePicker
@@ -408,7 +410,6 @@ export class UserCalendar extends Component {
                 minuteStep = {60}
                 hourStep = {1}
                 placeholder='Pick a time' />
-
                 <form onSubmit={this.handleSubmit}>
                 <input type="submit" value="Book" style={{
                             marginTop: '20%',
@@ -421,6 +422,10 @@ export class UserCalendar extends Component {
                             color: 'white'
                         }}/>
                 </form>
+
+                <PaymentDialog price={this.props.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
+                </PaymentDialog>
+
                 </div>
 
                 

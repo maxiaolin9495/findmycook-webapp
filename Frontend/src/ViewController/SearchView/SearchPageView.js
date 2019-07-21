@@ -29,6 +29,7 @@ export class SearchPageView extends React.Component {
     }
 
     editProfile=()=>{
+        setTimeout(() => window.scrollTo(0,0), 150);
         if(LoginService.isAuthenticated()){
             let withProfile = UserService.getCurrentUser().withProfile;
             if(withProfile ==='No') {

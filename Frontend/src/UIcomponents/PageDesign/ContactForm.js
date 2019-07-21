@@ -79,6 +79,10 @@ class ContactForm extends React.Component {
 
 
     handleSubmit =(event) =>{
+        if(this.state.message === ''){
+            alert('Please input your message')
+            return;
+        }
         event.preventDefault();
         let contactForm = {
             email: this.state.email,
