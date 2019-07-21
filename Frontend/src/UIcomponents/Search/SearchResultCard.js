@@ -113,7 +113,11 @@ class SearchResultCard extends Component {
                         marginRight: '50px',
                         fontSize: '22px',
                         fontFamily: 'San Francisco'
-                    }} onClick={() => this.props.history.push(`/chef/${this.props.id}`)}>Select</Button>
+                    }} onClick={() => {
+                        this.props.history.push(`/chef/${this.props.id}`);
+                        window.location.reload()
+                        setTimeout(() => window.scrollTo(0,0), 150);
+                    }}>Select</Button>
                 </div>
             </div>
         );

@@ -183,8 +183,6 @@ export class UserCalendar extends Component {
     }
 
     handleSubmit() {
-
-
         if (this.state.selectedDay == undefined ||
             this.state.startTime == null ||
             this.state.endTime == null ||
@@ -233,7 +231,6 @@ export class UserCalendar extends Component {
         }).catch((e) => {
             console.error(e);
         });
-        console.log(props.chef);
         BookingService.getBookings('Chef',props.chef.email).then((userCalendarBookings) => {
             this.setState({
                 userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefEmail === props.chef.email
