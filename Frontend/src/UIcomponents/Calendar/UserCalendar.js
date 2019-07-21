@@ -197,7 +197,7 @@ export class UserCalendar extends Component {
           }
         
         userCalendarBooking.userName = this.state.customerName;
-        userCalendarBooking.chefName = "Michael Scott";
+        userCalendarBooking.chefName = this.props.chef.firstName + ' ' + this.props.chef.lastName;
         userCalendarBooking.address = this.state.address;
         
         //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
@@ -227,12 +227,12 @@ export class UserCalendar extends Component {
       this.setState({customerName: customerName.firstName + ' ' + customerName.lastName});
       this.setState({address: customerName.address})
       ChefCalendarService.getWorkTimeEntries().then((chefWorkTimes) => {
-          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === 'Michael Scott')});
+          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName)});
       }).catch((e) => {
           console.error(e);
       });
       UserCalendarService.getBookings().then((userCalendarBookings) => {
-        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
+        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName ===  this.props.chef.firstName + ' ' + this.props.chef.lastName)});
     }).catch((e) => {
         console.error(e);
     });

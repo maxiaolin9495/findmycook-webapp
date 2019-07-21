@@ -49,7 +49,7 @@ class ChefDetail extends React.Component {
 
     componentWillMount(){
         UserCalendarService.getBookings().then((userCalendarBookings) => {
-            this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
+            this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === this.props.chef.firstName + '' + this.props.chef.lastName)});
         }).catch((e) => {
             console.error(e);
         });
@@ -68,6 +68,8 @@ class ChefDetail extends React.Component {
 
 
     render() {
+        console.log(`Current user bookings for chef: ${this.props.chef.firstName}`)
+        console.log(this.state.userCalendarBookings)
         setTimeout(() => window.scrollTo(0,0), 150);
         return (
             <div className="md-grid" id="chefDetailBox" label="ChefDetail" style={{
@@ -175,7 +177,7 @@ class ChefDetail extends React.Component {
                     </div>
                 </div>
                 </div>
-                <UserCalendar userCalendarBookings = {this.state.userCalendarBookings} onSubmit={(userCalendarBooking) => this.createBooking(userCalendarBooking)} />
+                <UserCalendar chef = {this.props.chef} userCalendarBookings = {this.state.userCalendarBookings} onSubmit={(userCalendarBooking) => this.createBooking(userCalendarBooking)} />
             </div>
         );
     }
