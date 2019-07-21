@@ -476,7 +476,7 @@ export class UserCalendar extends Component {
                 hourStep = {1}
                 placeholder='Pick a time' />
 
-                <PaymentDialog price={this.props.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
+                <PaymentDialog price={this.props.chef.price} handleSubmit={this.handleSubmit} onSubmit={this.handleSubmit}>
                 </PaymentDialog>
 
                 </div>
