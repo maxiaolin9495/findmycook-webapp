@@ -8,7 +8,6 @@ import {UserCalendar} from "../Calendar/UserCalendar";
 import UserCalendarService from '../../Services/UserCalendarService';
 import BookingService from "../../Services/BookingService";
 import UserService from "../../Services/UserService";
-import LoginService from "../../Services/LoginService";
 import Background from '../../Images/Homepage.jpg';
 
 class ChefDetail extends React.Component {
@@ -20,7 +19,8 @@ class ChefDetail extends React.Component {
         }
     }
 
-    handleBooking = (values) => {
+    createBooking = (values) => {
+        console.log('create Booking')
         let customer = UserService.getCurrentUser();
         BookingService.emailNotification(this.props.chef.email, this.props.chef.firstName,
             'New Booking from FindMyCook',
@@ -34,7 +34,7 @@ class ChefDetail extends React.Component {
                 price: this.props.chef.price,
                 city: customer.city,
                 payment: 'paid',
-                
+
             }).then(
                 data => {
                     this.props.history.push('/my-booking');
@@ -42,7 +42,6 @@ class ChefDetail extends React.Component {
             console.log(e);
         })
     };
-
     addReview(){
         this.props.history.push(`/review/${this.props.chef._id}`)
     }
@@ -54,19 +53,6 @@ class ChefDetail extends React.Component {
             console.error(e);
         });
     }
-
-    createBooking(userCalendarBooking) {
-        alert('Booking request saved');
-        UserCalendarService.createBooking(userCalendarBooking).then((data) => {
-            this.props.history.push('/');
-        }).catch((e) => {
-            console.error(e);
-            this.setState(Object.assign({}, this.state, {error: 'Error while creating booking'}));
-        });
-        
-    }
-
-
     render() {
         //console.log(`Current user bookings for chef: ${this.props.chef.firstName}`)
         //console.log(this.state.userCalendarBookings)
