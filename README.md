@@ -55,7 +55,20 @@ npm start
 ```
 npm start
 ```
+## Demo
+Search for "Munich" to see the different chefs.
 
+Log in with: 
+Email: test2@test.com
+Password: 123 
+
+Now, open the MyBookings tab from the Kebap menu and check it out
+Or try submitting a review
+Or try make a booking from the calendar
+
+Now, register as a chef and log in. Open the Kebap menu and navigate to the MyCalendar tab.
+Register the worktimes you desire to work in. Afterwards, search the city you registered with and select your profile. 
+You will see, your worktime days turned green in the calendar.
 
 ### Code of Conduct
 
