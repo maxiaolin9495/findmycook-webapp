@@ -83,7 +83,7 @@ export class ChefCalendarView extends Component {
 
                 <div>
                     <h3 style = {this.getStyleForWorkTimeTitle()}>Worktime Entries</h3>
-                    {this.state.workTimes.filter(workTime => workTime.chefName === this.state.chefName).length == 0 ? 
+                    {this.state.workTimes.filter(workTime => workTime.chefName === this.state.chefName && new Date(parseInt(workTime.startTime)) >= new Date()).length == 0 ? 
                     (<h4 style = {this.getStyleForNoEntry()}>No entries</h4>) : <h4></h4>}
                     {this.state.workTimes
                         .filter(workTime => workTime.chefName === this.state.chefName && new Date(parseInt(workTime.startTime)) >= new Date())

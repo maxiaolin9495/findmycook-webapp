@@ -20,7 +20,7 @@ export class ChefDetailView extends React.Component {
             loading: true
         });
         let chefid = this.props.match.params.id;
-        console.log(this.props.match.params.id);
+        //console.log(this.props.match.params.id);
         ChefService.getChefDetail(chefid).then((data) => {
             this.setState({
                 chef: data,
@@ -44,7 +44,7 @@ export class ChefDetailView extends React.Component {
         let result = this.state.reviews.reduce((acc, val) => {
             return val.chefName == this.state.chef.firstName + ' ' + this.state.chef.lastName ? acc + val.overallRating : acc;
           }, 0);
-        console.log(this.state.reviews);
+        //console.log(this.state.reviews);
         return Math.round(result/ this.state.reviews.length);
     }
 

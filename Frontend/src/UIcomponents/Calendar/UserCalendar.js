@@ -48,6 +48,7 @@ export class UserCalendar extends Component {
         this.disabledHoursStartTime = this.disabledHoursStartTime.bind(this);
         this.disabledHoursEndTime = this.disabledHoursEndTime.bind(this);
         this.disabledMinutes = this.disabledMinutes.bind(this);
+        this.onDemandComputeDisabledHours = this.onDemandComputeDisabledHours.bind(this);
         this.onMonthChange = this.onMonthChange.bind(this);
 
         this.state = {
@@ -78,6 +79,7 @@ export class UserCalendar extends Component {
         this.setState({endTime: null})
         this.setState({ selectedDay: day });
         this.computeDisabledHours(day);
+        //console.log(day)
         //console.log("Month State:")
         //console.log(this.state.month.getMonth())
     }
@@ -233,6 +235,7 @@ export class UserCalendar extends Component {
       this.setState({address: customerName.address})
       ChefCalendarService.getWorkTimeEntries().then((chefWorkTimes) => {
           this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName)});
+          this.colorizeCalendar([...chefWorkTimes].filter(workTime => workTime.chefName === this.props.chef.firstName + ' ' + this.props.chef.lastName))
       }).catch((e) => {
           console.error(e);
       });
@@ -242,16 +245,67 @@ export class UserCalendar extends Component {
     }).catch((e) => {
         console.error(e);
     });
-      this.colorizeCalendar()
-      //console.log('The current modifiers:')
-      //console.log(modifiers)
     }
 
     daysInMonth (month, year) {
       return new Date(year, month, 0).getDate();
     }
 
-    colorizeCalendar(){
+    onDemandComputeDisabledHours(selected, workTimes){
+      workTimes = workTimes.filter(workTime => new Date(parseInt(workTime.startTime)).toLocaleDateString() === selected.toLocaleDateString());
+      let userCalendarBookings = this.state.userCalendarBookings.filter(userCalendarBooking => new Date(parseInt(userCalendarBooking.startTime)).toLocaleDateString() === selected.toLocaleDateString());
+
+      console.log('Chef work times:')
+      console.log(workTimes)
+      if (workTimes.length == 0){
+        return [...Array(24).keys()];
+      }
+
+      var temp_userBookedTimesForStartTime = []
+      var temp_userBookedTimesForEndTime = []
+      for (var i = 0; i < userCalendarBookings.length; i++){
+        let start = new Date(parseInt(userCalendarBookings[i].startTime)).getHours();
+        let end = new Date(parseInt(userCalendarBookings[i].endTime)).getHours();
+        temp_userBookedTimesForStartTime.push(this.range(start, end-1));
+        temp_userBookedTimesForEndTime.push(this.range(start, end));
+      }
+
+      // Booking A: 9-12 & Booking B: 14-15 ==> userBookedTimes: [9,10,11,12,14,15]
+      let userBookedTimesForStartTime = temp_userBookedTimesForStartTime.flat()
+      let userBookedTimesForEndTime = temp_userBookedTimesForEndTime.flat()
+
+      //Creation of chef worktime range, ex. worktime is 9 to 17 ==> startEnabledRange [9,10,11,...,16]
+      var startEnabledRange = []
+      var endEnabledRange = []
+
+      for(var i = 0; i < workTimes.length; i++){
+        let start = new Date(parseInt(workTimes[i].startTime))
+        let end = new Date(parseInt(workTimes[i].endTime))
+        let startHour = start.getHours()
+        let endHour = end.getHours()
+        let temp_startEnabledRange = this.range(startHour,endHour - 1);
+        let temp_endEnabledRange = this.range(startHour + 1,endHour);
+        startEnabledRange = startEnabledRange.concat(temp_startEnabledRange);
+        endEnabledRange =  endEnabledRange.concat(temp_endEnabledRange);
+      }
+      startEnabledRange.sort(this.sortNumbers)
+      endEnabledRange.sort(this.sortNumbers)
+
+      //computing open slots where userBookings are considered
+      let removedBookedStartEnabledRange =  startEnabledRange.filter(value => !userBookedTimesForStartTime.includes(value)) 
+      let removedBookedEndEnabledRange =  endEnabledRange.filter(value => !userBookedTimesForEndTime.includes(value))
+
+      //Set disabled hours for start & endtime considering chefCalendar worktimes & userCalendarBookings
+      let defaultDisabledRange = [...Array(24).keys()];
+      let disabledHoursStartTime = defaultDisabledRange.filter(value => !removedBookedStartEnabledRange.includes(value));
+      let disabledHoursEndTime = defaultDisabledRange.filter(value => !removedBookedEndEnabledRange.includes(value));
+      return disabledHoursStartTime
+      }
+
+
+    colorizeCalendar(worktimes){
+      console.log('worktimes')
+      console.log(worktimes)
       let today = new Date();
       today.setDate(1);
       today.setMonth(this.state.month.getMonth());
@@ -263,19 +317,20 @@ export class UserCalendar extends Component {
 
       //compute disabled days for a given month
       for(var i=0; i <= this.daysInMonth(this.state.month.getMonth(),this.state.month.getFullYear()); i++){
-        tomorrow.setDate(today.getDate()+1);
-        this.computeDisabledHours(tomorrow);
-        if(this.state.disabledHoursStartTime == 24){
-          modifiers.disabled.push(tomorrow)
+        tomorrow.setDate(today.getDate()+i);
+        let disabledHours = this.onDemandComputeDisabledHours(tomorrow, worktimes);
+        //console.log(tomorrow)
+        if(disabledHours.length == 24){
+          modifiers.disabled.push(new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()))
         } else {
-          modifiers.enabled.push(tomorrow)
+          modifiers.enabled.push(new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()))
         }
       } 
     }
 
     onMonthChange(month){
       this.setState({month : month});
-      this.colorizeCalendar();
+      this.colorizeCalendar(this.state.chefWorkTimes);
     }
 
     range(start, end) {
@@ -294,8 +349,9 @@ export class UserCalendar extends Component {
       //console.log("User bookings on the selected date:")
       //console.log(userCalendarBookings)
       //console.log("Chef worktime on the selected date:")
+      
+      //console.log('Chef work times:')
       //console.log(workTimes)
-
       if (workTimes.length == 0){
         this.setState({defaultOpenValueStartTime: moment(new Date())})
         this.setState({defaultOpenValueEndTime: moment(new Date())})
@@ -370,7 +426,7 @@ export class UserCalendar extends Component {
 
     
     render() {
-      console.log(this.state.userCalendarBookings)
+      //console.log(this.state.userCalendarBookings)
         return (
             <div className="md-grid" id="calendarBox" label="UserCalendar" style={{width: '17.5%', background: 'white'}}>
                 
