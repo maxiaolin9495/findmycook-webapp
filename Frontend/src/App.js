@@ -2,7 +2,6 @@
 
 import React from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {UserCalendarView} from './ViewController/CalendarView/UserCalendarView';
 import {ChefCalendarView} from './ViewController/CalendarView/ChefCalendarView';
 import {ReviewChefView} from "./ViewController/ReviewChefView/ReviewChefView.js";
 import {SearchPageView} from "./ViewController/SearchView/SearchPageView";
@@ -24,7 +23,6 @@ export default class App extends React.Component {
                 {component: SearchPageView, path: '/', exact: true},
                 {component: SearchResultView, path: '/searchresult', exact: true},
                 {component: LoginView, path: '/login', exact: true}, 
-                {component: UserCalendarView, path: '/userCalendar', exact: true},
                 {component: ReviewChefView, path: '/review/:id', exact: true},
                 {component: ChefCalendarView, path: '/chefCalendar', exact: true},
                 {component: ChefDetailView, path: '/chef/:id'},

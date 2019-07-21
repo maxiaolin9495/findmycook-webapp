@@ -39,7 +39,7 @@ class ChefReviewDetails extends React.Component {
                     {this.props.review.title}
                 </h3>
 
-                <p style = {{marginTop: '-2%'}}> 
+                <p style = {{marginTop: '-1%'}}> 
                     {this.props.review.text} 
                 </p>
                 

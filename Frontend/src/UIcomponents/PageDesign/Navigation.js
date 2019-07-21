@@ -4,6 +4,7 @@ import {FontIcon, ListItem, NavigationDrawer, Button, Avatar, IconSeparator, Nav
 import imgURL from '../../Images/fmc.png';
 import NavigationMenuStyle from '../../css/Navigation.css';
 import LoginService from '../../Services/LoginService';
+import UserService from '../../Services/UserService';
 import { upperFirst } from 'lodash/string';
 
 const Item = ({label, children}) => (
@@ -53,7 +54,7 @@ const defaultNavItems = [
     },
 ];
 
-const logInNavItems = [
+const logInNavItemsCustomer = [
     {
         label: 'Home',
         to: '/',
@@ -61,9 +62,28 @@ const logInNavItems = [
         icon: 'home',
     },
     {
-        label: 'Search',
-        to:'/searchresult',
-        icon:'search',
+        label: 'My Bookings',
+        to: '/my-booking',
+        icon: 'store'
+    }, 
+    {
+        label: 'Contact us',
+        to: '/contact-us',
+        icon: 'send'
+    },
+    {
+        label: 'About us',
+        to: '/about-us',
+        icon: 'book'
+    },
+]
+
+const logInNavItemsChef = [
+    {
+        label: 'Home',
+        to: '/',
+        exact: true,
+        icon: 'home',
     },
     {
         label: 'My Bookings',
@@ -121,11 +141,11 @@ class NavigationMenu extends React.Component {
             attractions: [],
             titles: [],
             toolbarTitle: this.getCurrentTitle(props),
-            navItems: LoginService.isAuthenticated() ? logInNavItems:defaultNavItems
+            navItems: LoginService.isAuthenticated() ? (UserService.getCurrentUser().userType == 'Customer'? logInNavItemsCustomer : logInNavItemsChef) :defaultNavItems
         };
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    componentWillReceiveProps(nextProps){
         this.setState({toolbarTitle: this.getCurrentTitle(nextProps)});
     }
 
@@ -152,20 +172,19 @@ class NavigationMenu extends React.Component {
                     className="NavigationMenuStyle"
                     drawerTitle="Menu"
                     toolbarActions={
-                        LoginService.isAuthenticated() ?
-                            <Button id="logoutButton" type = "button" flat primary swapTheming onClick={this.logout}>Log out</Button>:
+                        LoginService.isAuthenticated() ?                            
+                            <Button id="logoutButton" type = "button" flat primary swapTheming onClick={this.logout}>Log out</Button>                            
+                            :
                             <div id="noneName">
                               <Button type = "button" id="loginButton" flat primary swapTheming onClick={()=> this.props.history.push('/login')}>Login</Button>
                               <Button type = "button" id="RegistrationButton" flat primary swapTheming onClick={()=> this.props.history.push('/register')}>Register</Button>
-                              <Button type = "button" id="calendarButton" flat primary swapTheming onClick={()=> this.props.history.push('/userCalendar')}>User Calendar</Button>
-
                             </div>
                     }
                     navItems={
                         this.state.navItems.map(props => <NavLink {...props} key={props.to}/>)
                     }
                     toolbarTitle={
-                        <Item label="FindMyCook.com">
+                        <Item label="Find my Cook">
                             <Button onClick={() => this.props.history.push('/')}><Avatar src={imgURL}
                                                                                          role="presentation"
                                                                                          suffix="green-300"/></Button>

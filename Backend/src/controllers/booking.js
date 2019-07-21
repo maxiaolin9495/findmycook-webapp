@@ -183,6 +183,33 @@ const cancelBooking = async (req, res) =>{
     });
 
     if(req.body.status === 'canceled'){
+        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status, payment: 'inProgress'}).then(booking => {
+            return res.status(200).json({
+                booking: booking,
+            })
+        }) .catch(error => {
+            console.log('error by creating a booking');
+            return res.status(500).json({
+                error: 'Internal error',
+                message: error.message
+            })
+        });
+    }
+
+}
+
+const reviewBooking = async (req, res) =>{
+    if (!Object.prototype.hasOwnProperty.call(req.body, '_id')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a _id property'
+    });
+
+    if (!Object.prototype.hasOwnProperty.call(req.body, 'status')) return res.status(400).json({
+        error: 'Bad Request',
+        message: 'The request body must contain a status property'
+    });
+
+    if(req.body.status === 'reviewed'){
         bookingModel.updateOne({_id: req.body._id}, {status: req.body.status}).then(booking => {
             return res.status(200).json({
                 booking: booking,
@@ -206,5 +233,6 @@ module.exports = {
     getCustomerName,
     confirmBooking,
     cancelBooking,
-    closeBooking
+    closeBooking,
+    reviewBooking
 }

@@ -4,7 +4,7 @@ import {withRouter} from "react-router-dom";
 import React from "react";
 import BookingService from "../../Services/BookingService";
 import Dialog from "../Dialog";
-import UserService from "../../Services/UserService";
+import ChefService from "../../Services/ChefService";
 
 class BookingCard extends Component {
     constructor(props) {
@@ -17,6 +17,7 @@ class BookingCard extends Component {
             name: '',
             date: '',
             photo: '',
+            reviewId: '',
             status: this.props.status,
         }
     }
@@ -36,6 +37,10 @@ class BookingCard extends Component {
         else return false;
     }
 
+    ifReviewed = () => {
+        if (this.state.status === 'reviewed') return true;
+        else return false;
+    }
 
     componentWillMount() {
         this.setState({
@@ -59,7 +64,15 @@ class BookingCard extends Component {
                 name: data.firstName + ' ' + data.lastName,
                 chefFirstName: data.firstName,
                 photo: data.photo,
+                city: data.city,
                 loading: false
+            });
+        }).catch((e) => {
+            console.error(e);
+        });
+        ChefService.getChefBySearch(this.state.chefFirstName).then((chef) => {
+            this.setState({
+                reviewId: [...chef].filter(chef => chef.firstName === this.state.chefFirstName),
             });
         }).catch((e) => {
             console.error(e);
@@ -76,9 +89,20 @@ class BookingCard extends Component {
     getTimeSlot = () => {
         let startTime = new Date(parseInt(this.props.startTime));
         let endTime = new Date(parseInt(this.props.endTime));
-        return startTime.toTimeString().split('GMT')[0] + '- ' + endTime.toTimeString().split(' GMT')[0]
+        return startTime.getHours() + ':00' + '- ' + endTime.getHours() + ':00'
     }
 
+    addReview(){
+        this.setState({status: 'reviewed'})
+        BookingService.reviewBooking(this.props.id, 'reviewed').then(
+            data => {
+                this.props.history.push(`/review/${this.state.reviewId[0]._id}`)
+            }
+        ).catch(e => {
+            console.log(e);
+        })
+        
+    }
 
     verifyDate = () => {
         let now = new Date();
@@ -150,7 +174,7 @@ class BookingCard extends Component {
         }
     }
 
-    closeBooking = () =>{
+    closeBooking = () => {
         BookingService.closeBooking(this.props.id, 'closed').then(data => {
            this.state.status = 'closed';
            console.log(this.status);
@@ -189,10 +213,11 @@ class BookingCard extends Component {
                              border: '2px yellow',
                              fontSize: 'block',
                              color: 'white',
-                             background: this.ifCanceled() ? 'red' : this.ifNeedConfirmation() ? 'lightBlue' : 'green',
+                             background: this.ifCanceled() ? 'red' : this.ifNeedConfirmation() ? 'lightBlue' : this.ifReviewed()? 'purple': 'green',
                              paddingBottom: '15px'
                          }}>{this.state.status === 'inProgress' ? 'Need Confirmation' : this.state.status}</Button>}
                 />
+                
                 <div style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -226,14 +251,8 @@ class BookingCard extends Component {
                             marginTop: '30px'
                         }}>{this.getDate()} <br/> {this.getTimeSlot()}</h5>
                     </div>
-                    <div style={{width: '20%', marginLeft: '15%'}}>
-                        <div style={{
-                            color: 'green',
-                            marginTop: '10%',
-                            matginLeft: '15%',
-                            marginRight: '50px',
-                            fontSize: '40px',
-                        }}>€{this.props.price}</div>
+                    <div style={{width: '100%'}}>
+                    <div style={{width: '100%', marginLeft: '85%'}}>
                         {
                             this.ifFinished() ? '' : this.ifCanceled() ? '' :
                                 <Dialog actionName='cancel' onClick={() => this.cancelBooking(false)}/>
@@ -243,7 +262,22 @@ class BookingCard extends Component {
                                 <Dialog actionName='confirm' onClick={() => this.confirmBooking()}/> : ''}
 
                     </div>
+                    <div style={{
+                            color: 'green',
+                            marginTop: '10%',
+                            marginLeft: '85%',
+                            marginRight: '40px',
+                            fontSize: '40px',
+                        }}>€{this.props.price}</div>
                 </div>
+                </div>
+                <div>
+                    {
+                        this.props.userType === 'Customer' && this.ifFinished() && !this.ifReviewed()?
+                        <Button style = {{color: 'white', background: 'grey'}} raised primary onClick={() => this.addReview()}add review> add review</Button>
+                        : ''
+                    }
+                    </div>
             </Card>
         );
     }

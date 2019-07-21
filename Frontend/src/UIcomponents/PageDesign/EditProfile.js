@@ -82,7 +82,7 @@ class EditProfile extends React.Component {
                                }}/>
                     <TextField
                         id="floating-center-firstName"
-                        label="firstname"
+                        label="First name"
                         required
                         lineDirection="center"
                         placeholder="Please input your firstname"
@@ -90,7 +90,7 @@ class EditProfile extends React.Component {
                     />
                     < TextField
                         id="floating-center-lastName"
-                        label="lastName"
+                        label="Last name"
                         required
                         lineDirection="center"
                         placeholder="Please input your lastname"
@@ -117,14 +117,14 @@ class EditProfile extends React.Component {
                     {!this.isChef()?
                         <TextField
                             id="floating-center-lastName"
-                            label="address"
+                            label="Address"
                             required
                             lineDirection="center"
                             placeholder="Please input your address"
                             onChange={value => this.handleChange('address', value)}/>:''}
                     <TextField
                         id="floating-center-phoneNumber"
-                        label="phonenumber"
+                        label="Mobile phone"
                         required
                         lineDirection="center"
                         placeholder="Please input your common phonenumber"
@@ -149,7 +149,7 @@ class EditProfile extends React.Component {
                             <FileInput type="file" id = 'photo' accept="image/*" onChange={values => this.fileChangedHandler(values)} primary/>
                             <TextField
                                 id="floating-center-foodType"
-                                label="cuisine"
+                                label="Cuisine"
                                 required
                                 lineDirection="center"
                                 placeholder="Please input your best cuisine type"
@@ -157,7 +157,7 @@ class EditProfile extends React.Component {
                             />
                             <TextField
                                 id="floating-center-price"
-                                label="price"
+                                label="Price"
                                 required
                                 lineDirection="center"
                                 placeholder="Please input your service fee"

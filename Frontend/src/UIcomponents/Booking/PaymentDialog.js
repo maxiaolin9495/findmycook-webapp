@@ -40,7 +40,7 @@ class PaymentDialog extends PureComponent {
     render() {
         return (
             <div style = {{marginTop: '10%', marginLeft: 'auto', marginRight: 'auto'}}>
-                <Button raised onClick={this.show}>book</Button>
+                <Button raised onClick={this.show} style = {{marginLeft: '17px'}}>Book now</Button>
                 <DialogContainer
                     id="scrolling-content-dialog"
                     title='Confirm your Booking'
@@ -51,7 +51,7 @@ class PaymentDialog extends PureComponent {
                      amount= {this.props.price}
                      currency='EUR'
                      sandboxID='AQmkwXCQvzEjf2jUqdTvG3hb_I9DlgZ0ahbE9cit9Izrvh0Wtz5cFTV_ZpZ4ICBS9tbc1zD94Hzdms7i'
-                     onPaymentStart={() => console.log('payment started')}
+                     onPaymentStart={() => {console.log('payment started')}}
                      onPaymentSuccess={(res) => this.paymentSuccess(res)}
                      onPaymentError={(msg) => {alert('Unsuccessful payment')}}
                      onPaymentCancel={(msg) => {}}

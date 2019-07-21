@@ -8,6 +8,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import UserService from "../../Services/UserService";
 
+const modifiers = {
+  past: { 
+    before: new Date(),
+  }
+};
+
+const modifiersStyles = {
+  past:{
+    color: "rgb(230, 230, 230)",
+    backgroundColor: "clear"
+  }
+};
+
 export class ChefCalendar extends Component {
 
     constructor(props) {
@@ -72,8 +85,9 @@ export class ChefCalendar extends Component {
         
         let existingWorktimes = this.props.workTimes.filter(workTime => 
           new Date(parseInt(workTime.startTime)).toLocaleDateString() === convertedStartTime.toLocaleDateString())
-
-        console.log(existingWorktimes)
+        
+        //console.log("Existing Worktimes:")
+        //console.log(existingWorktimes)
 
         let entryIsValid = true;
         for(var i = 0; i < existingWorktimes.length; i++){
@@ -122,7 +136,11 @@ export class ChefCalendar extends Component {
             <div className="md-grid" id="calendarBox" label="ChefCalendar" style={{width: '17.5%', background: 'white'}}>
                 
                 <div>
-                    <DayPicker onDayClick={this.handleDayClick} selectedDays={this.state.selectedDay}/>
+                    <DayPicker 
+                    onDayClick={this.handleDayClick} 
+                    selectedDays={this.state.selectedDay}
+                    modifiers={modifiers}
+                    modifiersStyles={modifiersStyles}/>
                     {this.state.selectedDay ? 
                     (<h3 style = {{textAlign: 'center'}}>{this.state.selectedDay.toLocaleDateString()}</h3>) : 
                     (<h3 style = {{textAlign: 'center'}}>Choose a day above</h3>)}
