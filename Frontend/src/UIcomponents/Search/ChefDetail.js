@@ -104,9 +104,9 @@ class ChefDetail extends React.Component {
                             <div>
                             <Button style={{
                                 height: '30px',
-                                marginTop:'-30%',
-                                marginLeft: '-2%',
-                                marginBottom:'8%',
+                                marginTop:'-10%',
+                                marginLeft: '-1%',
+                                marginBottom:'3%',
                                 fontSize: '20px',
                                 background: 'clear'
                             }} onClick={() => this.addReview()}>{this.props.reviewsAmount} review(s)</Button>
@@ -117,7 +117,7 @@ class ChefDetail extends React.Component {
                                 fontSize: '10px',
                                 background: 'blue',
                                 color: 'white',
-                                marginLeft: '2%'
+                                marginLeft: '-2%'
                             }} onClick={() => this.addReview()}>add review</Button>
 
                             <div style={{
@@ -160,10 +160,17 @@ class ChefDetail extends React.Component {
                             fontSize: '20px',
                             fontFamily: 'San Francisco'
                         }}>{this.props.chef.introduction}</h4>
+                       
                     </div>
+                    
                 </div>
+                
                 </div>
+
+                <div style={{width: '100%', minWidth: '100%', marginTop: '5%'}}>
                 <UserCalendar chef = {this.props.chef} userCalendarBookings = {this.state.userCalendarBookings} onSubmit={(userCalendarBooking) => this.createBooking(userCalendarBooking)} />
+                </div>
+                
             </div>
         );
     }
