@@ -183,7 +183,7 @@ const cancelBooking = async (req, res) =>{
     });
 
     if(req.body.status === 'canceled'){
-        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status}).then(booking => {
+        bookingModel.updateOne({_id: req.body._id}, {status: req.body.status, payment: 'inProgress'}).then(booking => {
             return res.status(200).json({
                 booking: booking,
             })
