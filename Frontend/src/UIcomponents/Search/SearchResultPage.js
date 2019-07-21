@@ -47,7 +47,6 @@ class SearchResultPage extends Component {
             alert('Please input a city name');
             return;
         }
-        console.log(this.props.history);
         this.props.history.push(`/searchresult?query=${this.state.searchValue}`);
         window.location.reload();
     }
