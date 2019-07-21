@@ -10,6 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment';
 import UserService from "../../Services/UserService";
 import PaymentDialog from "../Booking/PaymentDialog";
+import LoginService from "../../Services/LoginService";
 
 
 const modifiers = {
@@ -183,6 +184,9 @@ export class UserCalendar extends Component {
     handleSubmit(event) {
       event.preventDefault();
 
+      if(!LoginService.isAuthenticated()) {
+        alert('Please login first');
+      } else {
       if(this.state.selectedDay == undefined || 
         this.state.startTime == null ||
         this.state.endTime == null ||
@@ -220,6 +224,7 @@ export class UserCalendar extends Component {
         this.setState({ disabledHoursEndTime: [...Array(24).keys()]});
         this.props.onSubmit(userCalendarBooking);
      }
+    }
     }
 
     componentWillMount(){
@@ -364,6 +369,7 @@ export class UserCalendar extends Component {
 
     
     render() {
+      console.log(this.state.userCalendarBookings)
         return (
             <div className="md-grid" id="calendarBox" label="UserCalendar" style={{width: '17.5%', background: 'white'}}>
                 

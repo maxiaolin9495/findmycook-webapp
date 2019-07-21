@@ -68,8 +68,8 @@ class ChefDetail extends React.Component {
 
 
     render() {
-        console.log(`Current user bookings for chef: ${this.props.chef.firstName}`)
-        console.log(this.state.userCalendarBookings)
+        //console.log(`Current user bookings for chef: ${this.props.chef.firstName}`)
+        //console.log(this.state.userCalendarBookings)
         setTimeout(() => window.scrollTo(0,0), 150);
         return (
             <div className="md-grid" id="chefDetailBox" label="ChefDetail" style={{
