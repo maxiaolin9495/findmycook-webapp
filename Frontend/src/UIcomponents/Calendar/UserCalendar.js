@@ -237,7 +237,8 @@ export class UserCalendar extends Component {
           console.error(e);
       });
       UserCalendarService.getBookings().then((userCalendarBookings) => {
-        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName ===  this.props.chef.firstName + ' ' + this.props.chef.lastName)});
+        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName ===  this.props.chef.firstName + ' ' + this.props.chef.lastName
+        && userCalendarBooking.status !== 'canceled')});
     }).catch((e) => {
         console.error(e);
     });
