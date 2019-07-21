@@ -7,9 +7,49 @@ Using Terminal
 
 `git clone https://github.com/itsJS/findMyCook-frontend.git`
 
-## Code of Conduct
+## Run the Example
 
-### Git Workflow
+###Linux
+If you are using linux system, we recommand you to use docker
+Firstly you need to build the docker images in your local laptop
+`docker-compose build`
+Then you can start the whole project with:
+`docker-compose up`
+
+###Windows/MacOS
+#### Create a new directory where your database will be stored (it's a good idea to separate data and business logic - the data directory should be on a different place than your app)
+#### Start the database server
+```
+mongod --dbpath relative/path/to/database
+OR if you have already set the path just run
+mongod
+```
+#### Create all database schemes and import data to begin with
+```
+Open command shell in the backend folder and run: mongorestore dump/
+```
+
+## Run Project
+
+1) Start mongodb with
+```
+mongod
+```
+
+2) Go to backend folder in the project files and run
+```
+npm start
+```
+
+3) Go to frontend folder and run
+```
+npm start
+```
+
+
+### Code of Conduct
+
+#### Git Workflow
 Please use feature branches only to commit your code. 
 
 After finishing your feature, create a pull request and add one reviewer.
@@ -20,16 +60,16 @@ The reviewer shall merge the feature branch into the develop branch once they ap
 
 The master branch is only used for production, i.e. a finished deliverable/ work product.
 
-#### Here is our workflow:
+##### Here is our workflow:
 
 ![Image](git_workflow.png?raw=true)
 Reference: Copyright 2019 Stephan Krusche, Bernd Bruegge - POM SS19 - 09 - Branch and Merge Management - Slide 7
 
-### Naming Branches
+#### Naming Branches
 Name the branches according to the branch types:
 - 👨‍🎨 **Feature**: `feature/xx-yy-zz` -- ease tracking of features. Example: `feature/add-free-slots`
 - 🧙‍♀️**Bugfix**: `bugfix/xx-yy-zz` -- fixed bugs.
 - 👶 **Minor**: `minor/xx-yy-zz` -- refactorings or something similar.
 
-### Commit messages
+#### Commit messages
 Write commit messages based on these [guidelines](https://chris.beams.io/posts/git-commit/) ❤
