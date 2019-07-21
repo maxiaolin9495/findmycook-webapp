@@ -165,7 +165,7 @@ class NavigationMenu extends React.Component {
                         this.state.navItems.map(props => <NavLink {...props} key={props.to}/>)
                     }
                     toolbarTitle={
-                        <Item label="FindMyCook.com">
+                        <Item label="Find my Cook">
                             <Button onClick={() => this.props.history.push('/')}><Avatar src={imgURL}
                                                                                          role="presentation"
                                                                                          suffix="green-300"/></Button>

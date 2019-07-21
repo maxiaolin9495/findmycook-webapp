@@ -5,6 +5,7 @@ import {Card, CardTitle, TextField, CardText, Media, MediaOverlay, Grid, Cell, B
 import {withRouter} from 'react-router-dom'
 import StarRatingComponent from 'react-star-rating-component';
 import {UserCalendar} from "../Calendar/UserCalendar";
+import UserCalendarService from '../../Services/UserCalendarService';
 import BookingService from "../../Services/BookingService";
 import UserService from "../../Services/UserService";
 import LoginService from "../../Services/LoginService";
@@ -14,6 +15,9 @@ class ChefDetail extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            userCalendarBookings: []
+        }
     }
 
     handleBooking = (values) => {
@@ -30,6 +34,7 @@ class ChefDetail extends React.Component {
                 price: this.props.chef.price,
                 city: customer.city,
                 payment: 'paid',
+                
             }).then(
                 data => {
                     this.props.history.push('/my-booking');
@@ -41,6 +46,26 @@ class ChefDetail extends React.Component {
     addReview(){
         this.props.history.push(`/review/${this.props.chef._id}`)
     }
+
+    componentWillMount(){
+        UserCalendarService.getBookings().then((userCalendarBookings) => {
+            this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+
+    createBooking(userCalendarBooking) {
+        alert('Booking request saved');
+        UserCalendarService.createBooking(userCalendarBooking).then((data) => {
+            this.props.history.push('/');
+        }).catch((e) => {
+            console.error(e);
+            this.setState(Object.assign({}, this.state, {error: 'Error while creating booking'}));
+        });
+        
+    }
+
 
     render() {
         setTimeout(() => window.scrollTo(0,0), 150);
@@ -148,9 +173,9 @@ class ChefDetail extends React.Component {
                             fontFamily: 'San Francisco'
                         }}>{this.props.chef.introduction}</h4>
                     </div>
-
                 </div>
                 </div>
+                <UserCalendar userCalendarBookings = {this.state.userCalendarBookings} onSubmit={(userCalendarBooking) => this.createBooking(userCalendarBooking)} />
             </div>
         );
     }

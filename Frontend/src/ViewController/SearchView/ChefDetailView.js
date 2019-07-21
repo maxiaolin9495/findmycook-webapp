@@ -59,7 +59,7 @@ export class ChefDetailView extends React.Component {
                     reviewsAmount={this.state.reviews.length} 
                     averageOverallRating = {this.calculateOverallRating()}
                     />
-            </div>
+                </div>
         );
     }
 }

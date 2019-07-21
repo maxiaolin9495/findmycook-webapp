@@ -12,7 +12,8 @@ export class ChefCalendarView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            workTimes: []
+            workTimes: [],
+            chefName:''
         };
     }
 
@@ -43,15 +44,14 @@ export class ChefCalendarView extends Component {
     //TODO: Fetch actual chefName to use properly in line 21
     componentWillMount(){
         let currentUser = UserService.getCurrentUser();
-        let chefName = currentUser.firstName + ' ' + currentUser.lastName;
+        this.setState({chefName: '' + currentUser.firstName + ' ' + currentUser.lastName + ''});
         ChefCalendarService.getWorkTimeEntries().then((workTimes) => {
-            this.setState({workTimes: [...workTimes].filter(workTime => workTime.chefName === chefName)});
+            this.setState({workTimes: [...workTimes]});
             this.setState({workTimes: workTimes.sort(function(a, b) {
                 return a.startTime - b.startTime;})});
         }).catch((e) => {
             console.error(e);
-        });  
-        console.log(this.state.workTimes)    
+        });    
     }
 
     saveWorkTimeEntry(workTime) {  
@@ -76,16 +76,18 @@ export class ChefCalendarView extends Component {
         return (    
             <div>
                 <Navigation/>
-                <ChefCalendar workTimes = {this.state.workTimes} onSubmit={(workTime) => this.saveWorkTimeEntry(workTime)} />
+                <ChefCalendar workTimes = {this.state.workTimes.filter(workTime => workTime.chefName === this.state.chefName)} onSubmit={(workTime) => this.saveWorkTimeEntry(workTime)} />
                 <section>
                     <img src={Background} className="bg"/>
                 </section>
 
                 <div>
                     <h3 style = {this.getStyleForWorkTimeTitle()}>Worktime Entries</h3>
-                    {this.state.workTimes.length == 0 ? 
+                    {this.state.workTimes.filter(workTime => workTime.chefName === this.state.chefName).length == 0 ? 
                     (<h4 style = {this.getStyleForNoEntry()}>No entries</h4>) : <h4></h4>}
-                    {this.state.workTimes.map((workTime) => (  <ChefWorkTimeDetail workTime={workTime} deleteWorktime={(id) => this.deleteWorktime(id)}/>  ))}
+                    {this.state.workTimes
+                        .filter(workTime => workTime.chefName === this.state.chefName)
+                        .map((workTime) => (  <ChefWorkTimeDetail workTime={workTime} deleteWorktime={(id) => this.deleteWorktime(id)}/>  ))}
                 </div>
 
             </div>

@@ -40,7 +40,7 @@ class PaymentDialog extends PureComponent {
     render() {
         return (
             <div style = {{marginTop: '10%', marginLeft: 'auto', marginRight: 'auto'}}>
-                <Button raised onClick={this.show}>book</Button>
+                <Button raised onClick={this.show}>Pay here</Button>
                 <DialogContainer
                     id="scrolling-content-dialog"
                     title='Confirm your Booking'

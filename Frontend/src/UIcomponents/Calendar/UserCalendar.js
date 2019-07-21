@@ -77,8 +77,8 @@ export class UserCalendar extends Component {
         this.setState({endTime: null})
         this.setState({ selectedDay: day });
         this.computeDisabledHours(day);
-        console.log("State:")
-        console.log(this.state.month.getMonth())
+        //console.log("Month State:")
+        //console.log(this.state.month.getMonth())
     }
 
     onChangeStartTime = time => {
@@ -118,13 +118,13 @@ export class UserCalendar extends Component {
           }
         });
         disabledRangeResult = disabledRangeResult.sort((a, b) => (a > b) ? 1 : -1)
-        console.log("Disabled Range up to start time:")
-        console.log(disabledRangeResult)
+        //console.log("Disabled Range up to start time:")
+        //console.log(disabledRangeResult)
 
         if (userBookedTimes.length != 0){
           //Find next booking after selected start time and disable all open slots afterwards to avoid bridge booking 
-          console.log("user booked times:")
-          console.log(userBookedTimes)
+         //console.log("user booked times:")
+         //console.log(userBookedTimes)
           //Find next booking after selected starting time
           var nextBookingStartTime = -1;
           for(var i = 0; i < userBookedTimes.length; i++){
@@ -133,27 +133,27 @@ export class UserCalendar extends Component {
               break;
             }
           }
-          console.log("Next Booking")
-          console.log(nextBookingStartTime)
+          //console.log("Next Booking")
+          //console.log(nextBookingStartTime)
           }
 
           if (nextBookingStartTime != -1) {
             let temp_disabledRangeResult = this.range(nextBookingStartTime+1,23)
-            console.log("Temp Disabled Range")
-            console.log(temp_disabledRangeResult)
+            //console.log("Temp Disabled Range")
+            //console.log(temp_disabledRangeResult)
             temp_disabledRangeResult.forEach(element => {
               if (!disabledRangeResult.includes(element)) {
                 disabledRangeResult.push(element)
               }
             });
-            console.log("Disabled Range")
-            console.log(disabledRangeResult)
+            //console.log("Disabled Range")
+            //console.log(disabledRangeResult)
           }
 
           //identify end of work shift 
           let endOfWorktime = this.identifyEndOfWorktime(startHour)
-          console.log("End of Shift")
-          console.log(endOfWorktime)
+          //console.log("End of Shift")
+          //console.log(endOfWorktime)
           temp_disabledRangeResult = this.range(endOfWorktime+1,23)
           temp_disabledRangeResult.forEach(element => {
             if (!disabledRangeResult.includes(element)) {
@@ -163,8 +163,8 @@ export class UserCalendar extends Component {
         }
 
         let sorted = disabledRangeResult.sort(this.sortNumbers)
-        console.log("Disabled Range considering worktime slot")
-        console.log(sorted)
+        //console.log("Disabled Range considering worktime slot")
+        //console.log(sorted)
         this.setState({disabledHoursEndTime: sorted})
       }
 
@@ -197,7 +197,7 @@ export class UserCalendar extends Component {
           }
         
         userCalendarBooking.userName = this.state.customerName;
-        userCalendarBooking.chefName = "Silke Stein";
+        userCalendarBooking.chefName = "Michael Scott";
         userCalendarBooking.address = this.state.address;
         
         //Fetching Date from DatePicker and adding to startTime/endTime timeStamp 
@@ -227,17 +227,18 @@ export class UserCalendar extends Component {
       this.setState({customerName: customerName.firstName + ' ' + customerName.lastName});
       this.setState({address: customerName.address})
       ChefCalendarService.getWorkTimeEntries().then((chefWorkTimes) => {
-          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === 'Silke Stein')});
+          this.setState({chefWorkTimes: [...chefWorkTimes].filter(workTime => workTime.chefName === 'Michael Scott')});
       }).catch((e) => {
           console.error(e);
       });
       UserCalendarService.getBookings().then((userCalendarBookings) => {
-        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Silke Stein')});
+        this.setState({userCalendarBookings: [...userCalendarBookings].filter(userCalendarBooking => userCalendarBooking.chefName === 'Michael Scott')});
     }).catch((e) => {
         console.error(e);
     });
       this.colorizeCalendar()
-      console.log(modifiers)
+      //console.log('The current modifiers:')
+      //console.log(modifiers)
     }
 
     daysInMonth (month, year) {
@@ -410,6 +411,7 @@ export class UserCalendar extends Component {
                 minuteStep = {60}
                 hourStep = {1}
                 placeholder='Pick a time' />
+
                 <form onSubmit={this.handleSubmit}>
                 <input type="submit" value="Book" style={{
                             marginTop: '20%',
