@@ -38,7 +38,6 @@ class PaymentDialog extends PureComponent {
     };
 
     render() {
-        console.log('price = '+  this.props.price);
         return (
             <div style = {{marginTop: '10%', marginLeft: 'auto', marginRight: 'auto'}}>
                 <Button raised onClick={this.show}>Pay here</Button>
