@@ -2,10 +2,7 @@ import React from "react";
 import {withRouter} from "react-router-dom";
 import {Button, CardTitle, TextField} from "react-md";
 
-const defaultBody = `Hi,
-If you have any advice or suggestion about our website. \n` +
-    'Or you have any doubt about your booking, just send a message to us.\n' +
-    'After we have received your message, our Customer Service Team will contact with you as soon as possible';
+const defaultBody = 'Please input your issue here.';
 
 class ContactForm extends React.Component {
     constructor(props) {
@@ -45,10 +42,10 @@ class ContactForm extends React.Component {
                 />
                 <TextField
                     id="floating-center-firstName"
-                    label="First Name"
+                    label="Name"
                     required
                     lineDirection="center"
-                    placeholder="Please input your first name"
+                    placeholder="Please input your name"
                     style={{marginTop: '10px', marginLeft: '20px', marginRight: '20px'}}
                     onChange={value => this.handleChange('firstName', value)}
                 />
@@ -60,7 +57,7 @@ class ContactForm extends React.Component {
                     paddedBlock
                     style={{marginTop: '20px', marginLeft: '10px', marginRight: '10px'}}
                     maxLength={1000}
-                    defaultValue={this.state.defaultBody}
+                    placeholder={this.state.defaultBody}
                     errorText="Max 1000 characters."
                     onChange={value => this.handleChange('message', value)}
                 />

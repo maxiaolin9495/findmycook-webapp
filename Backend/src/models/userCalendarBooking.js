@@ -21,6 +21,11 @@ const UserCalendarBookingSchema = new mongoose.Schema({
     address:{
         type: String,
         required: true,
+    },
+    status:{
+        type: String,
+        required: true,
+        enum: ['closed', 'canceled', 'inProgress', 'confirmed'],
     }
 
 });

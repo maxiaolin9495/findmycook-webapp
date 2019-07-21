@@ -10,6 +10,7 @@ router.post('/searchCity', chefController.getChefByCity);
 router.get('/readdetail/:chefid', chefController.readDetailInfo);
 router.post('/chefCalendar', chefController.addWorkTimeEntry);
 router.get('/chefCalendar', chefController.getWorkTimeEntries);
+router.delete('/chefCalendar/:id', chefController.removeWorktime);
 router.post('/searchCity', chefController.getChefByCity);
 
 module.exports = router;
